@@ -17,8 +17,13 @@ public class AnalizadorLexicoTiny {
    private static String NL = System.getProperty("line.separator");
    
    private static enum Estado {
-    INICIO, REC_POR, REC_DIV, REC_PAP, REC_PCIERR, REC_COMA, REC_IGUAL,
-    REC_MAS, REC_MENOS, REC_ID, REC_ENT, REC_0, REC_IDEC, REC_DEC, REC_COM, REC_EOF
+	   Inicio,
+	   PUNTOYCOMA, RecAmpersand, FINDECLARACIONES, ARROBA, FINBLOQUE, INIBLOQUE, FINPAR, INIPAR,
+	   POR, ENTRE, EOF,
+	   ASIGNACION, MAYOR, MENOR, COMPARACION, MENORIGUAL, MAYORIGUAL, RecExcl, DISTINTO,
+	   Identificador,
+	   MAS, MENOS, Rec0, RedIDec, RealDec, Rec0Dec, RealDec0,
+	   Entero, RecExp, MaxExp, MenosExp, RealExp
    }
 
    private Estado estado;
@@ -36,70 +41,149 @@ public class AnalizadorLexicoTiny {
      filaInicio = filaActual;
      columnaInicio = columnaActual;
      lex.delete(0,lex.length());
-     while(true) {
-         switch(estado) {
-           case INICIO: 
-              if(hayLetra())  transita(Estado.REC_ID);
-              else if (hayDigitoPos()) transita(Estado.REC_ENT);
-              else if (hayCero()) transita(Estado.REC_0);
-              else if (haySuma()) transita(Estado.REC_MAS);
-              else if (hayResta()) transita(Estado.REC_MENOS);
-              else if (hayMul()) transita(Estado.REC_POR);
-              else if (hayDiv()) transita(Estado.REC_DIV);
-              else if (hayPAp()) transita(Estado.REC_PAP);
-              else if (hayPCierre()) transita(Estado.REC_PCIERR);
-              else if (hayIgual()) transita(Estado.REC_IGUAL);
-              else if (hayComa()) transita(Estado.REC_COMA);
-              else if (hayAlmohadilla()) transitaIgnorando(Estado.REC_COM);
-              else if (haySep()) transitaIgnorando(Estado.INICIO);
-              else if (hayEOF()) transita(Estado.REC_EOF);
-              else error();
-              break;
-           case REC_ID: 
-              if (hayLetra() || hayDigito()) transita(Estado.REC_ID);
-              else return unidadId();               
-              break;
-           case REC_ENT:
-               if (hayDigito()) transita(Estado.REC_ENT);
-               else if (hayPunto()) transita(Estado.REC_IDEC);
-               else return unidadEnt();
-               break;
-           case REC_0:
-               if (hayPunto()) transita(Estado.REC_IDEC);
-               else return unidadEnt();
-               break;
-           case REC_MAS:
-               if (hayDigitoPos()) transita(Estado.REC_ENT);
-               else if(hayCero()) transita(Estado.REC_0);
-               else return unidadMas();
-               break;
-           case REC_MENOS: 
-               if (hayDigitoPos()) transita(Estado.REC_ENT);
-               else if(hayCero()) transita(Estado.REC_0);
-               else return unidadMenos();
-               break;
-           case REC_POR: return unidadPor();
-           case REC_DIV: return unidadDiv();              
-           case REC_PAP: return unidadPAp();
-           case REC_PCIERR: return unidadPCierre();
-           case REC_IGUAL: return unidadIgual();
-           case REC_COMA: return unidadComa();
-           case REC_COM: 
-               if (hayNL()) transitaIgnorando(Estado.INICIO);
-               else if (hayEOF()) transita(Estado.REC_EOF);
-               else transitaIgnorando(Estado.REC_COM);
-               break;
-           case REC_EOF: return unidadEof();
-           case REC_IDEC:
-               if (hayDigitoPos()) transita(Estado.REC_DEC);
-               else if (hayCero()) transita(Estado.REC_IDEC);
-               else error();
-               break;
-           case REC_DEC: 
-               if (hayDigitoPos()) transita(Estado.REC_DEC);
-               else if (hayCero()) transita(Estado.REC_IDEC);
-               else return unidadReal();
-               break;
+     while (true) {
+    	 switch(estado) {
+    	 case Inicio:
+    		 if (hayPUNTOYCOMA()) transita(Estado.PUNTOYCOMA);
+    		 else if (hayAmpersand()) transita(Estado.RecAmpersand);
+    		 else if (hayARROBA()) transita(Estado.ARROBA);
+    		 else if (hayFINBLOQUE()) transita(Estado.FINBLOQUE);
+    		 else if (hayINIBLOQUE()) transita(Estado.INIBLOQUE);
+    		 else if (hayFINPAR()) transita(Estado.FINPAR);
+    		 else if (hayINIPAR()) transita(Estado.INIPAR);
+    		 else if (hayPOR()) transita(Estado.POR);
+    		 else if (hayENTRE()) transita(Estado.ENTRE);
+    		 else if (hayEOF()) transita(Estado.EOF);
+    		 else if (hayIgual()) transita(Estado.ASIGNACION);
+    		 else if (hayMayor()) transita(Estado.MAYOR);
+    		 else if (hayMenor()) transita(Estado.MENOR);
+    		 break;
+    	 case PUNTOYCOMA:
+    		 return unidadPUNTOYCOMA();
+    	 case RecAmpersand:
+    		 if (hayAmpersand()) transita(Estado.FINDECLARACIONES);
+    		 else error();
+    		 break;
+    	 case FINDECLARACIONES:
+    		 return unidadPUNTOYCOMA();
+    	 case ARROBA:
+    		 return unidadARROBA();
+    	 case FINBLOQUE:
+    		 return unidadFINBLOQUE();
+    	 case INIBLOQUE:
+    		 return unidadINIBLOQUE();
+    	 case FINPAR:
+    		 return unidadFINPAR();
+    	 case INIPAR:
+    		 return unidadINIPAR();
+    	 case POR:
+    		 return unidadPOR();
+    	 case ENTRE:
+    		 return unidadENTRE();
+    	 case EOF:
+    		 return unidadEOF();
+    	 case ASIGNACION:
+    		 if (hayIgual()) transita(Estado.COMPARACION);
+    		 else return unidadASIGNACION();
+    		 break;
+    	 case MAYOR:
+    		 if (hayIgual()) transita(Estado.MAYORIGUAL);
+    		 else return unidadMAYOR();
+    		 break;
+    	 case MENOR:
+    		 if (hayIgual()) transita(Estado.MENORIGUAL);
+    		 else return unidadMENOR();
+    		 break;
+    	 case COMPARACION:
+    		 return unidadCOMPARACION();
+    	 case MENORIGUAL:
+    		 return unidadMENORIGUAL();
+    	 case MAYORIGUAL:
+    		 return unidadMAYORIGUAL();
+    	 case RecExcl:
+    		 if (hayIgual()) transita(Estado.DISTINTO);
+    		 else error();
+    		 break;
+    	 case DISTINTO:
+    	 case Identificador:
+    	 case MAS:
+    	 case MENOS:
+    	 case Rec0:
+    	 case RedIDec:
+    	 case RealDec:
+    	 case Rec0Dec:
+    	 case RealDec0:
+    	 case Entero:
+    	 case RecExp:
+    	 case MaxExp:
+    	 case MenosExp:
+    	 case RealExp:
+    	 }
+     }
+//     while(true) {
+//         switch(estado) {
+//           case INICIO: 
+//              if(hayLetra())  transita(Estado.REC_ID);
+//              else if (hayDigitoPos()) transita(Estado.REC_ENT);
+//              else if (hayCero()) transita(Estado.REC_0);
+//              else if (haySuma()) transita(Estado.REC_MAS);
+//              else if (hayResta()) transita(Estado.REC_MENOS);
+//              else if (hayMul()) transita(Estado.REC_POR);
+//              else if (hayDiv()) transita(Estado.REC_DIV);
+//              else if (hayPAp()) transita(Estado.REC_PAP);
+//              else if (hayPCierre()) transita(Estado.REC_PCIERR);
+//              else if (hayIgual()) transita(Estado.REC_IGUAL);
+//              else if (hayComa()) transita(Estado.REC_COMA);
+//              else if (hayAlmohadilla()) transitaIgnorando(Estado.REC_COM);
+//              else if (haySep()) transitaIgnorando(Estado.INICIO);
+//              else if (hayEOF()) transita(Estado.REC_EOF);
+//              else error();
+//              break;
+//           case REC_ID: 
+//              if (hayLetra() || hayDigito()) transita(Estado.REC_ID);
+//              else return unidadId();               
+//              break;
+//           case REC_ENT:
+//               if (hayDigito()) transita(Estado.REC_ENT);
+//               else if (hayPunto()) transita(Estado.REC_IDEC);
+//               else return unidadEnt();
+//               break;
+//           case REC_0:
+//               if (hayPunto()) transita(Estado.REC_IDEC);
+//               else return unidadEnt();
+//               break;
+//           case REC_MAS:
+//               if (hayDigitoPos()) transita(Estado.REC_ENT);
+//               else if(hayCero()) transita(Estado.REC_0);
+//               else return unidadMas();
+//               break;
+//           case REC_MENOS: 
+//               if (hayDigitoPos()) transita(Estado.REC_ENT);
+//               else if(hayCero()) transita(Estado.REC_0);
+//               else return unidadMenos();
+//               break;
+//           case REC_POR: return unidadPor();
+//           case REC_DIV: return unidadDiv();              
+//           case REC_PAP: return unidadPAp();
+//           case REC_PCIERR: return unidadPCierre();
+//           case REC_IGUAL: return unidadIgual();
+//           case REC_COMA: return unidadComa();
+//           case REC_COM: 
+//               if (hayNL()) transitaIgnorando(Estado.INICIO);
+//               else if (hayEOF()) transita(Estado.REC_EOF);
+//               else transitaIgnorando(Estado.REC_COM);
+//               break;
+//           case REC_EOF: return unidadEof();
+//           case REC_IDEC:
+//               if (hayDigitoPos()) transita(Estado.REC_DEC);
+//               else if (hayCero()) transita(Estado.REC_IDEC);
+//               else error();
+//               break;
+//           case REC_DEC: 
+//               if (hayDigitoPos()) transita(Estado.REC_DEC);
+//               else if (hayCero()) transita(Estado.REC_IDEC);
+//               else return unidadReal();
+//               break;
          }
      }    
    }
@@ -161,39 +245,144 @@ public class AnalizadorLexicoTiny {
             return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.IDEN,lex.toString());     
       }
    }  
-   private UnidadLexica unidadEnt() {
-     return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.ENT,lex.toString());     
-   }    
-   private UnidadLexica unidadReal() {
-     return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.REAL,lex.toString());     
-   }    
-   private UnidadLexica unidadMas() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MAS);     
-   }    
-   private UnidadLexica unidadMenos() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MENOS);     
-   }    
-   private UnidadLexica unidadPor() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.POR);     
-   }    
-   private UnidadLexica unidadDiv() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.DIV);     
-   }    
-   private UnidadLexica unidadPAp() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.PAP);     
-   }    
-   private UnidadLexica unidadPCierre() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.PCIERRE);     
-   }    
-   private UnidadLexica unidadIgual() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.IGUAL);     
-   }    
-   private UnidadLexica unidadComa() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.COMA);     
-   }    
-   private UnidadLexica unidadEof() {
-     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.EOF);     
-   }    
+   
+   private UnidadLexica unidadMENOSUNARIO() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENOSUNARIO);
+	}
+
+	private UnidadLexica unidadNOT() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.NOT);
+	}
+
+	private UnidadLexica unidadPOR() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.POR);
+	}
+
+	private UnidadLexica unidadENTRE() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ENTRE);
+	}
+
+	private UnidadLexica unidadAND() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.AND);
+	}
+
+	private UnidadLexica unidadOR() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.OR);
+	}
+
+	private UnidadLexica unidadMAS() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAS);
+	}
+
+	private UnidadLexica unidadMENOS() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENOS);
+	}
+
+	private UnidadLexica unidadMENOR() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENOR);
+	}
+
+	private UnidadLexica unidadEntero() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Entero);
+	}
+
+	private UnidadLexica unidadReal() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Real);
+	}
+
+	private UnidadLexica unidadBooleano() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Booleano);
+	}
+
+	private UnidadLexica unidadMAYOR() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAYOR);
+	}
+
+	private UnidadLexica unidadMENORIGUAL() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENORIGUAL);
+	}
+
+	private UnidadLexica unidadMAYORIGUAL() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAYORIGUAL);
+	}
+
+	private UnidadLexica unidadCOMPARACION() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.COMPARACION);
+	}
+
+	private UnidadLexica unidadDISTINTO() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.DISTINTO);
+	}
+
+	private UnidadLexica unidadASIGNACION() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ASIGNACION);
+	}
+
+	private UnidadLexica unidadINIPAR() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.INIPAR);
+	}
+
+	private UnidadLexica unidadFINPAR() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINPAR);
+	}
+
+	private UnidadLexica unidadINIBLOQUE() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.INIBLOQUE);
+	}
+
+	private UnidadLexica unidadFINBLOQUE() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINBLOQUE);
+	}
+
+	private UnidadLexica unidadARROBA() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ARROBA);
+	}
+
+	private UnidadLexica unidadFINDECLARACIONES() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINDECLARACIONES);
+	}
+
+	private UnidadLexica unidadPUNTOYCOMA() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.PUNTOYCOMA);
+	}
+
+	private UnidadLexica unidadEOF() {
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.EOF);
+	}
+   
+//   private UnidadLexica unidadEnt() {
+//     return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.ENT,lex.toString());     
+//   }    
+//   private UnidadLexica unidadReal() {
+//     return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.REAL,lex.toString());     
+//   }    
+//   private UnidadLexica unidadMas() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MAS);     
+//   }    
+//   private UnidadLexica unidadMenos() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MENOS);     
+//   }    
+//   private UnidadLexica unidadPor() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.POR);     
+//   }    
+//   private UnidadLexica unidadDiv() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.DIV);     
+//   }    
+//   private UnidadLexica unidadPAp() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.PAP);     
+//   }    
+//   private UnidadLexica unidadPCierre() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.PCIERRE);     
+//   }    
+//   private UnidadLexica unidadIgual() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.IGUAL);     
+//   }    
+//   private UnidadLexica unidadComa() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.COMA);     
+//   }    
+//   private UnidadLexica unidadEof() {
+//     return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.EOF);     
+//   }    
    private void error() {
      System.err.println("("+filaActual+','+columnaActual+"):Caracter inexperado");  
      System.exit(1);
