@@ -29,7 +29,7 @@ public class AnalizadorLexicoTiny {
 	   POR, ENTRE,
 	   MAYOR, MAYORIGUAL,
 	   MENOR, MENORIGUAL,
-	   ASGINACION, COMPARACION,
+	   ASIGNACION, COMPARACION,
 	   RecExcl, DISTINTO,
 	   MENOS, MAS, REC0,
 	   Entero,
@@ -53,6 +53,50 @@ public class AnalizadorLexicoTiny {
      filaInicio = filaActual;
      columnaInicio = columnaActual;
      lex.delete(0,lex.length());
+     while (true) {
+    	 switch (estado) {
+	    	 case Inicio:
+	    	 case RECAMPERSAND: 
+	    		 if (hayAmpersand()) transita(Estado.FINDECLARACIONES);
+	    		 else error();
+	    		 break;
+	    	 case PUNTOYCOMA: return unidadPUNTOYCOMA();
+	    	 case FINBLOQUE: return unidadFINBLOQUE();
+	    	 case INIBLOQUE: return unidadINIBLOQUE();
+	    	 case FINPAR: return unidadFINPAR();
+	    	 case INIPAR: return unidadINIPAR();
+	    	 case ARROBA: return unidadARROBA();
+	    	 case Identificador: break; //TODO 
+	    	 case RecCom0:
+	    		 if (hayHashtag()) transita(Estado.RecCom1);
+	    		 else error();
+	    		 break;
+	    	 case RecCom1:
+	    		 if (haySaltoLinea()) transita(Estado.Inicio);
+	    		 //TODO hay que hacer algo más en este estado?
+	    		 break;
+	    	 case EOF: return unidadEOF();
+	    	 case POR: return unidadPOR();
+	    	 case ENTRE: return unidadENTRE();
+	    	 case MAYOR:
+	    		 if (hayIgual()) transita(Estado.MAYORIGUAL);
+	    		 else return unidadMAYOR();
+	    	 case MAYORIGUAL: return unidadMAYORIGUAL();
+	    	 case MENOR:
+	    		 if (hayIgual()) transita(Estado.MENORIGUAL);
+	    		 else return unidadMENOR();
+	    	 case MENORIGUAL: return unidadMENORIGUAL();
+	    	 case ASIGNACION:
+	    		 if (hayIgual()) transita(Estado.COMPARACION);
+	    		 else return unidadASIGNACION();
+	    	 case COMPARACION: return unidadCOMPARACION();
+	    	 case RecExcl:
+	    		 if (hayIgual()) transita(Estado.DISTINTO);
+	    		 else error();
+	    		 break;
+	    	 case DISTINTO: return unidadDISTINTO();
+    	 }
+     }
 //     while(true) {
 //         switch(estado) {
 //           case INICIO: 
