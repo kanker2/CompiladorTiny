@@ -18,12 +18,24 @@ public class AnalizadorLexicoTiny {
    
    private static enum Estado {
 	   Inicio,
-	   PUNTOYCOMA, RecAmpersand, FINDECLARACIONES, ARROBA, FINBLOQUE, INIBLOQUE, FINPAR, INIPAR,
-	   POR, ENTRE, EOF,
-	   ASIGNACION, MAYOR, MENOR, COMPARACION, MENORIGUAL, MAYORIGUAL, RecExcl, DISTINTO,
+	   RECAMPERSAND, FINDECLARACIONES,
+	   PUNTOYCOMA,
+	   FINBLOQUE, INIBLOQUE,
+	   FINPAR, INIPAR,
+	   ARROBA,
 	   Identificador,
-	   MAS, MENOS, Rec0, RedIDec, RealDec, Rec0Dec, RealDec0,
-	   Entero, RecExp, MaxExp, MenosExp, RealExp
+	   RecCom0, RecCom1,
+	   EOF,
+	   POR, ENTRE,
+	   MAYOR, MAYORIGUAL,
+	   MENOR, MENORIGUAL,
+	   ASGINACION, COMPARACION,
+	   RecExcl, DISTINTO,
+	   MENOS, MAS, REC0,
+	   Entero,
+	   RecIDec, Rec0Dec, RealDec,
+	   RecExp, MenosExp, MasExp, Rec0Exp, RealExp, Real0Exp 
+	   
    }
 
    private Estado estado;
@@ -41,85 +53,6 @@ public class AnalizadorLexicoTiny {
      filaInicio = filaActual;
      columnaInicio = columnaActual;
      lex.delete(0,lex.length());
-     while (true) {
-    	 switch(estado) {
-    	 case Inicio:
-    		 if (hayPUNTOYCOMA()) transita(Estado.PUNTOYCOMA);
-    		 else if (hayAmpersand()) transita(Estado.RecAmpersand);
-    		 else if (hayARROBA()) transita(Estado.ARROBA);
-    		 else if (hayFINBLOQUE()) transita(Estado.FINBLOQUE);
-    		 else if (hayINIBLOQUE()) transita(Estado.INIBLOQUE);
-    		 else if (hayFINPAR()) transita(Estado.FINPAR);
-    		 else if (hayINIPAR()) transita(Estado.INIPAR);
-    		 else if (hayPOR()) transita(Estado.POR);
-    		 else if (hayENTRE()) transita(Estado.ENTRE);
-    		 else if (hayEOF()) transita(Estado.EOF);
-    		 else if (hayIgual()) transita(Estado.ASIGNACION);
-    		 else if (hayMayor()) transita(Estado.MAYOR);
-    		 else if (hayMenor()) transita(Estado.MENOR);
-    		 break;
-    	 case PUNTOYCOMA:
-    		 return unidadPUNTOYCOMA();
-    	 case RecAmpersand:
-    		 if (hayAmpersand()) transita(Estado.FINDECLARACIONES);
-    		 else error();
-    		 break;
-    	 case FINDECLARACIONES:
-    		 return unidadPUNTOYCOMA();
-    	 case ARROBA:
-    		 return unidadARROBA();
-    	 case FINBLOQUE:
-    		 return unidadFINBLOQUE();
-    	 case INIBLOQUE:
-    		 return unidadINIBLOQUE();
-    	 case FINPAR:
-    		 return unidadFINPAR();
-    	 case INIPAR:
-    		 return unidadINIPAR();
-    	 case POR:
-    		 return unidadPOR();
-    	 case ENTRE:
-    		 return unidadENTRE();
-    	 case EOF:
-    		 return unidadEOF();
-    	 case ASIGNACION:
-    		 if (hayIgual()) transita(Estado.COMPARACION);
-    		 else return unidadASIGNACION();
-    		 break;
-    	 case MAYOR:
-    		 if (hayIgual()) transita(Estado.MAYORIGUAL);
-    		 else return unidadMAYOR();
-    		 break;
-    	 case MENOR:
-    		 if (hayIgual()) transita(Estado.MENORIGUAL);
-    		 else return unidadMENOR();
-    		 break;
-    	 case COMPARACION:
-    		 return unidadCOMPARACION();
-    	 case MENORIGUAL:
-    		 return unidadMENORIGUAL();
-    	 case MAYORIGUAL:
-    		 return unidadMAYORIGUAL();
-    	 case RecExcl:
-    		 if (hayIgual()) transita(Estado.DISTINTO);
-    		 else error();
-    		 break;
-    	 case DISTINTO:
-    	 case Identificador:
-    	 case MAS:
-    	 case MENOS:
-    	 case Rec0:
-    	 case RedIDec:
-    	 case RealDec:
-    	 case Rec0Dec:
-    	 case RealDec0:
-    	 case Entero:
-    	 case RecExp:
-    	 case MaxExp:
-    	 case MenosExp:
-    	 case RealExp:
-    	 }
-     }
 //     while(true) {
 //         switch(estado) {
 //           case INICIO: 
