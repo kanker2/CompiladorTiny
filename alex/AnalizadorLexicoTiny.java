@@ -59,6 +59,7 @@ public class AnalizadorLexicoTiny {
 	    		 if (hayAmpersand()) transita(Estado.FINDECLARACIONES);
 	    		 else error();
 	    		 break;
+	    	 case FINDECLARACIONES: return unidadFINDECLARACIONES();
 	    	 case PUNTOYCOMA: return unidadPUNTOYCOMA();
 	    	 case FINBLOQUE: return unidadFINBLOQUE();
 	    	 case INIBLOQUE: return unidadINIBLOQUE();
@@ -75,6 +76,7 @@ public class AnalizadorLexicoTiny {
 	    		 break;
 	    	 case RecCom1:
 	    		 if (haySaltoLinea()) transita(Estado.Inicio);
+	    		 //TODO No sabemos que hacer en EOF
 	    		 else error();
 	    		 break;
 	    	 case EOF: return unidadEOF();
@@ -300,9 +302,7 @@ public class AnalizadorLexicoTiny {
    private boolean hayINIBLOQUE() {return sigCar == '{';}
    private boolean hayFINBLOQUE() {return sigCar == '}';}
    private boolean hayIgual() {return sigCar == '=';}
-   private boolean hayComa() {return sigCar == ',';}
    private boolean hayPunto() {return sigCar == '.';}
-   private boolean hayAlmohadilla() {return sigCar == '#';}
    private boolean haySeparador() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n' || sigCar=='\b' || sigCar=='\r';}
    private boolean haySaltoLinea() {return sigCar == '\r' || sigCar == '\b' || sigCar == '\n';}
    private boolean hayEOF() {return sigCar == -1;}
@@ -367,28 +367,12 @@ public class AnalizadorLexicoTiny {
       }
    }  
    
-   private UnidadLexica unidadMENOSUNARIO() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENOSUNARIO);
-	}
-
-	private UnidadLexica unidadNOT() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.NOT);
-	}
-
 	private UnidadLexica unidadPOR() {
 	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.POR);
 	}
 
 	private UnidadLexica unidadENTRE() {
 	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ENTRE);
-	}
-
-	private UnidadLexica unidadAND() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.AND);
-	}
-
-	private UnidadLexica unidadOR() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.OR);
 	}
 
 	private UnidadLexica unidadMAS() {
@@ -409,10 +393,6 @@ public class AnalizadorLexicoTiny {
 
 	private UnidadLexica unidadReal() {
 	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Real);
-	}
-
-	private UnidadLexica unidadBooleano() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Booleano);
 	}
 
 	private UnidadLexica unidadMAYOR() {
