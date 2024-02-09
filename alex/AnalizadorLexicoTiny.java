@@ -55,7 +55,6 @@ public class AnalizadorLexicoTiny {
      lex.delete(0,lex.length());
      while (true) {
     	 switch (estado) {
-	    	 case Inicio:
 	    	 case RECAMPERSAND: 
 	    		 if (hayAmpersand()) transita(Estado.FINDECLARACIONES);
 	    		 else error();
@@ -81,21 +80,107 @@ public class AnalizadorLexicoTiny {
 	    	 case MAYOR:
 	    		 if (hayIgual()) transita(Estado.MAYORIGUAL);
 	    		 else return unidadMAYOR();
+	    		 break;
 	    	 case MAYORIGUAL: return unidadMAYORIGUAL();
 	    	 case MENOR:
 	    		 if (hayIgual()) transita(Estado.MENORIGUAL);
 	    		 else return unidadMENOR();
+	    		 break;
 	    	 case MENORIGUAL: return unidadMENORIGUAL();
 	    	 case ASIGNACION:
 	    		 if (hayIgual()) transita(Estado.COMPARACION);
 	    		 else return unidadASIGNACION();
+	    		 break;
 	    	 case COMPARACION: return unidadCOMPARACION();
 	    	 case RecExcl:
 	    		 if (hayIgual()) transita(Estado.DISTINTO);
 	    		 else error();
 	    		 break;
 	    	 case DISTINTO: return unidadDISTINTO();
-    	 }
+	    	 case MENOS:
+	    		 if (hayCero()) transita(Estado.REC0);
+	    		 else if (hayDigitoPositivo()) transita(Estado.Entero);
+	    		 else return unidadMENOS();
+	    		 break;
+	    	 case MAS:
+	    		 if (hayCero()) transita(Estado.REC0);
+	    		 else if (hayDigitoPositivo()) transita(Estado.Entero);
+	    		 else return unidadMAS();
+	    		 break;
+	    	 case Entero:
+	    		 if (hayDigito()) transita(Estado.Entero);
+	    		 else if (hayPunto()) transita(Estado.RecIDec);
+	    		 else if (hayeE()) transita(Estado.RecExp);
+	    		 else return unidadEntero();
+	    		 break;
+	    	 case RecIDec:
+	    		 if (hayDigito()) transita(Estado.RealDec);
+	    		 else error();
+	    		 break;
+	    	 case RealDec:
+	    		 if (hayCero()) transita(Estado.Rec0Dec);
+	    		 else if (hayeE()) transita(Estado.RecExp);
+	    		 else return unidadRealDec();
+	    		 break;
+	    	 case Rec0Dec:
+	    		 if (hayCero()) transita(Estado.Rec0Dec);
+	    		 else if (hayDigitoPositivo()) transita(Estado.RealDec);
+	    		 else error();
+	    		 break;
+	    	 case RecExp:
+	    		 if (hayCero()) transita(Estado.Rec0Exp);
+	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
+	    		 else if (hayMenos()) transita(Estado.MenosExp);
+	    		 else if (hayMas()) transita(Estado.MasExp);
+	    		 else error();
+	    		 break;
+	    	 case MenosExp:
+	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
+	    		 else if (hayCero()) transita(Estado.Rec0Exp);
+	    		 else error();
+	    		 break;
+	    	 case MasExp:
+	    		 if (hayDigitoPosivo()) transita(Estado.RealExp);
+	    		 else if (hayCero()) transita(Estado.Rec0Exp);
+	    		 else error();
+	    		 break;
+	    	 case Rec0Exp:
+	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
+	    		 else return unidadReal();
+	    		 break;
+	    	 case RealExp:
+	    		 if (hayCero()) transita(Estado.Real0Exp);
+	    		 else return unidadReal();
+	    		 break;
+	    	 case Real0Exp:
+	    		 if (hayCero()) transita(Estado.Real0Exp);
+	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
+	    		 else error();
+	    		 break;
+	    	 case Inicio:
+	    		 if (hayAmpersand()) transita(Estado.RECAMPERSAND);
+	    		 else if (hayPUNTOYCOMA()) transita(Estado.PUNTOYCOMA);
+	    		 else if (hayFINBLOQUE()) transita(Estado.FINBLOQUE);
+	    		 else if (hayINIBLOQUE()) transita(Estado.INIBLOQUE);
+	    		 else if (hayFINPAR()) transita(Estado.FINPAR);
+	    		 else if (hayINIPAR()) transita(Estado.INIPAR);
+	    		 else if (hayARROBA()) transita(Estado.ARROBA);
+	    		 else if (hayLetra() || hayGuionBajo()) transita(Estado.Identificador);
+	    		 else if (hayHashtag()) transita(Estado.RecCom0);
+	    		 else if (hayEOF()) transita(Estado.EOF);
+	    		 else if (hayPOR()) transita(Estado.POR);
+	    		 else if (hayENTRE()) transita(Estado.ENTRE);
+	    		 else if (hayMAYOR()) transita(Estado.MAYOR);
+	    		 else if (hayMENOR()) transita(Estado.MENOR);
+	    		 else if (hayIgual()) transita(Estado.ASIGNACION);
+	    		 else if (hayExclamacion()) transita(Estado.RecExcl);
+	    		 else if (hayMAS()) transita(Estado.MAS);
+	    		 else if (hayMENOS()) transita(Estado.MENOS);
+	    		 else if (hayCero()) transita(Estado.REC0);
+	    		 else if (hayDigitoPositivo()) transita(Estado.Entero);
+	    		 else if (haySeparador()) transita(Estado.Inicio);
+	    		 break;
+     	 }
      }
 //     while(true) {
 //         switch(estado) {
