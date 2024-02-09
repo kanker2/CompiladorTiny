@@ -49,7 +49,7 @@ public class AnalizadorLexicoTiny {
    }
    
    public UnidadLexica sigToken() throws IOException {
-     estado = Estado.INICIO;
+     estado = Estado.Inicio;
      filaInicio = filaActual;
      columnaInicio = columnaActual;
      lex.delete(0,lex.length());
@@ -72,7 +72,7 @@ public class AnalizadorLexicoTiny {
 	    		 break;
 	    	 case RecCom1:
 	    		 if (haySaltoLinea()) transita(Estado.Inicio);
-	    		 //TODO hay que hacer algo más en este estado?
+	    		 else error();
 	    		 break;
 	    	 case EOF: return unidadEOF();
 	    	 case POR: return unidadPOR();
@@ -120,7 +120,7 @@ public class AnalizadorLexicoTiny {
 	    	 case RealDec:
 	    		 if (hayCero()) transita(Estado.Rec0Dec);
 	    		 else if (hayeE()) transita(Estado.RecExp);
-	    		 else return unidadRealDec();
+	    		 else return unidadReal();
 	    		 break;
 	    	 case Rec0Dec:
 	    		 if (hayCero()) transita(Estado.Rec0Dec);
@@ -130,8 +130,8 @@ public class AnalizadorLexicoTiny {
 	    	 case RecExp:
 	    		 if (hayCero()) transita(Estado.Rec0Exp);
 	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
-	    		 else if (hayMenos()) transita(Estado.MenosExp);
-	    		 else if (hayMas()) transita(Estado.MasExp);
+	    		 else if (hayMENOS()) transita(Estado.MenosExp);
+	    		 else if (hayMAS()) transita(Estado.MasExp);
 	    		 else error();
 	    		 break;
 	    	 case MenosExp:
@@ -140,7 +140,7 @@ public class AnalizadorLexicoTiny {
 	    		 else error();
 	    		 break;
 	    	 case MasExp:
-	    		 if (hayDigitoPosivo()) transita(Estado.RealExp);
+	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
 	    		 else if (hayCero()) transita(Estado.Rec0Exp);
 	    		 else error();
 	    		 break;
@@ -179,6 +179,7 @@ public class AnalizadorLexicoTiny {
 	    		 else if (hayCero()) transita(Estado.REC0);
 	    		 else if (hayDigitoPositivo()) transita(Estado.Entero);
 	    		 else if (haySeparador()) transita(Estado.Inicio);
+	    		 else error();
 	    		 break;
      	 }
      }
@@ -246,8 +247,8 @@ public class AnalizadorLexicoTiny {
 //               else if (hayCero()) transita(Estado.REC_IDEC);
 //               else return unidadReal();
 //               break;
-         }
-     }    
+//         }
+//     }    
    }
    private void transita(Estado sig) throws IOException {
      lex.append((char)sigCar);
@@ -281,22 +282,33 @@ public class AnalizadorLexicoTiny {
    
    private boolean hayLetra() {return sigCar >= 'a' && sigCar <= 'z' ||
                                       sigCar >= 'A' && sigCar <= 'z';}
-   private boolean hayDigitoPos() {return sigCar >= '1' && sigCar <= '9';}
+   private boolean hayDigitoPositivo() {return sigCar >= '1' && sigCar <= '9';}
    private boolean hayCero() {return sigCar == '0';}
-   private boolean hayDigito() {return hayDigitoPos() || hayCero();}
-   private boolean haySuma() {return sigCar == '+';}
-   private boolean hayResta() {return sigCar == '-';}
-   private boolean hayMul() {return sigCar == '*';}
-   private boolean hayDiv() {return sigCar == '/';}
-   private boolean hayPAp() {return sigCar == '(';}
-   private boolean hayPCierre() {return sigCar == ')';}
+   private boolean hayDigito() {return hayDigitoPositivo() || hayCero();}
+   private boolean hayMAS() {return sigCar == '+';}
+   private boolean hayMENOS() {return sigCar == '-';}
+   private boolean hayPOR() {return sigCar == '*';}
+   private boolean hayENTRE() {return sigCar == '/';}
+   private boolean hayINIPAR() {return sigCar == '(';}
+   private boolean hayFINPAR() {return sigCar == ')';}
+   private boolean hayINIBLOQUE() {return sigCar == '{';}
+   private boolean hayFINBLOQUE() {return sigCar == '}';}
    private boolean hayIgual() {return sigCar == '=';}
    private boolean hayComa() {return sigCar == ',';}
    private boolean hayPunto() {return sigCar == '.';}
    private boolean hayAlmohadilla() {return sigCar == '#';}
-   private boolean haySep() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n';}
-   private boolean hayNL() {return sigCar == '\r' || sigCar == '\b' || sigCar == '\n';}
+   private boolean haySeparador() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n' || sigCar=='\b' || sigCar=='\r';}
+   private boolean haySaltoLinea() {return sigCar == '\r' || sigCar == '\b' || sigCar == '\n';}
    private boolean hayEOF() {return sigCar == -1;}
+   private boolean hayExclamacion() {return sigCar=='!';}
+   private boolean hayMENOR() {return sigCar=='<';}
+   private boolean hayMAYOR() {return sigCar=='>';}
+   private boolean hayHashtag() {return sigCar=='#';}
+   private boolean hayGuionBajo() {return sigCar=='_';}
+   private boolean hayARROBA() {return sigCar=='@';}
+   private boolean hayPUNTOYCOMA() {return sigCar==';';}
+   private boolean hayAmpersand() {return sigCar=='&';}
+   private boolean hayeE() {return sigCar=='e' || sigCar=='E';}
    private UnidadLexica unidadId() {
      switch(lex.toString()) {
          case "evalua":  
