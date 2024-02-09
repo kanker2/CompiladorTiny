@@ -65,7 +65,10 @@ public class AnalizadorLexicoTiny {
 	    	 case FINPAR: return unidadFINPAR();
 	    	 case INIPAR: return unidadINIPAR();
 	    	 case ARROBA: return unidadARROBA();
-	    	 case Identificador: break; //TODO 
+	    	 case Identificador:
+	    		 if (hayGuionBajo() || hayGuionMedio() || hayDigito() || hayLetra()) transita(Estado.Identificador);
+	    		 else return unidadIdentificador();
+	    		 break; 
 	    	 case RecCom0:
 	    		 if (hayHashtag()) transita(Estado.RecCom1);
 	    		 else error();
@@ -181,6 +184,9 @@ public class AnalizadorLexicoTiny {
 	    		 else if (haySeparador()) transita(Estado.Inicio);
 	    		 else error();
 	    		 break;
+    		 default:
+    			 error();
+    			 
      	 }
      }
 //     while(true) {
@@ -305,18 +311,59 @@ public class AnalizadorLexicoTiny {
    private boolean hayMAYOR() {return sigCar=='>';}
    private boolean hayHashtag() {return sigCar=='#';}
    private boolean hayGuionBajo() {return sigCar=='_';}
+   private boolean hayGuionMedio() {return sigCar=='-';}
    private boolean hayARROBA() {return sigCar=='@';}
    private boolean hayPUNTOYCOMA() {return sigCar==';';}
    private boolean hayAmpersand() {return sigCar=='&';}
    private boolean hayeE() {return sigCar=='e' || sigCar=='E';}
-   private UnidadLexica unidadId() {
-     switch(lex.toString()) {
-         case "evalua":  
-            return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.EVALUA);
-         case "donde":    
-            return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.DONDE);
+   private UnidadLexica unidadIdentificador() {
+     switch(lex.toString().toLowerCase()) {
+         case "int": 
+         	return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.INT);
+         case "real":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.REAL);
+         case "bool":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL);
+         case "string":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.STRING);
+         case "and":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.AND);
+         case "or":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.OR);
+         case "not":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NOT);
+         case "null":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NULL);
+         case "true":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE);
+         case "false":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE);
+         case "proc":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.PROC);
+         case "if":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.IF);
+         case "else":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.ELSE);
+         case "while":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.WHILE);
+         case "struct":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.STRUCT);
+         case "new":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NEW);
+         case "delete":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.DELETE);
+         case "read":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.READ);
+         case "write":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.WRITE);
+         case "nl":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NL);
+         case "type":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.TYPE);
+         case "call":
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.CALL);
          default:    
-            return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.IDEN,lex.toString());     
+            return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.Identificador,lex.toString());     
       }
    }  
    
