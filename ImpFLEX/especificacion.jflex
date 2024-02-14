@@ -3,7 +3,7 @@ package alex;
 %%
 %line
 %column
-%class AnalizadorLexicoTinyFlex
+%class AnalizadorLexicoTiny
 %type  UnidadLexica
 %unicode
 
@@ -22,17 +22,17 @@ package alex;
   ops = new ALexOperations(this);
 %init}
 
-letra =  ([a-z] | [A-Z])
+letra =  ([a-z]|[A-Z])
 digitoPositivo  = [1-9]
-digito  = ({digitoPositivo} | 0)
-parteEntera = ({digitoPositivo} {digito}* | 0)
-parteDecimal =  ({digito}* {digitoPositivo} | 0)
-parteExponencial = (\e | \E) [\+\-]? {parteEntera}
-Identificador  = ({letra} |  _ ) ({letra} | {digito} | _ )*
-Entero = [\+\-]? {parteEntera}
-Real = {Entero} (\.{parteDecimal}({parteExponencial})? | {parteExponencial}) 
-Cadena = \"(^\")*\" 
-INT = (i | I)(n | N)(t | T)
+digito  = ({digitoPositivo}|0)
+parteEntera = ({digitoPositivo}{digito}*|0)
+parteDecimal =  ({digito}*{digitoPositivo}|0)
+parteExponencial = (\e|\E)[\+\-]?{parteEntera}
+Identificador  = ({letra}|_ )({letra}|{digito}|_)*
+Entero = [\+\-]?{parteEntera}
+Real = {Entero}(\.{parteDecimal}({parteExponencial})?|{parteExponencial}) 
+Cadena = \"[^\"]*\"
+INT = (i|I)(n|N)(t|T)
 REAL = (r|R)(e|E)(a|A)(l|L)
 BOOL = (b|B)(o|O)(o|O)(l|L)
 String = (s|S)(t|T)(r|R)(i|I)(n|N)(g|G)
@@ -60,17 +60,17 @@ MAS = \+
 MENOS = \-
 MENOR = \<
 MAYOR= \>
-MENORIGUAL = \<=
-MAYORIGUAL = \>=
-COMPARACION = \==
-DISTINTO = \!=
+MENORIGUAL = "<="
+MAYORIGUAL = ">="
+COMPARACION = "=="
+DISTINTO = "!="
 ASIGNACION = \=
 INIPAR = \(
 FINPAR = \) 
 INIBLOQUE = \{
 FINBLOQUE = \}
 ARROBA = \@
-FINDECLARACIONES = \&&
+FINDECLARACIONES = "&&"
 PUNTOYCOMA = \;
 INIARRAY = \[
 FINARRAY = \]
@@ -79,9 +79,8 @@ MODULO = \%
 COMA = \,
 REFERENCIA = \&
 PUNTO = \.
-EOF = EOF
 separador = [ \t\r\b\n]
-comentario = ##([^\n,EOF])*  /*Hay que preguntar aver si esto es necesario*/
+comentario = ##([^\n])* 
 
 %% 
 
@@ -136,7 +135,6 @@ comentario = ##([^\n,EOF])*  /*Hay que preguntar aver si esto es necesario*/
 {COMA}			          {return ops.unidadCOMA();}
 {REFERENCIA}		      {return ops.unidadREFERENCIA();}
 {PUNTO}			          {return ops.unidadPUNTO();}
-{EOF}			            {return ops.unidad();}	
 {separador} 		      {}
 {comentario} 		      {}
 [^]                   {ops.error();}
