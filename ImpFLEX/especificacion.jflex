@@ -22,16 +22,6 @@ package alex;
   ops = new ALexOperations(this);
 %init}
 
-letra =  ([a-z]|[A-Z])
-digitoPositivo  = [1-9]
-digito  = ({digitoPositivo}|0)
-parteEntera = ({digitoPositivo}{digito}*|0)
-parteDecimal =  ({digito}*{digitoPositivo}|0)
-parteExponencial = (\e|\E)[\+\-]?{parteEntera}
-Identificador  = ({letra}|_ )({letra}|{digito}|_)*
-Entero = [\+\-]?{parteEntera}
-Real = {Entero}(\.{parteDecimal}({parteExponencial})?|{parteExponencial}) 
-Cadena = \"[^\"]*\"
 INT = (i|I)(n|N)(t|T)
 REAL = (r|R)(e|E)(a|A)(l|L)
 BOOL = (b|B)(o|O)(o|O)(l|L)
@@ -54,6 +44,16 @@ WRITE = (w|W)(r|R)(i|I)(t|T)(e|E)
 NL = (n|N)(l|L)
 TYPE = (t|T)(y|Y)(p|P)(e|E)
 CALL = (c|C)(a|A)(l|L)(l|L)
+letra =  ([a-z]|[A-Z])
+digitoPositivo  = [1-9]
+digito  = ({digitoPositivo}|0)
+parteEntera = ({digitoPositivo}{digito}*|0)
+parteDecimal =  ({digito}*{digitoPositivo}|0)
+parteExponencial = (\e|\E)[\+\-]?{parteEntera}
+Identificador  = ({letra}|_ )({letra}|{digito}|_)*
+Entero = [\+\-]?{parteEntera}
+Real = {Entero}(\.{parteDecimal}({parteExponencial})?|{parteExponencial}) 
+Cadena = \"[^\"]*\"
 POR = \*
 ENTRE = \/
 MAS = \+
@@ -84,7 +84,6 @@ comentario = ##([^\n])*
 
 %% 
 
-{Identificador}		{return ops.unidadId();}
 {Entero}		      {return ops.unidadEntero();}
 {Real}			      {return ops.unidadReal();}
 {Cadena} 		      {return ops.unidadCadena();}
@@ -110,6 +109,7 @@ comentario = ##([^\n])*
 {NL}			        {return ops.unidadNL();}
 {TYPE}			      {return ops.unidadTYPE();}
 {CALL}			      {return ops.unidadCALL();}
+{Identificador}		{return ops.unidadId();}
 {POR}			        {return ops.unidadPOR();}
 {ENTRE}			      {return ops.unidadENTRE();}
 {MAS}			        {return ops.unidadMAS();}

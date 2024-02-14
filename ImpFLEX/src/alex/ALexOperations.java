@@ -47,11 +47,11 @@ public class ALexOperations {
 	}
 
 	UnidadLexica unidadEntero() {
-		return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(), ClaseLexica.Entero);
+		return new UnidadLexicaMultivaluada(alex.fila(), alex.columna(), ClaseLexica.Entero, alex.lexema());
 	}
 
 	UnidadLexica unidadReal() {
-		return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(), ClaseLexica.Real);
+		return new UnidadLexicaMultivaluada(alex.fila(), alex.columna(), ClaseLexica.Real, alex.lexema());
 	}
 
 	UnidadLexica unidadMAYOR() {
@@ -115,7 +115,7 @@ public class ALexOperations {
 	}
 
 	public UnidadLexica unidadCadena() {
-		return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(), ClaseLexica.CADENA);
+		return new UnidadLexicaMultivaluada(alex.fila(), alex.columna(), ClaseLexica.CADENA, alex.lexema());
 	}
 
 	public UnidadLexica unidadINTP() {
