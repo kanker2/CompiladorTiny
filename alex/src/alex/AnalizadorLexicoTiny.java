@@ -112,6 +112,11 @@ public class AnalizadorLexicoTiny {
 	    		 else if (hayDigitoPositivo()) transita(Estado.Entero);
 	    		 else return unidadMAS();
 	    		 break;
+	    	 case REC0:
+	    		 if (hayPunto()) transita(Estado.RecIDec);
+	    		 else if (hayeE()) transita(Estado.RecExp);
+	    		 else return  unidadEntero();
+	    		 break;
 	    	 case Entero:
 	    		 if (hayDigito()) transita(Estado.Entero);
 	    		 else if (hayPunto()) transita(Estado.RecIDec);
@@ -156,6 +161,7 @@ public class AnalizadorLexicoTiny {
 	    		 break;
 	    	 case RealExp:
 	    		 if (hayCero()) transita(Estado.Real0Exp);
+	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
 	    		 else return unidadReal();
 	    		 break;
 	    	 case Real0Exp:
@@ -364,7 +370,7 @@ public class AnalizadorLexicoTiny {
    }
 
    public static void main(String arg[]) throws IOException {
-     Reader input = new InputStreamReader(new FileInputStream("U:/hlocal/workspace-jee/LPPL/src/alex/input.txt"));
+     Reader input = new InputStreamReader(new FileInputStream("C:\\Users\\Luna Santos\\eclipse-workspace\\pl ejm\\src\\alex/input.txt"));
      AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
      UnidadLexica unidad;
      do {
