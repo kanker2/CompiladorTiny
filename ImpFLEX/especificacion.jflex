@@ -3,7 +3,7 @@ package alex;
 %%
 %line
 %column
-%class AnalizadorLexicoTiny
+%public class AnalizadorLexicoTiny
 %type  UnidadLexica
 %unicode
 
