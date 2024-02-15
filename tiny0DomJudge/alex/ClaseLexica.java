@@ -1,20 +1,16 @@
 package alex;
 
 public enum ClaseLexica {
-	Identificador, Entero, Real,
-	INT, REAL, BOOL,
-	NOT, TRUE, FALSE,
-	POR, ENTRE, AND, OR, 
-	MAS, MENOS,
-	MENOR, MAYOR, MENORIGUAL, MAYORIGUAL, 
-	COMPARACION, DISTINTO, ASIGNACION, 
-	INIPAR, FINPAR, 
-	INIBLOQUE, FINBLOQUE, 
-	ARROBA, FINDECLARACIONES, PUNTOYCOMA, EOF,;
+    Identificador, Entero, Real,
+    INT, REAL, BOOL,
+    NOT, TRUE, FALSE,
+    POR, ENTRE, AND, OR, 
+    MAS, MENOS,
+    MENOR, MAYOR, MENORIGUAL, MAYORIGUAL, 
+    COMPARACION, DISTINTO, ASIGNACION, 
+    INIPAR, FINPAR, 
+    INIBLOQUE, FINBLOQUE, 
+    ARROBA, FINDECLARACIONES, PUNTOYCOMA, EOF;
 
-	char[] getImage() {
-		// TODO Auto-generated method stub
-		//??????????????????????????????????????????????????
-		return null;
-	}
+   
 }
