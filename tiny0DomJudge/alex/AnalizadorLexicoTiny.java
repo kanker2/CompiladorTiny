@@ -367,7 +367,7 @@ public class AnalizadorLexicoTiny {
    private void error() throws IOException {
 	   estado=Estado.Inicio;
 	   sigCar();
-	   throw new ECaracterInesperado();??????
+	   throw new ECaracterInesperado("ERROR");
    }
    
 }
