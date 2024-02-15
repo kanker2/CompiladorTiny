@@ -75,9 +75,9 @@ public class AnalizadorLexicoTiny {
 	    		 else error();
 	    		 break;
 	    	 case RecCom1:
-	    		 if (haySaltoLinea()) transita(Estado.Inicio);
+	    		 if (haySaltoLinea()) transitaIgnorando(Estado.Inicio);
 	    		 else if (hayEOF()) transita(Estado.EOF);
-	    		 else transita(Estado.RecCom1);
+	    		 else transitaIgnorando(Estado.RecCom1);
 	    		 break;
 	    	 case EOF: return unidadEOF();
 	    	 case POR: return unidadPOR();
@@ -184,7 +184,7 @@ public class AnalizadorLexicoTiny {
 	    		 else if (hayMENOS()) transita(Estado.MENOS);
 	    		 else if (hayCero()) transita(Estado.REC0);
 	    		 else if (hayDigitoPositivo()) transita(Estado.Entero);
-	    		 else if (haySeparador()) transita(Estado.Inicio);
+	    		 else if (haySeparador()) transitaIgnorando(Estado.Inicio);
 	    		 else error();
 	    		 break;
     		 default:
@@ -209,7 +209,7 @@ public class AnalizadorLexicoTiny {
      if (sigCar == NL.charAt(0)) saltaFinDeLinea();
      if (sigCar == '\n') {
         filaActual++;
-        columnaActual=0;
+        columnaActual=1;
      }
      else {
        columnaActual++;  
@@ -254,108 +254,108 @@ public class AnalizadorLexicoTiny {
    private UnidadLexica unidadIdentificador() {
      switch(lex.toString().toLowerCase()) {
          case "int": 
-         	return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.INT);
+         	return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.INT, "<"+lex.toString()+">");
          case "real":
-        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.REAL);
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.REAL, "<"+lex.toString()+">");
          case "bool":
-        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL);
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL, "<"+lex.toString()+">");
          case "and":
-        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.AND);
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.AND, "<"+lex.toString()+">");
          case "or":
-        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.OR);
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.OR, "<"+lex.toString()+">");
          case "not":
-        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NOT);
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.NOT, "<"+lex.toString()+">");
          case "true":
-        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE);
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE, "<"+lex.toString()+">");
          case "false":
-        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE);
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE, "<"+lex.toString()+">");
          default:    
             return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.Identificador,lex.toString());     
       }
    }  
    
 	private UnidadLexica unidadPOR() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.POR);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.POR, "*");
 	}
 
 	private UnidadLexica unidadENTRE() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ENTRE);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ENTRE, "/");
 	}
 
 	private UnidadLexica unidadMAS() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAS);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAS, "+");
 	}
 
 	private UnidadLexica unidadMENOS() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENOS);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENOS, "-");
 	}
 
 	private UnidadLexica unidadMENOR() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENOR);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENOR, "<");
 	}
 
 	private UnidadLexica unidadEntero() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Entero);
+	    return new UnidadLexicaMultivaluada(filaInicio, columnaInicio, ClaseLexica.Entero, lex.toString());
 	}
 
 	private UnidadLexica unidadReal() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Real);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Real, lex.toString());
 	}
 
 	private UnidadLexica unidadMAYOR() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAYOR);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAYOR, ">");
 	}
 
 	private UnidadLexica unidadMENORIGUAL() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENORIGUAL);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MENORIGUAL, "<=");
 	}
 
 	private UnidadLexica unidadMAYORIGUAL() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAYORIGUAL);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.MAYORIGUAL, ">=");
 	}
 
 	private UnidadLexica unidadCOMPARACION() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.COMPARACION);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.COMPARACION, "==");
 	}
 
 	private UnidadLexica unidadDISTINTO() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.DISTINTO);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.DISTINTO, "!=");
 	}
 
 	private UnidadLexica unidadASIGNACION() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ASIGNACION);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ASIGNACION, "=");
 	}
 
 	private UnidadLexica unidadINIPAR() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.INIPAR);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.INIPAR, "(");
 	}
 
 	private UnidadLexica unidadFINPAR() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINPAR);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINPAR, ")");
 	}
 
 	private UnidadLexica unidadINIBLOQUE() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.INIBLOQUE);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.INIBLOQUE, "{");
 	}
 
 	private UnidadLexica unidadFINBLOQUE() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINBLOQUE);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINBLOQUE, "}");
 	}
 
 	private UnidadLexica unidadARROBA() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ARROBA);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.ARROBA, "@");
 	}
 
 	private UnidadLexica unidadFINDECLARACIONES() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINDECLARACIONES);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.FINDECLARACIONES, "&&");
 	}
 
 	private UnidadLexica unidadPUNTOYCOMA() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.PUNTOYCOMA);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.PUNTOYCOMA, ";");
 	}
 
 	private UnidadLexica unidadEOF() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.EOF);
+	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.EOF, "EOF");
 	}
    
    private void error() {
@@ -364,7 +364,7 @@ public class AnalizadorLexicoTiny {
    }
 
    public static void main(String arg[]) throws IOException {
-     Reader input = new InputStreamReader(new FileInputStream("input.txt"));
+     Reader input = new InputStreamReader(new FileInputStream("U:/hlocal/workspace-jee/LPPL/src/alex/input.txt"));
      AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
      UnidadLexica unidad;
      do {
