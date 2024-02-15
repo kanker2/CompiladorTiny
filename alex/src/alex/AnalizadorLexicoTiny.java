@@ -112,15 +112,10 @@ public class AnalizadorLexicoTiny {
 	    		 else if (hayDigitoPositivo()) transita(Estado.Entero);
 	    		 else return unidadMAS();
 	    		 break;
-	    	 case REC0:
-	    		 if (hayPunto()) transita(Estado.RecIDec);
-	    		 else if (hayeE()) transita(Estado.RecExp);
-	    		 else return  unidadEntero();
-	    		 break;
 	    	 case Entero:
 	    		 if (hayDigito()) transita(Estado.Entero);
 	    		 else if (hayPunto()) transita(Estado.RecIDec);
-	    		 else if (hayeE()) transita(Estado.RecExp);
+	    		 else if (hayE()) transita(Estado.RecExp);
 	    		 else return unidadEntero();
 	    		 break;
 	    	 case RecIDec:
@@ -129,7 +124,7 @@ public class AnalizadorLexicoTiny {
 	    		 break;
 	    	 case RealDec:
 	    		 if (hayCero()) transita(Estado.Rec0Dec);
-	    		 else if (hayeE()) transita(Estado.RecExp);
+	    		 else if (hayE()) transita(Estado.RecExp);
 	    		 else if (hayDigitoPositivo()) transita(Estado.RealDec);
 	    		 else return unidadReal();
 	    		 break;
@@ -153,7 +148,7 @@ public class AnalizadorLexicoTiny {
 	    	 case MasExp:
 	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
 	    		 else if (hayCero()) transita(Estado.Rec0Exp);
-	    		 else error();
+	    		 else error() ;
 	    		 break;
 	    	 case Rec0Exp:
 	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
@@ -161,7 +156,7 @@ public class AnalizadorLexicoTiny {
 	    		 break;
 	    	 case RealExp:
 	    		 if (hayCero()) transita(Estado.Real0Exp);
-	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
+	    		 else if(hayDigitoPositivo()) transita(Estado.RealExp);
 	    		 else return unidadReal();
 	    		 break;
 	    	 case Real0Exp:
@@ -169,6 +164,10 @@ public class AnalizadorLexicoTiny {
 	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
 	    		 else error();
 	    		 break;
+	    	 case REC0:
+	    		 if(hayPunto()) transita(Estado.RecIDec);
+	    		 else if(hayE()) transita(Estado.RecExp);
+	    		 else return unidadEntero();
 	    	 case Inicio:
 	    		 if (hayAmpersand()) transita(Estado.RECAMPERSAND);
 	    		 else if (hayPUNTOYCOMA()) transita(Estado.PUNTOYCOMA);
@@ -256,25 +255,25 @@ public class AnalizadorLexicoTiny {
    private boolean hayARROBA() {return sigCar=='@';}
    private boolean hayPUNTOYCOMA() {return sigCar==';';}
    private boolean hayAmpersand() {return sigCar=='&';}
-   private boolean hayeE() {return sigCar=='e' || sigCar=='E';}
+   private boolean hayE() {return sigCar=='e' || sigCar=='E';}
    private UnidadLexica unidadIdentificador() {
      switch(lex.toString().toLowerCase()) {
          case "int": 
-         	return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.INT, "<"+lex.toString()+">");
+         	return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.INT, "<int>");
          case "real":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.REAL, "<"+lex.toString()+">");
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.REAL, "<real>");
          case "bool":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL, "<"+lex.toString()+">");
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL, "<bool>");
          case "and":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.AND, "<"+lex.toString()+">");
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.AND, "<and>");
          case "or":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.OR, "<"+lex.toString()+">");
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.OR, "<or>");
          case "not":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.NOT, "<"+lex.toString()+">");
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.NOT, "<not>");
          case "true":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE, "<"+lex.toString()+">");
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE, "<true>");
          case "false":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE, "<"+lex.toString()+">");
+        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE, "<false>");
          default:    
             return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.Identificador,lex.toString());     
       }
@@ -364,19 +363,24 @@ public class AnalizadorLexicoTiny {
 	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.EOF, "EOF");
 	}
    
-   private void error() {
-     System.err.println("("+filaActual+','+columnaActual+"):Caracter inexperado");  
-     System.exit(1);
+   private void error() throws IOException {
+     System.out.println("ERROR");
+     estado=Estado.Inicio;
+     sigCar();
+     
    }
-
+   
    public static void main(String arg[]) throws IOException {
-     Reader input = new InputStreamReader(new FileInputStream("C:\\Users\\Luna Santos\\eclipse-workspace\\pl ejm\\src\\alex/input.txt"));
-     AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
-     UnidadLexica unidad;
-     do {
-       unidad = al.sigToken();
-       System.out.println(unidad);
-     }
-     while (unidad.clase() != ClaseLexica.EOF);
-    } 
+	     Reader input = new InputStreamReader(new FileInputStream("U:/hlocal/workspace-jee/LPPL/src/alex/input.txt"));
+	     AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
+	     UnidadLexica unidad;
+	     do {
+	       unidad = al.sigToken();
+	       System.out.println(unidad);
+	     }
+	     while (unidad.clase() != ClaseLexica.EOF);
+   } 
+
+   //U:/hlocal/workspace-jee/LPPL/src/alex/input.txt
+   
 }
