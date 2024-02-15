@@ -16,8 +16,7 @@ public class DomJudge {
 	     do {
 	       try {  
 	         unidad = al.yylex();
-	         System.out.println("unidad.lexema: "+unidad.lexema());
-	         System.out.println("al.yytext: "+al.yytext());
+	         System.out.println(unidad.lexema());
 	       }
 	       catch(ECaracterInesperado | IOException e) {
 	               System.out.println("ERROR");
