@@ -58,7 +58,7 @@ public class UnidadLexicaUnivaluada extends UnidadLexica {
 		lexemas.put(ClaseLexica.REFERENCIA, "&");
 	}
 	
-   public String lexema() { return lexemas.get(clase); }   
+   public String lexema() { return lexemas.get(clase); }
    public UnidadLexicaUnivaluada(int fila, int columna, ClaseLexica clase) {
      super(fila,columna,clase);  
    }
