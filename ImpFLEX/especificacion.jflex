@@ -3,10 +3,10 @@ package alex;
 %%
 %line
 %column
-%public class AnalizadorLexicoTiny
+%class AnalizadorLexicoTiny
 %type  UnidadLexica
 %unicode
-
+%public
 %{
   private ALexOperations ops;
   public String lexema() {return yytext();}
