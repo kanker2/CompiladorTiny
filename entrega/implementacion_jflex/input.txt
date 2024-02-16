@@ -1,0 +1,3 @@
+## comentario a ignorar
+int hola = 0;
+#¿hola

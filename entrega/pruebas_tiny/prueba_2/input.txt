@@ -1,0 +1,7 @@
+# comentario mal iniciado
+## En el caso anterior, una única # no
+## es una secuencia válida, por lo que da ERROR.
+## Y, luego, cada palabra se reconoce como identificador.
+$ ## este símbolo no está soportado => ERROR
+! ## tampoco una ! aislada => ERROR
+## Aquí termina el texto. Debería reconocerse EOF
