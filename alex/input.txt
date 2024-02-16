@@ -1,16 +1,3 @@
-{
-## Programa simple de ejemplo
-real peso;
-bool pesado
-&&
-@ peso = (45.0 * 12e-56) / -2.05;
-@ pesado = (peso > 10.0) or (peso / 2 <=
-+0.0)
-}
-# comentario mal iniciado
-## En el caso anterior, una única # no
-## es una secuencia válida, por lo que da ERROR.
-## Y, luego, cada palabra se reconoce como identificador.
-$ ## este símbolo no está soportado => ERROR
-! ## tampoco una ! aislada => ERROR
-## Aquí termina el texto. Debería reconocerse EOF
+#hoal
+5.hola!
+$

@@ -62,7 +62,7 @@ public class AnalizadorLexicoTiny {
     	 switch (estado) {
 	    	 case RECAMPERSAND: 
 	    		 if (hayAmpersand()) transita(Estado.FINDECLARACIONES);
-	    		 else error();
+	    		 else error(Estado.RECAMPERSAND);
 	    		 break;
 	    	 case FINDECLARACIONES: return unidadFINDECLARACIONES();
 	    	 case PUNTOYCOMA: return unidadPUNTOYCOMA();
@@ -77,7 +77,7 @@ public class AnalizadorLexicoTiny {
 	    		 break; 
 	    	 case RecCom0:
 	    		 if (hayHashtag()) transitaIgnorando(Estado.RecCom1);
-	    		 else error();
+	    		 else error(Estado.RecCom0);
 	    		 break;
 	    	 case RecCom1:
 	    		 if (haySaltoLinea()) transitaIgnorando(Estado.Inicio);
@@ -104,7 +104,7 @@ public class AnalizadorLexicoTiny {
 	    	 case COMPARACION: return unidadCOMPARACION();
 	    	 case RecExcl:
 	    		 if (hayIgual()) transita(Estado.DISTINTO);
-	    		 else error();
+	    		 else error(Estado.RecExcl);
 	    		 break;
 	    	 case DISTINTO: return unidadDISTINTO();
 	    	 case MENOS:
@@ -125,7 +125,7 @@ public class AnalizadorLexicoTiny {
 	    		 break;
 	    	 case RecIDec:
 	    		 if (hayDigito()) transita(Estado.RealDec);
-	    		 else error();
+	    		 else error(Estado.RecIDec);
 	    		 break;
 	    	 case RealDec:
 	    		 if (hayCero()) transita(Estado.Rec0Dec);
@@ -136,24 +136,24 @@ public class AnalizadorLexicoTiny {
 	    	 case Rec0Dec:
 	    		 if (hayCero()) transita(Estado.Rec0Dec);
 	    		 else if (hayDigitoPositivo()) transita(Estado.RealDec);
-	    		 else error();
+	    		 else error(Estado.Rec0Dec);
 	    		 break;
 	    	 case RecExp:
 	    		 if (hayCero()) transita(Estado.Rec0Exp);
 	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
 	    		 else if (hayMENOS()) transita(Estado.MenosExp);
 	    		 else if (hayMAS()) transita(Estado.MasExp);
-	    		 else error();
+	    		 else error(Estado.RecExp);
 	    		 break;
 	    	 case MenosExp:
 	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
 	    		 else if (hayCero()) transita(Estado.Rec0Exp);
-	    		 else error();
+	    		 else error(Estado.MenosExp);
 	    		 break;
 	    	 case MasExp:
 	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
 	    		 else if (hayCero()) transita(Estado.Rec0Exp);
-	    		 else error() ;
+	    		 else error(Estado.MasExp);
 	    		 break;
 	    	 case Rec0Exp:
 	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
@@ -167,7 +167,7 @@ public class AnalizadorLexicoTiny {
 	    	 case Real0Exp:
 	    		 if (hayCero()) transita(Estado.Real0Exp);
 	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
-	    		 else error();
+	    		 else error(Estado.Real0Exp);
 	    		 break;
 	    	 case REC0:
 	    		 if(hayPunto()) transita(Estado.RecIDec);
@@ -195,10 +195,10 @@ public class AnalizadorLexicoTiny {
 	    		 else if (hayCero()) transita(Estado.REC0);
 	    		 else if (hayDigitoPositivo()) transita(Estado.Entero);
 	    		 else if (haySeparador()) transitaIgnorando(Estado.Inicio);
-	    		 else error();
+	    		 else error(Estado.Inicio);
 	    		 break;
     		 default:
-    			 error();
+    			 error(null);
     			 
      	 }
      }
@@ -228,7 +228,7 @@ public class AnalizadorLexicoTiny {
    private void saltaFinDeLinea() throws IOException {
       for (int i=1; i < NL.length(); i++) {
           sigCar = input.read();
-          if (sigCar != NL.charAt(i)) error();
+          if (sigCar != NL.charAt(i)) error(null);
       }
       sigCar = '\n';
    }
@@ -367,16 +367,39 @@ public class AnalizadorLexicoTiny {
 	private UnidadLexica unidadEOF() {
 	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.EOF, "EOF");
 	}
-   
-	private void error() throws IOException {
-		huboError = true;
-		if (!haySeparador())
-			transita(Estado.Inicio);
-		else
-			transitaIgnorando(Estado.Inicio);
-		throw new ECaracterInesperado("Caracter inexperado (" + filaActual + "," + columnaActual + "): " + lex);
+ 
+	private void error(Estado e) throws IOException {
+		String msgError = "Carácter inesperado (" + filaActual + "," + columnaActual + "): " + (char)sigCar + "; " + caracterEsperado(e);
+		
+		sigCar();
+		estado = Estado.Inicio;
+		throw new ECaracterInesperado(msgError);
 	}
-
+	
+	private String caracterEsperado(Estado e) {
+		String msg = "Se esperaba un ";
+		switch (e) {
+			case RecCom0:
+				return msg+"#";
+			case RECAMPERSAND:
+				return msg+'&';
+			case RecExcl:
+				return msg+"=";
+			case RecIDec:
+			case Rec0Dec:
+			case MasExp:
+			case MenosExp:
+				return msg+"dígito";
+			case Rec0Exp:
+				return msg+"dígito o signo";
+			case RecCom1:
+			case Inicio:
+				return "No se reconoce el caracter";
+			default:
+				return "No se reconoce el caracter";
+		}
+	}
+	
    //U:/hlocal/workspace-jee/LPPL/src/alex/input.txt
    
 }
