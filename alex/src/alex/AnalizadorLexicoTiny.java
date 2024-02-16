@@ -374,19 +374,8 @@ public class AnalizadorLexicoTiny {
 			transita(Estado.Inicio);
 		else
 			transitaIgnorando(Estado.Inicio);
-		throw new ECaracterInesperado("***" + filaActual + "," + columnaActual + ": Caracter inexperado: " + lex);
+		throw new ECaracterInesperado("Caracter inexperado (" + filaActual + "," + columnaActual + "): " + lex);
 	}
-   
-   public static void main(String arg[]) throws IOException {
-	     Reader input = new InputStreamReader(new FileInputStream("U:/hlocal/workspace-jee/LPPL/src/alex/input.txt"));
-	     AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
-	     UnidadLexica unidad;
-	     do {
-	       unidad = al.sigToken();
-	       System.out.println(unidad);
-	     }
-	     while (unidad.clase() != ClaseLexica.EOF);
-   } 
 
    //U:/hlocal/workspace-jee/LPPL/src/alex/input.txt
    
