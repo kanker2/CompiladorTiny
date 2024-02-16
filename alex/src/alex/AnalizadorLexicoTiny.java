@@ -35,7 +35,7 @@ public class AnalizadorLexicoTiny {
 	   MENOS, MAS, REC0,
 	   Entero,
 	   RecIDec, Rec0Dec, RealDec,
-	   RecExp, MenosExp, MasExp, Rec0Exp, RealExp, Real0Exp 
+	   RecExp, MenosExp, MasExp, Rec0Exp, RealExp, 
 	   
    }
 
@@ -156,24 +156,16 @@ public class AnalizadorLexicoTiny {
 	    		 else error(Estado.MasExp);
 	    		 break;
 	    	 case Rec0Exp:
-	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
-	    		 else if (hayCero()) transita(Estado.Real0Exp);
-	    		 else return unidadReal();
-	    		 break;
+	    		 return unidadReal();
 	    	 case RealExp:
-	    		 if (hayCero()) transita(Estado.Real0Exp);
-	    		 else if(hayDigitoPositivo()) transita(Estado.RealExp);
+	    		 if(hayDigito()) transita(Estado.RealExp);
 	    		 else return unidadReal();
-	    		 break;
-	    	 case Real0Exp:
-	    		 if (hayCero()) transita(Estado.Real0Exp);
-	    		 else if (hayDigitoPositivo()) transita(Estado.RealExp);
-	    		 else error(Estado.Real0Exp);
 	    		 break;
 	    	 case REC0:
 	    		 if(hayPunto()) transita(Estado.RecIDec);
 	    		 else if(hayE()) transita(Estado.RecExp);
 	    		 else return unidadEntero();
+	    		 break;
 	    	 case Inicio:
 	    		 if (hayAmpersand()) transita(Estado.RECAMPERSAND);
 	    		 else if (hayPUNTOYCOMA()) transita(Estado.PUNTOYCOMA);
@@ -370,14 +362,15 @@ public class AnalizadorLexicoTiny {
 	}
  
 	private void error(Estado e) throws IOException {
-		String msgError = "Carácter inesperado (" + filaActual + "," + columnaActual + "): " + (char)sigCar + "; " + caracterEsperado(e);
+		//String msgError = "Carácter inesperado (" + filaActual + "," + columnaActual + "): " + (char)sigCar + "; " + caracterEsperado(e);
 		
 		sigCar();
 		estado = Estado.Inicio;
-		throw new ECaracterInesperado(msgError);
+		throw new ECaracterInesperado("ERROR");
 	}
 	
 	private String caracterEsperado(Estado e) {
+		
 		String msg = "Se esperaba un ";
 		switch (e) {
 			case RecCom0:
@@ -400,7 +393,5 @@ public class AnalizadorLexicoTiny {
 				return "No se reconoce el caracter";
 		}
 	}
-	
-   //U:/hlocal/workspace-jee/LPPL/src/alex/input.txt
-   
+	   
 }
