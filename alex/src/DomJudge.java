@@ -25,7 +25,7 @@ public class DomJudge {
 		  }
 		  catch(ECaracterInesperado e) {
 		         error = true;
-		         //System.out.println("ERROR");
+		         System.out.println("ERROR");
 		  }
 		}
 		while (error || unidad.clase() != ClaseLexica.EOF);

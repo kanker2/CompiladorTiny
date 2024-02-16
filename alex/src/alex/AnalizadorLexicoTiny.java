@@ -72,7 +72,7 @@ public class AnalizadorLexicoTiny {
 	    	 case INIPAR: return unidadINIPAR();
 	    	 case ARROBA: return unidadARROBA();
 	    	 case Identificador:
-	    		 if (hayGuionBajo() || hayGuionMedio() || hayDigito() || hayLetra()) transita(Estado.Identificador);
+	    		 if (hayGuionBajo() || hayDigito() || hayLetra()) transita(Estado.Identificador);
 	    		 else return unidadIdentificador();
 	    		 break; 
 	    	 case RecCom0:
@@ -249,7 +249,6 @@ public class AnalizadorLexicoTiny {
    private boolean hayMAYOR() {return sigCar=='>';}
    private boolean hayHashtag() {return sigCar=='#';}
    private boolean hayGuionBajo() {return sigCar=='_';}
-   private boolean hayGuionMedio() {return sigCar=='-';}
    private boolean hayARROBA() {return sigCar=='@';}
    private boolean hayPUNTOYCOMA() {return sigCar==';';}
    private boolean hayAmpersand() {return sigCar=='&';}
