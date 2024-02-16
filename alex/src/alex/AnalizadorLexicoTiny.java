@@ -227,7 +227,7 @@ public class AnalizadorLexicoTiny {
    }
    
    private boolean hayLetra() {return sigCar >= 'a' && sigCar <= 'z' ||
-                                      sigCar >= 'A' && sigCar <= 'z';}
+                                      sigCar >= 'A' && sigCar <= 'Z';}
    private boolean hayDigitoPositivo() {return sigCar >= '1' && sigCar <= '9';}
    private boolean hayCero() {return sigCar == '0';}
    private boolean hayDigito() {return hayDigitoPositivo() || hayCero();}
@@ -241,7 +241,7 @@ public class AnalizadorLexicoTiny {
    private boolean hayFINBLOQUE() {return sigCar == '}';}
    private boolean hayIgual() {return sigCar == '=';}
    private boolean hayPunto() {return sigCar == '.';}
-   private boolean haySeparador() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n' || sigCar=='\b' || sigCar=='\r';}
+   private boolean haySeparador() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n';}
    private boolean haySaltoLinea() {return sigCar == '\r' || sigCar == '\b' || sigCar == '\n';}
    private boolean hayEOF() {return sigCar == -1;}
    private boolean hayExclamacion() {return sigCar=='!';}
@@ -253,6 +253,7 @@ public class AnalizadorLexicoTiny {
    private boolean hayPUNTOYCOMA() {return sigCar==';';}
    private boolean hayAmpersand() {return sigCar=='&';}
    private boolean hayE() {return sigCar=='e' || sigCar=='E';}
+   
    private UnidadLexica unidadIdentificador() {
      switch(lex.toString().toLowerCase()) {
          case "int": 
