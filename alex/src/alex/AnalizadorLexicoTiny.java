@@ -259,21 +259,21 @@ public class AnalizadorLexicoTiny {
    private UnidadLexica unidadIdentificador() {
      switch(lex.toString().toLowerCase()) {
          case "int": 
-         	return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.INT, "<int>");
+         	return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.INT, "<int>");
          case "real":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.REAL, "<real>");
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.REAL, "<real>");
          case "bool":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL, "<bool>");
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL, "<bool>");
          case "and":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.AND, "<and>");
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.AND, "<and>");
          case "or":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.OR, "<or>");
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.OR, "<or>");
          case "not":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.NOT, "<not>");
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NOT, "<not>");
          case "true":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE, "<true>");
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE, "<true>");
          case "false":
-        	 return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE, "<false>");
+        	 return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE, "<false>");
          default:    
             return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.Identificador,lex.toString());     
       }
@@ -304,7 +304,7 @@ public class AnalizadorLexicoTiny {
 	}
 
 	private UnidadLexica unidadReal() {
-	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.Real, lex.toString());
+	    return new UnidadLexicaMultivaluada(filaInicio, columnaInicio, ClaseLexica.Real, lex.toString());
 	}
 
 	private UnidadLexica unidadMAYOR() {
@@ -364,10 +364,9 @@ public class AnalizadorLexicoTiny {
 	}
    
    private void error() throws IOException {
-     System.out.println("ERROR");
      estado=Estado.Inicio;
      sigCar();
-     
+     throw new ECaracterInesperado("***" + filaActual + "," + columnaActual + ": Caracter inexperado: " + sigCar);
    }
    
    public static void main(String arg[]) throws IOException {
