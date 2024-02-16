@@ -14,6 +14,7 @@ public class AnalizadorLexicoTiny {
    private int columnaInicio;
    private int filaActual;
    private int columnaActual;
+   private boolean huboError;
    private static String NL = System.getProperty("line.separator");
    
    private static enum Estado {
@@ -46,13 +47,17 @@ public class AnalizadorLexicoTiny {
     sigCar = input.read();
     filaActual=1;
     columnaActual=1;
+    huboError = false;
    }
    
    public UnidadLexica sigToken() throws IOException {
      estado = Estado.Inicio;
      filaInicio = filaActual;
      columnaInicio = columnaActual;
-     lex.delete(0,lex.length());
+     if (huboError)
+    	 huboError = false;
+     else
+    	 lex.delete(0,lex.length());
      while (true) {
     	 switch (estado) {
 	    	 case RECAMPERSAND: 
@@ -200,7 +205,7 @@ public class AnalizadorLexicoTiny {
    }
    private void transita(Estado sig) throws IOException {
      lex.append((char)sigCar);
-     sigCar();         
+     sigCar();
      estado = sig;
    }
    private void transitaIgnorando(Estado sig) throws IOException {
@@ -363,11 +368,14 @@ public class AnalizadorLexicoTiny {
 	    return new UnidadLexicaUnivaluada(filaInicio, columnaInicio, ClaseLexica.EOF, "EOF");
 	}
    
-   private void error() throws IOException {
-     estado=Estado.Inicio;
-     sigCar();
-     throw new ECaracterInesperado("***" + filaActual + "," + columnaActual + ": Caracter inexperado: " + sigCar);
-   }
+	private void error() throws IOException {
+		huboError = true;
+		if (!haySeparador())
+			transita(Estado.Inicio);
+		else
+			transitaIgnorando(Estado.Inicio);
+		throw new ECaracterInesperado("***" + filaActual + "," + columnaActual + ": Caracter inexperado: " + lex);
+	}
    
    public static void main(String arg[]) throws IOException {
 	     Reader input = new InputStreamReader(new FileInputStream("U:/hlocal/workspace-jee/LPPL/src/alex/input.txt"));
