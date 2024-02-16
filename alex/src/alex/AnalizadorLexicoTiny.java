@@ -157,6 +157,7 @@ public class AnalizadorLexicoTiny {
 	    		 break;
 	    	 case Rec0Exp:
 	    		 if (hayDigitoPositivo()) transita(Estado.RealExp);
+	    		 else if (hayCero()) transita(Estado.Real0Exp);
 	    		 else return unidadReal();
 	    		 break;
 	    	 case RealExp:
