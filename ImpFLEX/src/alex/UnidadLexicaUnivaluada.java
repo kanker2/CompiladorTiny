@@ -48,7 +48,7 @@ public class UnidadLexicaUnivaluada extends UnidadLexica {
 		lexemas.put(ClaseLexica.READ, "<read>");
 		lexemas.put(ClaseLexica.WRITE, "<write>");
 		lexemas.put(ClaseLexica.NL, "<nl>");
-		lexemas.put(ClaseLexica.TYPE, "<nl>");
+		lexemas.put(ClaseLexica.TYPE, "<type>");
 		lexemas.put(ClaseLexica.CALL, "<call>");
 		lexemas.put(ClaseLexica.INIARRAY, "[");
 		lexemas.put(ClaseLexica.FINARRAY, "]");
