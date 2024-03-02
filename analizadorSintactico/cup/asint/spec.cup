@@ -1,0 +1,48 @@
+package asint;
+
+import java_cup.runtime.*;
+import alex.AnalizadorLexicoEval;
+import alex.UnidadLexica;
+import errors.GestionErroresEval;
+
+scan with {: 
+  return getScanner().next_token(); 
+:};
+parser code {: 
+   private GestionErroresEval errores;
+   public void syntax_error(Symbol unidadLexica) {
+     errores.errorSintactico((UnidadLexica)unidadLexica);
+   }
+:};
+init with {: 
+   errores = new GestionErroresEval();
+   AnalizadorLexicoEval alex = (AnalizadorLexicoEval)getScanner();
+   alex.fijaGestionErrores(errores);
+:};
+
+
+terminal     DONDE, EVALUA, IDEN, ENT, REAL, MAS,
+             MENOS, POR, DIV, IGUAL, COMA, PAP, PCIERRE;
+
+non terminal  programa, expresion, declaraciones, 
+              lista_declaraciones, declaracion, E0, E1, E2, OP0, OP1;
+
+programa      ::= expresion declaraciones ;
+expresion     ::= EVALUA E0 ;
+declaraciones ::= DONDE lista_declaraciones ;
+declaraciones ::= ;
+lista_declaraciones ::= lista_declaraciones COMA declaracion ;
+lista_declaraciones ::= declaracion ;
+declaracion ::= IDEN IGUAL E0 ;
+E0 ::= E0 OP0 E1 ;
+E0 ::= E1 ;
+E1 ::= E1 OP1 E2 ;
+E1 ::= E2 ;
+E2 ::= IDEN ;
+E2 ::= ENT ;
+E2 ::= REAL ;
+E2 ::= PAP E0 PCIERRE;
+OP0 ::= MAS ;
+OP0 ::= MENOS ;
+OP1 ::= POR ;
+OP1 ::= DIV ;

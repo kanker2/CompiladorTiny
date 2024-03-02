@@ -1,0 +1,5 @@
+evalua
+   5.0 + -7*(peso - 10.45)/nivel
+donde
+   peso = 56 + 18,
+   nivel = peso*0.5 + 1

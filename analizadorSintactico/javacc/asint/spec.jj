@@ -1,0 +1,40 @@
+options  {
+  STATIC=false;
+  DEBUG_PARSER=true;
+}  
+PARSER_BEGIN(AnalizadorSintacticoTiny)
+package asint;
+
+public class AnalizadorSintacticoTiny {
+    protected void newToken(Token t) {}
+}
+PARSER_END(AnalizadorSintacticoTiny)
+
+  TOKEN:{<#letra:["a"-"z","A"-"Z"]>}
+  TOKEN:{<#digitoPositivo:["1"-"9"]>}
+  TOKEN:{<#digito:<digitoPositivo>|"0">} 
+  TOKEN:{<#parteEntera:<digitoPositivo> (<digito>)* |"0">} 
+  TOKEN:{<#parteDecimal: (<digito>)* <digitoPositivo> | "0">}
+  SKIP:{<["\t"," ","\r","\b","\n"]>}  
+  SKIP:{<"#"(~["\n"])*>}  
+  TOKEN: {<donde:"donde">}
+  TOKEN: {<evalua:"evalua">}
+  TOKEN:{<iden:<letra>(<letra>|<digito>)*>}
+  TOKEN:{<lit_ent:(["+","-"])?<parteEntera>>}
+  TOKEN:{<lit_real:(["+","-"])?<parteEntera>"."<parteDecimal>>  }
+  
+  void analiza()   : {} {programa() <EOF> }
+  void programa()  : {} {expresion() declaraciones()}
+  void expresion() : {} {<evalua> e0()}
+  void declaraciones() : {} {<donde> lista_declaraciones() | {}}
+  void lista_declaraciones() : {} {declaracion() rlista_decs()}
+  void rlista_decs() : {} {"," declaracion() rlista_decs() | {}}
+  void declaracion() : {} {<iden> "=" e0()}
+  void e0() : {} {e1() re0()}
+  void re0() : {} {op0() e1() re0() | {}}
+  void e1() : {} {e2() re1()}
+  void re1() : {} {op1() e2() re1() | {}}
+  void e2() : {} {<iden> | <lit_ent> |  <lit_real> | "(" e0() ")"}
+  void op0()  : {} {"+" | "-"}
+  void op1()  : {} {"*" | "/"}
+  
