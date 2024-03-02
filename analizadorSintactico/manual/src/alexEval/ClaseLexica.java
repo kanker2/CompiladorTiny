@@ -15,14 +15,14 @@ public enum ClaseLexica {
  EVALUA("<evalua>"), 
  DONDE("<donde>"), 
  EOF("<EOF>");
-private String image;
-public String getImage() {
+	private String image;
+	public String getImage() {
      return image;
  }
- private ClaseLexica() {
+	private ClaseLexica() {
      image = toString();
  }
- private ClaseLexica(String image) {
+	private ClaseLexica(String image) {
     this.image = image;  
  }
 }

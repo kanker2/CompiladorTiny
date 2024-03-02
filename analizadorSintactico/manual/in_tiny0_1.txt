@@ -1,0 +1,4 @@
+{
+## error: falta @
+x = 5
+}

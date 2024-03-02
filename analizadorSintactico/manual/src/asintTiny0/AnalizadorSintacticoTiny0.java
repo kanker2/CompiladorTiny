@@ -87,6 +87,7 @@ public class AnalizadorSintacticoTiny0 {
 		   case INT: case REAL: case BOOL:
 			   tipo();
 			   empareja(ClaseLexica.Identificador);
+			   break;
 		   default:
 			   esperados(ClaseLexica.INT, ClaseLexica.REAL, ClaseLexica.BOOL);
 			   error();
@@ -116,6 +117,7 @@ public class AnalizadorSintacticoTiny0 {
 		   switch (anticipo.clase()) {
 		   case ARROBA:
 			   lista_instrucciones();
+			   break;
 		   default:
 			   esperados(ClaseLexica.ARROBA);
 			   break;
@@ -127,6 +129,7 @@ public class AnalizadorSintacticoTiny0 {
 		   case ARROBA:
 			   instruccion();
 			   lista_ins();
+			   break;
 		   default:
 			   esperados(ClaseLexica.ARROBA);
 			   error();

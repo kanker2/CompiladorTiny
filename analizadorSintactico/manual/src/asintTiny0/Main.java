@@ -9,7 +9,7 @@ import java.io.Reader;
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 	     Reader input = new InputStreamReader(new FileInputStream(args[0]));
-	     AnalizadorSintacticoTiny0 asint = new AnalizadorSintacticoTiny0(input);
+	     AnalizadorSintacticoTiny0DJ asint = new AnalizadorSintacticoTiny0DJ(input);
 	     asint.analiza();
 	 }
 
