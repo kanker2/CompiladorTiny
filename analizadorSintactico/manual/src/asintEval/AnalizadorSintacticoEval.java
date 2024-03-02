@@ -1,6 +1,5 @@
-package asint;
+package asintEval;
 
-import errors.GestionErroresEval;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.EnumSet;
@@ -11,6 +10,7 @@ import java.util.logging.Logger;
 import alexEval.AnalizadorLexicoEval;
 import alexEval.ClaseLexica;
 import alexEval.UnidadLexica;
+import errorsEval.GestionErroresEval;
 
 public class AnalizadorSintacticoEval {
    private UnidadLexica anticipo;       // token adelantado
