@@ -1,4 +1,4 @@
-package alex;
+package alexTiny0;
 
 import java.io.FileInputStream;
 import java.io.Reader;

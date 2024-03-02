@@ -1,5 +1,8 @@
 package alexEval;
 
+import alexTiny0.ClaseLexica;
+import alexTiny0.UnidadLexica;
+
 public class UnidadLexicaMultivaluada extends UnidadLexica {
   private String lexema;
   public UnidadLexicaMultivaluada(int fila, int columna, ClaseLexica clase, String lexema) {

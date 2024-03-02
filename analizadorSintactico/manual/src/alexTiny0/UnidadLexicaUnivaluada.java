@@ -1,4 +1,4 @@
-package alex;
+package alexTiny0;
 
 public class UnidadLexicaUnivaluada extends UnidadLexica {
 	private String simbolo;

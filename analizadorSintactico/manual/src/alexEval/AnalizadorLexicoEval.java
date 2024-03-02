@@ -3,6 +3,12 @@ package alexEval;
 import errors.GestionErroresEval;
 import java.io.FileInputStream;
 import java.io.Reader;
+
+import alexTiny0.ClaseLexica;
+import alexTiny0.UnidadLexica;
+import alexTiny0.UnidadLexicaMultivaluada;
+import alexTiny0.UnidadLexicaUnivaluada;
+
 import java.io.InputStreamReader;
 import java.io.IOException;
 

@@ -1,5 +1,7 @@
 package alexEval;
 
+import alexTiny0.ClaseLexica;
+
 public abstract class UnidadLexica {
    private ClaseLexica clase;
    private int fila;

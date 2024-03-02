@@ -1,5 +1,8 @@
 package alexEval;
 
+import alexTiny0.ClaseLexica;
+import alexTiny0.UnidadLexica;
+
 public class UnidadLexicaUnivaluada extends UnidadLexica {
    public String lexema() {throw new UnsupportedOperationException();}   
    public UnidadLexicaUnivaluada(int fila, int columna, ClaseLexica clase) {

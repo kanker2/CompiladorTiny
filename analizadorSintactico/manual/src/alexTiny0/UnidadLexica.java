@@ -1,4 +1,4 @@
-package alex;
+package alexTiny0;
 
 public abstract class UnidadLexica {
    private ClaseLexica clase;

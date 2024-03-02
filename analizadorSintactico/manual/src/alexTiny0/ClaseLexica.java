@@ -1,4 +1,4 @@
-package alex;
+package alexTiny0;
 
 public enum ClaseLexica {
 	Identificador, Entero, Real,
