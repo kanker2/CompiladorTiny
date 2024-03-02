@@ -1,6 +1,9 @@
 package alexTiny0;
 
 import java.io.Reader;
+
+import errorsTiny0.GestionErroresTiny0;
+
 import java.io.IOException;
 
 public class AnalizadorLexicoTiny {
@@ -14,6 +17,7 @@ public class AnalizadorLexicoTiny {
    private int columnaActual;
    private boolean huboError;
    private static String NL = System.getProperty("line.separator");
+   private GestionErroresTiny0 errores;
    
    private static enum Estado {
 	   Inicio,
@@ -39,8 +43,9 @@ public class AnalizadorLexicoTiny {
 
    private Estado estado;
 
-   public AnalizadorLexicoTiny(Reader input) throws IOException {
+   public AnalizadorLexicoTiny(Reader input, GestionErroresTiny0 errores) throws IOException {
     this.input = input;
+    this.errores = errores;
     lex = new StringBuffer();
     sigCar = input.read();
     filaActual=1;

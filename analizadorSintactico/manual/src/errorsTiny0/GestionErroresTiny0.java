@@ -2,7 +2,7 @@ package errorsTiny0;
 
 import java.util.Set;
 
-import alexEval.ClaseLexica;
+import alexTiny0.ClaseLexica;
 
 public class GestionErroresTiny0 {
    public static class ErrorLexico extends RuntimeException {
