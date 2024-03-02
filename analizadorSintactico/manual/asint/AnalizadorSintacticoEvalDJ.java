@@ -1,8 +1,9 @@
 package asint;
 
-import alex.UnidadLexica;
 import java.io.IOException;
 import java.io.Reader;
+
+import alexEval.UnidadLexica;
 
 public class AnalizadorSintacticoEvalDJ extends AnalizadorSintacticoEval {
        public AnalizadorSintacticoEvalDJ(Reader input) throws IOException {

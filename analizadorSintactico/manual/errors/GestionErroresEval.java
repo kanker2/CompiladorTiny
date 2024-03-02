@@ -1,7 +1,8 @@
 package errors;
 
-import alex.ClaseLexica;
 import java.util.Set;
+
+import alexEval.ClaseLexica;
 
 public class GestionErroresEval {
    public static class ErrorLexico extends RuntimeException {

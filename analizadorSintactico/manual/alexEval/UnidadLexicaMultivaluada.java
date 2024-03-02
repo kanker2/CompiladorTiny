@@ -1,4 +1,4 @@
-package alex;
+package alexEval;
 
 public class UnidadLexicaMultivaluada extends UnidadLexica {
   private String lexema;

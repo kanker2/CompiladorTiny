@@ -1,4 +1,4 @@
-package alex;
+package alexEval;
 
 public enum ClaseLexica {
  IDEN, 
