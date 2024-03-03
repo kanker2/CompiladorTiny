@@ -106,7 +106,8 @@ PARSER_END(AnalizadorSintacticoTiny)
 	void instruccion()                   	: {} {instruccion_eval() | instruccion_if() | instruccion_while() | instruccion_read() | instruccion_write() | instruccion_nl() | instruccion_new() | instruccion_delete() | instruccion_call() | instruccion_compuesta()}
 	void instruccion_eval()               : {} {"@" expresion()}
 	void expresion()											: {} {E0()}
-	void E0()															: {} {E1() "=" E0()}
+	void E0()															: {} {E1() FE0()}
+	void FE0()														: {} {"=" E0() | {}}
 	void E1()															: {} {E2() RE1()}
 	void RE1()														: {} {OP1() E2() RE1() | {}}
 	void E2()															: {} {E3() FE2()}
