@@ -19,11 +19,6 @@ PARSER_END(AnalizadorSintacticoTiny)
   SKIP:{<["\t"," ","\r","\b","\n"]>}  
   SKIP:{<"##"(~["\n"])*>} 
 
-  TOKEN:{<Identificador:(<letra>|"_")(<letra>|<digito>|"_")*>} 
-  TOKEN:{<Entero:(["+","-"])?<parteEntera>>}
-  TOKEN:{<Real:<Entero>("."<parteDecimal>(<parteExponencial>)?|<parteExponencial>)>}
-  TOKEN:{<Cadena:"\""(~["\""])*"\"">}
-
   TOKEN:{<INT:("i"|"I")("n"|"N")("t"|"T")>}
   TOKEN:{<REAL:("r"|"R")("e"|"E")("a"|"A")("l"|"L")>}
   TOKEN:{<BOOL:("b"|"B")("o"|"O")("o"|"O")("l"|"L")>}
@@ -71,6 +66,11 @@ PARSER_END(AnalizadorSintacticoTiny)
 	TOKEN:{<COMA:",">}
 	TOKEN:{<REFERENCIA:"&">}
 	TOKEN:{<PUNTO:".">}
+
+  TOKEN:{<Identificador:(<letra>|"_")(<letra>|<digito>|"_")*>} 
+  TOKEN:{<Entero:(["+","-"])?<parteEntera>>}
+  TOKEN:{<Real:<Entero>("."<parteDecimal>(<parteExponencial>)?|<parteExponencial>)>}
+  TOKEN:{<Cadena:"\""(~["\""])*"\"">}
 
 
   void programa_tiny()									: {} {bloque() <EOF>}

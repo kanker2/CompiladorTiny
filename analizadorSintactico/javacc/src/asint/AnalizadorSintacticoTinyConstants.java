@@ -23,107 +23,107 @@ public interface AnalizadorSintacticoTinyConstants {
   /** RegularExpression Id. */
   int parteExponencial = 6;
   /** RegularExpression Id. */
-  int Identificador = 9;
+  int INT = 9;
   /** RegularExpression Id. */
-  int Entero = 10;
+  int REAL = 10;
   /** RegularExpression Id. */
-  int Real = 11;
+  int BOOL = 11;
   /** RegularExpression Id. */
-  int Cadena = 12;
+  int STRING = 12;
   /** RegularExpression Id. */
-  int INT = 13;
+  int AND = 13;
   /** RegularExpression Id. */
-  int REAL = 14;
+  int OR = 14;
   /** RegularExpression Id. */
-  int BOOL = 15;
+  int NOT = 15;
   /** RegularExpression Id. */
-  int STRING = 16;
+  int NULL = 16;
   /** RegularExpression Id. */
-  int AND = 17;
+  int TRUE = 17;
   /** RegularExpression Id. */
-  int OR = 18;
+  int FALSE = 18;
   /** RegularExpression Id. */
-  int NOT = 19;
+  int PROC = 19;
   /** RegularExpression Id. */
-  int NULL = 20;
+  int IF = 20;
   /** RegularExpression Id. */
-  int TRUE = 21;
+  int ELSE = 21;
   /** RegularExpression Id. */
-  int FALSE = 22;
+  int WHILE = 22;
   /** RegularExpression Id. */
-  int PROC = 23;
+  int STRUCT = 23;
   /** RegularExpression Id. */
-  int IF = 24;
+  int NEW = 24;
   /** RegularExpression Id. */
-  int ELSE = 25;
+  int DELETE = 25;
   /** RegularExpression Id. */
-  int WHILE = 26;
+  int READ = 26;
   /** RegularExpression Id. */
-  int STRUCT = 27;
+  int WRITE = 27;
   /** RegularExpression Id. */
-  int NEW = 28;
+  int NL = 28;
   /** RegularExpression Id. */
-  int DELETE = 29;
+  int TYPE = 29;
   /** RegularExpression Id. */
-  int READ = 30;
+  int CALL = 30;
   /** RegularExpression Id. */
-  int WRITE = 31;
+  int POR = 31;
   /** RegularExpression Id. */
-  int NL = 32;
+  int ENTRE = 32;
   /** RegularExpression Id. */
-  int TYPE = 33;
+  int MAS = 33;
   /** RegularExpression Id. */
-  int CALL = 34;
+  int MENOS = 34;
   /** RegularExpression Id. */
-  int POR = 35;
+  int MENOR = 35;
   /** RegularExpression Id. */
-  int ENTRE = 36;
+  int MENORIGUAL = 36;
   /** RegularExpression Id. */
-  int MAS = 37;
+  int MAYOR = 37;
   /** RegularExpression Id. */
-  int MENOS = 38;
+  int MAYORIGUAL = 38;
   /** RegularExpression Id. */
-  int MENOR = 39;
+  int COMPARACION = 39;
   /** RegularExpression Id. */
-  int MENORIGUAL = 40;
+  int DISTINTO = 40;
   /** RegularExpression Id. */
-  int MAYOR = 41;
+  int ASIGNACION = 41;
   /** RegularExpression Id. */
-  int MAYORIGUAL = 42;
+  int INIPAR = 42;
   /** RegularExpression Id. */
-  int COMPARACION = 43;
+  int FINPAR = 43;
   /** RegularExpression Id. */
-  int DISTINTO = 44;
+  int INIBLOQUE = 44;
   /** RegularExpression Id. */
-  int ASIGNACION = 45;
+  int FINBLOQUE = 45;
   /** RegularExpression Id. */
-  int INIPAR = 46;
+  int ARROBA = 46;
   /** RegularExpression Id. */
-  int FINPAR = 47;
+  int FINDECLARACIONES = 47;
   /** RegularExpression Id. */
-  int INIBLOQUE = 48;
+  int PUNTOYCOMA = 48;
   /** RegularExpression Id. */
-  int FINBLOQUE = 49;
+  int INIARRAY = 49;
   /** RegularExpression Id. */
-  int ARROBA = 50;
+  int FINARRAY = 50;
   /** RegularExpression Id. */
-  int FINDECLARACIONES = 51;
+  int PUNTERO = 51;
   /** RegularExpression Id. */
-  int PUNTOYCOMA = 52;
+  int MODULO = 52;
   /** RegularExpression Id. */
-  int INIARRAY = 53;
+  int COMA = 53;
   /** RegularExpression Id. */
-  int FINARRAY = 54;
+  int REFERENCIA = 54;
   /** RegularExpression Id. */
-  int PUNTERO = 55;
+  int PUNTO = 55;
   /** RegularExpression Id. */
-  int MODULO = 56;
+  int Identificador = 56;
   /** RegularExpression Id. */
-  int COMA = 57;
+  int Entero = 57;
   /** RegularExpression Id. */
-  int REFERENCIA = 58;
+  int Real = 58;
   /** RegularExpression Id. */
-  int PUNTO = 59;
+  int Cadena = 59;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -139,11 +139,7 @@ public interface AnalizadorSintacticoTinyConstants {
     "<parteExponencial>",
     "<token of kind 7>",
     "<token of kind 8>",
-    "<Identificador>",
-    "<Entero>",
-    "<Real>",
-    "<Cadena>",
-    "<INT>",
+    "\"int\"",
     "<REAL>",
     "<BOOL>",
     "<STRING>",
@@ -190,6 +186,10 @@ public interface AnalizadorSintacticoTinyConstants {
     "\",\"",
     "\"&\"",
     "\".\"",
+    "<Identificador>",
+    "<Entero>",
+    "<Real>",
+    "<Cadena>",
   };
 
 }
