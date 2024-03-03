@@ -675,27 +675,9 @@ public class AnalizadorSintacticoTiny implements AnalizadorSintacticoTinyConstan
 
       E3();
       FE2();
+      RE2();
     } finally {
       trace_return("E2");
-    }
-}
-
-  final public void FE2() throws ParseException {
-    trace_call("FE2");
-    try {
-
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case MENOS:{
-        jj_consume_token(MENOS);
-        E3();
-        break;
-        }
-      default:
-        jj_la1[17] = jj_gen;
-        RE2();
-      }
-    } finally {
-      trace_return("FE2");
     }
 }
 
@@ -711,11 +693,30 @@ public class AnalizadorSintacticoTiny implements AnalizadorSintacticoTinyConstan
         break;
         }
       default:
-        jj_la1[18] = jj_gen;
+        jj_la1[17] = jj_gen;
 
       }
     } finally {
       trace_return("RE2");
+    }
+}
+
+  final public void FE2() throws ParseException {
+    trace_call("FE2");
+    try {
+
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case MENOS:{
+        jj_consume_token(MENOS);
+        E3();
+        break;
+        }
+      default:
+        jj_la1[18] = jj_gen;
+
+      }
+    } finally {
+      trace_return("FE2");
     }
 }
 
@@ -1228,7 +1229,7 @@ public class AnalizadorSintacticoTiny implements AnalizadorSintacticoTinyConstan
 	   jj_la1_0 = new int[] {0x881e200,0x0,0x881e200,0x801e200,0x0,0x200,0x0,0x801e200,0x801e200,0x1e000,0x801e200,0x0,0xf5000000,0x0,0xf5000000,0x0,0x0,0x0,0x0,0x60000,0x0,0x781e00,0x0,0x701e00,0x0,0x0,0x80000,0x0,0x2000000,0x781e00,0x0,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x800002,0x100000,0x800002,0x800000,0x2000000,0x4000000,0x200000,0x800000,0x0,0x0,0x800000,0x2000000,0x50005,0x100000,0x50005,0x2000,0x1f80,0x40,0x20,0x0,0x1000018,0x4040,0x8a00000,0x4000,0x1f80,0x1000018,0x40,0x8a00000,0x0,0x4040,0x2000000,};
+	   jj_la1_1 = new int[] {0x800002,0x100000,0x800002,0x800000,0x2000000,0x4000000,0x200000,0x800000,0x0,0x0,0x800000,0x2000000,0x50005,0x100000,0x50005,0x2000,0x1f80,0x20,0x40,0x0,0x1000018,0x4040,0x8a00000,0x4000,0x1f80,0x1000018,0x40,0x8a00000,0x0,0x4040,0x2000000,};
 	}
 
   {

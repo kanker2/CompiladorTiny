@@ -1,5 +1,5 @@
 ## Programa con seccion de declaraciones y
 ## seccion de instrucciones
 {
- @ x = y = z
+ @ x and y
 }

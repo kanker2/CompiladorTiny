@@ -110,9 +110,9 @@ PARSER_END(AnalizadorSintacticoTiny)
 	void FE0()														: {} {"=" E0() | {}}
 	void E1()															: {} {E2() RE1()}
 	void RE1()														: {} {OP1() E2() RE1() | {}}
-	void E2()															: {} {E3() FE2()}
-	void FE2()														: {} {"-" E3() | RE2()}
+	void E2()															: {} {E3() FE2() RE2()}
 	void RE2()														: {} {"+" E3() RE2() | {}}
+	void FE2()														: {} {"-" E3() | {}}
 	void E3()															: {} {E4() FE3()}
 	void FE3()														: {} {<AND> E3() | <OR> E4() | {}}
 	void E4()															: {} {E5() RE4()}
