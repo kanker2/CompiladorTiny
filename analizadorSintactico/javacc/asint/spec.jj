@@ -15,21 +15,89 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN:{<#digito:<digitoPositivo>|"0">} 
   TOKEN:{<#parteEntera:<digitoPositivo> (<digito>)* |"0">} 
   TOKEN:{<#parteDecimal: (<digito>)* <digitoPositivo> | "0">}
+  TOKEN:{<#parteExponencial: ("e"|"E")["+","-"]? <parteEntera>>}
   SKIP:{<["\t"," ","\r","\b","\n"]>}  
-  SKIP:{<"#"(~["\n"])*>}  
-  TOKEN: {<donde:"donde">}
-  TOKEN: {<evalua:"evalua">}
-  TOKEN:{<iden:<letra>(<letra>|<digito>)*>}
-  TOKEN:{<lit_ent:(["+","-"])?<parteEntera>>}
-  TOKEN:{<lit_real:(["+","-"])?<parteEntera>"."<parteDecimal>>  }
-  
-  void analiza()   : {} {programa() <EOF> }
-  void programa()  : {} {expresion() declaraciones()}
-  void expresion() : {} {<evalua> e0()}
-  void declaraciones() : {} {<donde> lista_declaraciones() | {}}
-  void lista_declaraciones() : {} {declaracion() rlista_decs()}
-  void rlista_decs() : {} {"," declaracion() rlista_decs() | {}}
-  void declaracion() : {} {<iden> "=" e0()}
+  SKIP:{<"#"(~["\n"])*>} 
+
+  TOKEN:{<entero:(["+","-"])?<parteEntera>>}
+  TOKEN:{<real:<Entero> ("."<parteDecimal>(<parteExponencial>)? | <parteExponencial>>  }
+
+  TOKEN:{<int:("i"|"I")("n"|"N")("t"|"T")>}
+  TOKEN:{<real:("r"|"R")("e"|"E")("a"|"A")("l"|"L")>}
+  TOKEN:{<bool: ("b"|"B")("o"|"O")("o"|"O")("l"|"L")>}
+  TOKEN:{<string:("s"|"S")("t"|"T")("r"|"R")("i"|"I")("n"|"N")("g"|"G")>}
+  TOKEN:{<and:("a"|"A")("n"|"N")("d"|"D")>}
+  TOKEN:{<or:("o"|"O")("r"|"R")>}
+  TOKEN:{<not:("n"|"N")("o"|O")("t"|"T")>}
+  TOKEN:{<null:("n"|"N")("u"|"U")("l"|"L")("l"|"L")>}
+  TOKEN:{<true:("t"|"T")("r"|"R")("u"|"U")("e"|"E")>}
+  TOKEN:{<false:("f"|"F")("a"|"A")("l"|"L")("s"|"S")("e"|"E")+>}
+  TOKEN:{<proc:("p"|"P")("r"|"R")("o"|"O")("c"|"C")>}
+  TOKEN:{<if:("i"|"I")("f"|"F")>}
+  TOKEN:{<else:("e"|"E")("l"|"L")("s"|"S")("e"|"E")>}
+  TOKEN:{<while:("w"|"W")("h"|"H")("i"|"I")("l"|"L")("e"|"E")>}
+  TOKEN:{<struct:("s"|"S")("t"|"T")("r"|"R")("u"|"U")("c"|"C")("t"|"T")>}
+  TOKEN:{<new:("n"|"N")("e"|"E")("w"|"W")>}
+  TOKEN:{<delete:("d"|"D")("e"|"E")("l"|"L")("e"|"E")("t"|"T")("e"|"E")>}
+  TOKEN:{<read:("r"|"R")("e"|"E")("a"|"A")("d"|"D")>}
+  TOKEN:{<write:(w|W)(r|R)(i|I)(t|T)(e|E)>}
+  TOKEN:{<nl:("n"|"N"|"l"|"L")>}
+  TOKEN:{<type:("t"|"T")("y"|"Y")("p"|"P")("e"|"E")>}
+  TOKEN:{<call:("c"|"C")("a"|"A")("l"|"L")("l"|"L")>}
+  TOKEN: {<cadena:(<letra>)*>}
+  TOKEN:{<identificador:(<letra>|"_")(<letra>|<digito>|"_")*>} 
+
+
+  void analiza()   : {} {bloque() <EOF> }
+  void bloque()  : {} {"{"lista_opt_declaraciones() lista_opt_instrucciones()"}"}
+  void lista_opt_declaraciones() : {} {lista_declaraciones() <&&>}
+  void lista_declaraciones() : {} {declaracion() lista_decs()}
+  void lista_decs() : {} {";" declaracion() lista_decs() | {}}
+  void declaracion() : {} {declaracion_variable() | declaracion_tipo() | declaracion_proc()}
+  void declaracion_variable():{} {tipo() <identificador>} 
+  void declaracion_tipo() :{} {<type> tipo() <identificador>}
+  void declaracion_proc() : {} {<PROC> <Identificador> "(" lista_opt_parametros_formales  ")" bloque()}
+  void lista_opt_parametros_formales(): {} {lista_parametros_formales() | {}}
+  void lista_parametros_formales(): {} {parametro_formal() RECP()}
+  void RECP(): {} {"," parametro_formal() RECP() | {}}
+  void parametro_formal(): {} {tipo() RECpf()}
+  void RECpf(): {"&" <identificador> | <identificador>}
+  void tipo(): {} {tipo_basico() | tipo_registro() | tipo_puntero() | tipo_definido() | tipo_array()}
+  void tipo_basico(): {} {<int> |<real>|<bool>|<string>}
+  void tipo_regisro(): {} {<struct> "{" lista_opt_parametros_registro() "}"}
+  void tipo_puntero(): {} {"^" tipo()}
+  void tipo_definido(): {} {<identificador>}
+  void tipo_array(): {} {tipo_basico() "{" <entero> "}"}
+  void lista_opt_parametros_registro(): {} {lista_parametros_registro() | {}}
+  void lista_parametros_registro(): {} {parametro_registro() RECIpr()}
+  void parametro_registro(): {} {tipo() <identificador>}
+  void RECIpr(): {} {"," parametro_registro() RECIpr() | {}}
+
+  void lista_opt_instrucciones(): {} {lista_instrucciones() | {}}
+  void lista_instrucciones(): {} {instruccion() RECI()}
+  void RECI(): {} {";" instruccion() RECI() | {}}
+  void instruccion(): {} { instruccion-eval()|instruccion-if() |instruccion-if-else()|instruccion-while()|instruccion-read() |instruccion-write() |instruccion-nl()|instruccion-new() |instruccion-delete() |instruccion-call() }
+  void instruccion-eval(): {} {"@" expresion()}
+  void instruccion-if(): {} {<if> expresion() bloque()}
+  void instruccion-if-else(): {} {<if> expresion() bloque() <else> bloque()}
+  void instruccion-while(): {} {<while> bloque()}
+  void instruccion-read(): {} {<read> expresion()}
+  void instruccion-write(): {} {<write> expresion()}
+  void instruccion-nl(): {} {<nl>}
+  void instruccion-new(): {} {<new> expresion()}
+  void instruccion-delete(): {} {<delete> expresion()}
+  void instruccion-call(): {} {<call> <identificador> parametros()}
+  void parametros(): {} {"(" lista_opt_parametros() ")"}
+  void lista_opt_parametros(): {} {lista_parametros()|{}}
+  void lista_parametros(): {} {expresion() RECIp()}
+  void RECIp(): {} {"," expresion() RECIp() | {}}
+  void instruccion(): {} {instruccion-compuesta()}
+  void instruccion-compuesta(): {} {bloque()}
+
+  void expresion(): {} {E0()}
+  void E0(): {} {}
+
+
   void e0() : {} {e1() re0()}
   void re0() : {} {op0() e1() re0() | {}}
   void e1() : {} {e2() re1()}
