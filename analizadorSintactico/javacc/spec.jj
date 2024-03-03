@@ -88,12 +88,14 @@ PARSER_END(AnalizadorSintacticoTiny)
   
 	void parametro_formal()               : {} {tipo() RECpf()}
 	void RECpf()                          : {} {"&" <Identificador> | <Identificador>}
-	void tipo()                           : {} {tipo_basico() | tipo_registro() | tipo_puntero() | tipo_definido() | tipo_array()}
+	void tipo()                           : {} {tipo_array()}
+	void tipo_array()                    	: {} {tipo_puntero() RETA()}
+	void RETA() 							: {} {"[" <Entero> "]" RETA() | {}}
+	void tipo_puntero()                  	: {} {"^" tipo_puntero() | T2()}
+	void T2()								: {} {tipo_basico() | tipo_registro() | tipo_definido()}
 	void tipo_basico()                  	: {} {<INT> | <REAL> | <BOOL> | <STRING>}
 	void tipo_registro()                 	: {} {<STRUCT> "{" lista_opt_parametros_registro() "}"}
-	void tipo_puntero()                  	: {} {"^" tipo()}
 	void tipo_definido()                  : {} {<Identificador>}
-	void tipo_array()                    	: {} {tipo_basico() "[" <Entero> "]"}
 	void lista_opt_parametros_registro()  : {} {lista_parametros_registro() | {}}
 	void lista_parametros_registro()      : {} {parametro_registro() REClpr()}
 	void REClpr()                        	: {} {"," parametro_registro() REClpr() | {}}
