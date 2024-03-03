@@ -73,61 +73,66 @@ PARSER_END(AnalizadorSintacticoTiny)
 	TOKEN:{<PUNTO:"\.">}
 
 
-  void analiza()   : {} {bloque() <EOF> }
-  void bloque()  : {} {"{"lista_opt_declaraciones() lista_opt_instrucciones()"}"}
-  void lista_opt_declaraciones() : {} {lista_declaraciones() <&&>}
-  void lista_declaraciones() : {} {declaracion() lista_decs()}
-  void lista_decs() : {} {";" declaracion() lista_decs() | {}}
-  void declaracion() : {} {declaracion_variable() | declaracion_tipo() | declaracion_proc()}
-  void declaracion_variable():{} {tipo() <identificador>} 
-  void declaracion_tipo() :{} {<type> tipo() <identificador>}
-  void declaracion_proc() : {} {<PROC> <Identificador> "(" lista_opt_parametros_formales  ")" bloque()}
-  void lista_opt_parametros_formales(): {} {lista_parametros_formales() | {}}
-  void lista_parametros_formales(): {} {parametro_formal() RECP()}
-  void RECP(): {} {"," parametro_formal() RECP() | {}}
-  void parametro_formal(): {} {tipo() RECpf()}
-  void RECpf(): {"&" <identificador> | <identificador>}
-  void tipo(): {} {tipo_basico() | tipo_registro() | tipo_puntero() | tipo_definido() | tipo_array()}
-  void tipo_basico(): {} {<int> |<real>|<bool>|<string>}
-  void tipo_regisro(): {} {<struct> "{" lista_opt_parametros_registro() "}"}
-  void tipo_puntero(): {} {"^" tipo()}
-  void tipo_definido(): {} {<identificador>}
-  void tipo_array(): {} {tipo_basico() "{" <entero> "}"}
-  void lista_opt_parametros_registro(): {} {lista_parametros_registro() | {}}
-  void lista_parametros_registro(): {} {parametro_registro() RECIpr()}
-  void parametro_registro(): {} {tipo() <identificador>}
-  void RECIpr(): {} {"," parametro_registro() RECIpr() | {}}
-
-  void lista_opt_instrucciones(): {} {lista_instrucciones() | {}}
-  void lista_instrucciones(): {} {instruccion() RECI()}
-  void RECI(): {} {";" instruccion() RECI() | {}}
-  void instruccion(): {} { instruccion-eval()|instruccion-if() |instruccion-if-else()|instruccion-while()|instruccion-read() |instruccion-write() |instruccion-nl()|instruccion-new() |instruccion-delete() |instruccion-call() }
-  void instruccion-eval(): {} {"@" expresion()}
-  void instruccion-if(): {} {<if> expresion() bloque()}
-  void instruccion-if-else(): {} {<if> expresion() bloque() <else> bloque()}
-  void instruccion-while(): {} {<while> bloque()}
-  void instruccion-read(): {} {<read> expresion()}
-  void instruccion-write(): {} {<write> expresion()}
-  void instruccion-nl(): {} {<nl>}
-  void instruccion-new(): {} {<new> expresion()}
-  void instruccion-delete(): {} {<delete> expresion()}
-  void instruccion-call(): {} {<call> <identificador> parametros()}
-  void parametros(): {} {"(" lista_opt_parametros() ")"}
-  void lista_opt_parametros(): {} {lista_parametros()|{}}
-  void lista_parametros(): {} {expresion() RECIp()}
-  void RECIp(): {} {"," expresion() RECIp() | {}}
-  void instruccion(): {} {instruccion-compuesta()}
-  void instruccion-compuesta(): {} {bloque()}
-
-  void expresion(): {} {E0()}
-  void E0(): {} {}
-
-
-  void e0() : {} {e1() re0()}
-  void re0() : {} {op0() e1() re0() | {}}
-  void e1() : {} {e2() re1()}
-  void re1() : {} {op1() e2() re1() | {}}
-  void e2() : {} {<iden> | <lit_ent> |  <lit_real> | "(" e0() ")"}
-  void op0()  : {} {"+" | "-"}
-  void op1()  : {} {"*" | "/"}
+  void programa_tiny()									: {} {bloque() <EOF>}
+  void bloque()  												: {} {"{" lista_opt_declaraciones() lista_opt_instrucciones() "}"}
+  void lista_opt_declaraciones()				: {} {lista_declaraciones() "&&"}
+  void lista_declaraciones() 						: {} { declaracion() lista_decs()}
+  void lista_decs() 										: {} {";" declaracion() lista_decs() | {}}
+  void declaracion() 										: {} {declaracion_variable() | declaracion_tipo() | declaracion_proc()}
+  void declaracion_variable()						: {} {tipo() <Identificador>}
+  void declaracion_tipo() 							: {} { <TYPE> tipo() <Identificador>}
+  void declaracion_proc() 							: {} { <PROC> <Identificador> "(" lista_opt_parametros_formales  ")" bloque()}
+  void lista_opt_parametros_formales()	: {} {lista_parametros_formales() | {}}
+  void lista_parametros_formales()			: {} {parametro_formal() RECP()}
+  void RECP()														: {} {"," parametro_formal() RECP() | {}}
   
+	void parametro_formal()               : {} {tipo() RECpf()}
+	void RECpf()                          : {} {"&" <Identificador> | <Identificador>}
+	void tipo()                           : {} {tipo_basico() | tipo_registro() | tipo_puntero() | tipo_definido() | tipo_array()}
+	void tipo_basico()                  	: {} {<INT> | <REAL> | <BOOL> | <STRING>}
+	void tipo_registro()                 	: {} {<STRUCT> "{" lista_opt_parametros_registro() "}"}
+	void tipo_puntero()                  	: {} {"^" tipo()}
+	void tipo_definido()                  : {} {<Identificador>}
+	void tipo_array()                    	: {} {tipo_basico() "[" <Entero> "]"}
+	void lista_opt_parametros_registro()  : {} {lista_parametros_registro() | {}}
+	void lista_parametros_registro()      : {} {parametro_registro() REClpr()}
+	void REClpr()                        	: {} {"," parametro_registro() REClpr() | {}}
+	void parametro_registro()             : {} {tipo() <Identificador>}
+	void lista_opt_instrucciones()       	: {} {lista_instrucciones() | {}}
+	void lista_instrucciones()            : {} {instruccion() RECI()}
+	void RECI()                          	: {} {";" instruccion() RECI() | {}}
+	void instruccion()                   	: {} {instruccion_eval() | instruccion_if() | instruccion_if_else() | instruccion_while() | instruccion_read() | instruccion_write() | instruccion_nl() | instruccion_new() | instruccion_delete() | instruccion_call() | instruccion_compuesta()}
+	void instruccion_eval()               : {} {"@" expresion()}
+	void expresion()											: {} {E0()}
+	void E0()															: {} {E1() "=" E0()}
+	void E1()															: {} {E2() RE1()}
+	void RE1()														: {} {OP1() E2() RE1() | {}}
+	void E2()															: {} {E3() FE2()}
+	void FE2()														: {} {"-" E3() | RE2()}
+	void RE2()														: {} {"+" E3() RE2() | {}}
+	void E3()															: {} {E4() FE3()}
+	void FE3()														: {} {<AND> E3() | <OR> E4() | {}}
+	void E4()															: {} {E5() RE4()}
+	void RE4()														: {} {OP4() E5() RE4() | {}}
+	void E5()															: {} {OP5() E5() | E6()}
+	void E6()															: {} {E7() RE6()}
+	void RE6()														: {} {OP6() RE6() | {}}
+	void E7()															: {} {<Entero> | <Real> | <TRUE> | <FALSE> | <NULL> | <Cadena> | <Identificador> | "(" E0() ")"}
+	void OP1()														: {} {">" | ">=" | "<" | "<=" | "==" | "!="}
+	void OP4()														: {} {"*" | "/" | "%"}
+	void OP5()														: {} {<NOT> | "-"}
+	void OP6()														: {} {"[" E0() "]" | "." <Identificador> | "^"}
+	void instruccion_if()                 : {} {<IF> expresion() bloque()}
+	void instruccion_if_else()            : {} {instruccion_if() <ELSE> bloque()}
+	void instruccion_while()              : {} {<WHILE> bloque()}
+	void instruccion_read()               : {} {<READ> expresion()}
+	void instruccion_write()              : {} {<WRITE> expresion()}
+	void instruccion_nl()                 : {} {<NL>}
+	void instruccion_new()                : {} {<NEW> expresion()}
+	void instruccion_delete()             : {} {<DELETE> expresion()}
+	void instruccion_call()               : {} {<CALL> <Identificador> parametros()}
+	void parametros()                     : {} {"(" lista_opt_parametros() ")"}
+	void lista_opt_parametros()           : {} {lista_parametros() | {}}
+	void lista_parametros()               : {} {expresion() REClp()}
+	void REClp()                          : {} {"," expresion() REClp() | {}}
+	void instruccion_compuesta()          : {} {bloque()}
