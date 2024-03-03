@@ -13,39 +13,64 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN:{<#letra:["a"-"z","A"-"Z"]>}
   TOKEN:{<#digitoPositivo:["1"-"9"]>}
   TOKEN:{<#digito:<digitoPositivo>|"0">} 
-  TOKEN:{<#parteEntera:<digitoPositivo> (<digito>)* |"0">} 
-  TOKEN:{<#parteDecimal: (<digito>)* <digitoPositivo> | "0">}
-  TOKEN:{<#parteExponencial: ("e"|"E")["+","-"]? <parteEntera>>}
+  TOKEN:{<#parteEntera:<digitoPositivo>(<digito>)*|"0">} 
+  TOKEN:{<#parteDecimal:(<digito>)* <digitoPositivo>|"0">}
+  TOKEN:{<#parteExponencial:["e","E"]i(["+","-"])?<parteEntera>>}
   SKIP:{<["\t"," ","\r","\b","\n"]>}  
-  SKIP:{<"#"(~["\n"])*>} 
+  SKIP:{<"##"(~["\n",<EOF>])*>} 
 
-  TOKEN:{<entero:(["+","-"])?<parteEntera>>}
-  TOKEN:{<real:<Entero> ("."<parteDecimal>(<parteExponencial>)? | <parteExponencial>>  }
+  TOKEN:{<Identificador:(<letra>|"_")(<letra>|<digito>|"_")*>} 
+  TOKEN:{<Entero:(["+","-"])?<parteEntera>>}
+  TOKEN:{<Real:<Entero>("."<parteDecimal>(<parteExponencial>)?|<parteExponencial>)>}
+  TOKEN:{<Cadena:"\""(~["\""])*"\"">}
 
-  TOKEN:{<int:("i"|"I")("n"|"N")("t"|"T")>}
-  TOKEN:{<real:("r"|"R")("e"|"E")("a"|"A")("l"|"L")>}
-  TOKEN:{<bool: ("b"|"B")("o"|"O")("o"|"O")("l"|"L")>}
-  TOKEN:{<string:("s"|"S")("t"|"T")("r"|"R")("i"|"I")("n"|"N")("g"|"G")>}
-  TOKEN:{<and:("a"|"A")("n"|"N")("d"|"D")>}
-  TOKEN:{<or:("o"|"O")("r"|"R")>}
-  TOKEN:{<not:("n"|"N")("o"|O")("t"|"T")>}
-  TOKEN:{<null:("n"|"N")("u"|"U")("l"|"L")("l"|"L")>}
-  TOKEN:{<true:("t"|"T")("r"|"R")("u"|"U")("e"|"E")>}
-  TOKEN:{<false:("f"|"F")("a"|"A")("l"|"L")("s"|"S")("e"|"E")+>}
-  TOKEN:{<proc:("p"|"P")("r"|"R")("o"|"O")("c"|"C")>}
-  TOKEN:{<if:("i"|"I")("f"|"F")>}
-  TOKEN:{<else:("e"|"E")("l"|"L")("s"|"S")("e"|"E")>}
-  TOKEN:{<while:("w"|"W")("h"|"H")("i"|"I")("l"|"L")("e"|"E")>}
-  TOKEN:{<struct:("s"|"S")("t"|"T")("r"|"R")("u"|"U")("c"|"C")("t"|"T")>}
-  TOKEN:{<new:("n"|"N")("e"|"E")("w"|"W")>}
-  TOKEN:{<delete:("d"|"D")("e"|"E")("l"|"L")("e"|"E")("t"|"T")("e"|"E")>}
-  TOKEN:{<read:("r"|"R")("e"|"E")("a"|"A")("d"|"D")>}
-  TOKEN:{<write:(w|W)(r|R)(i|I)(t|T)(e|E)>}
-  TOKEN:{<nl:("n"|"N"|"l"|"L")>}
-  TOKEN:{<type:("t"|"T")("y"|"Y")("p"|"P")("e"|"E")>}
-  TOKEN:{<call:("c"|"C")("a"|"A")("l"|"L")("l"|"L")>}
-  TOKEN: {<cadena:(<letra>)*>}
-  TOKEN:{<identificador:(<letra>|"_")(<letra>|<digito>|"_")*>} 
+  TOKEN:{<INT:("i"|"I")("n"|"N")("t"|"T")>}
+  TOKEN:{<REAL:("r"|"R")("e"|"E")("a"|"A")("l"|"L")>}
+  TOKEN:{<BOOL:("b"|"B")("o"|"O")("o"|"O")("l"|"L")>}
+  TOKEN:{<STRING:("s"|"S")("t"|"T")("r"|"R")("i"|"I")("n"|"N")("g"|"G")>}
+  TOKEN:{<AND:("a"|"A")("n"|"N")("d"|"D")>}
+  TOKEN:{<OR:("o"|"O")("r"|"R")>}
+  TOKEN:{<NOT:("n"|"N")("o"|O")("t"|"T")>}
+  TOKEN:{<NULL:("n"|"N")("u"|"U")("l"|"L")("l"|"L")>}
+  TOKEN:{<TRUE:("t"|"T")("r"|"R")("u"|"U")("e"|"E")>}
+  TOKEN:{<FALSE:("f"|"F")("a"|"A")("l"|"L")("s"|"S")("e"|"E")+>}
+  TOKEN:{<PROC:("p"|"P")("r"|"R")("o"|"O")("c"|"C")>}
+  TOKEN:{<IF:("i"|"I")("f"|"F")>}
+  TOKEN:{<ELSE:("e"|"E")("l"|"L")("s"|"S")("e"|"E")>}
+  TOKEN:{<WHILE:("w"|"W")("h"|"H")("i"|"I")("l"|"L")("e"|"E")>}
+  TOKEN:{<STRUCT:("s"|"S")("t"|"T")("r"|"R")("u"|"U")("c"|"C")("t"|"T")>}
+  TOKEN:{<NEW:("n"|"N")("e"|"E")("w"|"W")>}
+  TOKEN:{<DELETE:("d"|"D")("e"|"E")("l"|"L")("e"|"E")("t"|"T")("e"|"E")>}
+  TOKEN:{<READ:("r"|"R")("e"|"E")("a"|"A")("d"|"D")>}
+  TOKEN:{<WRITE:(w|W)(r|R)(i|I)(t|T)(e|E)>}
+  TOKEN:{<NL:("n"|"N"|"l"|"L")>}
+  TOKEN:{<TYPE:("t"|"T")("y"|"Y")("p"|"P")("e"|"E")>}
+  TOKEN:{<CALL:("c"|"C")("a"|"A")("l"|"L")("l"|"L")>}
+	TOKEN:{<POR:"\*">}
+	TOKEN:{<ENTRE:"/">}
+	TOKEN:{<MAS:"\+">}
+	TOKEN:{<MENOS:"\-">}
+	TOKEN:{<MENOR:"\<">}
+	TOKEN:{<MENORIGUAL:"\<=">}
+	TOKEN:{<MAYOR:"\>">}
+	TOKEN:{<MAYORIGUAL:"\>=">}
+	TOKEN:{<COMPARACION:"==">}
+	TOKEN:{<DISTINTO:"!=">}
+	TOKEN:{<ASIGNACION:"=">}
+	TOKEN:{<INIPAR:"\(">}
+	TOKEN:{<FINPAR:"\)">}
+	TOKEN:{<INIBLOQUE:"{">}
+	TOKEN:{<FINBLOQUE:"}">}
+	TOKEN:{<ARROBA:"@">}
+	TOKEN:{<FINDECLARACIONES:"&&">}
+	TOKEN:{<PUNTOYCOMA:";">}
+	TOKEN:{<INIARRAY:"\[">}
+	TOKEN:{<FINARRAY:"\]">}
+	TOKEN:{<PUNTERO:"^">}
+	TOKEN:{<MODULO:"%">}
+	TOKEN:{<COMA:"\,">}
+	TOKEN:{<REFERENCIA:"&">}
+	TOKEN:{<PUNTO:"\.">}
 
 
   void analiza()   : {} {bloque() <EOF> }
