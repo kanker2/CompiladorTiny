@@ -10,7 +10,12 @@ public class AnalizadorSintacticoTinyDJ extends AnalizadorSintacticoTiny {
             case REAL: System.out.println("<real>"); break;
             case BOOL: System.out.println("<bool>"); break;
             case STRING: System.out.println("<string>"); break;
+            case AND: System.out.println("<and>"); break;
+            case OR: System.out.println("<or>"); break;
+            case NOT: System.out.println("<not>"); break;
             case NULL: System.out.println("<null>"); break;
+            case TRUE: System.out.println("<true>"); break;
+            case FALSE: System.out.println("<false>"); break;
             case PROC: System.out.println("<proc>"); break;
             case IF: System.out.println("<if>"); break;
             case ELSE: System.out.println("<else>"); break;

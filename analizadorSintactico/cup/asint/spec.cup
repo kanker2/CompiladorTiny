@@ -1,48 +1,185 @@
 package asint;
 
 import java_cup.runtime.*;
-import alex.AnalizadorLexicoEval;
+import alex.AnalizadorLexicoTiny;
 import alex.UnidadLexica;
-import errors.GestionErroresEval;
+import errors.GestionErroresTiny;
 
 scan with {: 
   return getScanner().next_token(); 
 :};
 parser code {: 
-   private GestionErroresEval errores;
+   private GestionErroresTiny errores;
    public void syntax_error(Symbol unidadLexica) {
      errores.errorSintactico((UnidadLexica)unidadLexica);
    }
 :};
 init with {: 
-   errores = new GestionErroresEval();
-   AnalizadorLexicoEval alex = (AnalizadorLexicoEval)getScanner();
+   errores = new GestionErroresTiny();
+   AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
    alex.fijaGestionErrores(errores);
 :};
 
 
-terminal     DONDE, EVALUA, IDEN, ENT, REAL, MAS,
-             MENOS, POR, DIV, IGUAL, COMA, PAP, PCIERRE;
+terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINPAR, INIARRAY, FINARRAY, PUNTERO, REFERENCIA, COMA, ARROBA, MAYOR, MAYORIGUAL, MENOR, MENORIGUAL, COMPARACION, DISTINTO, POR, ENTRE, MODULO, NOT, MENOS, IF, ELSE, WHILE, READ, WRITE, NL, NEW, DELETE, CALL, INT, REAL, BOOL, STRING, STRUCT, TYPE, PROC, TRUE, FALSE, NULL, Identificador, Entero, Real, Cadena;   
 
-non terminal  programa, expresion, declaraciones, 
-              lista_declaraciones, declaracion, E0, E1, E2, OP0, OP1;
+non terminal programa_tiny, bloque, lista_opt_declaraciones, lista_declaraciones, declaracion, lista_decs, declaracion_variable, declaracion_tipo, declaracion_proc, lista_opt_parametros_formales, lista_parametros_formales, parametro_formal, RECpf, tipo, tipo_array, RETA, tipo_puntero, T2, tipo_basico, tipo_registro, tipo_definido, lista_opt_parametros_registro, lista_parametros_registro, parametro_registro, REClpr, lista_opt_instrucciones, lista_instrucciones, RECI, instruccion, instruccion_eval, instruccion_if, instruccion_else, instruccion_while, instruccion_read, instruccion_write, instruccion_nl, instruccion_new, instruccion_delete, instruccion_call, expresion, E0, E1, E2, OP0, OP1, FE0, RE1, FE2, RE2, FE3, RE3, FE4, RE4, E3, E4, E5, E6, E7, OP4, OP5, OP6, parametros, lista_opt_parametros, lista_parametros, REClp;
 
-programa      ::= expresion declaraciones ;
-expresion     ::= EVALUA E0 ;
-declaraciones ::= DONDE lista_declaraciones ;
-declaraciones ::= ;
-lista_declaraciones ::= lista_declaraciones COMA declaracion ;
-lista_declaraciones ::= declaracion ;
-declaracion ::= IDEN IGUAL E0 ;
-E0 ::= E0 OP0 E1 ;
-E0 ::= E1 ;
-E1 ::= E1 OP1 E2 ;
-E1 ::= E2 ;
-E2 ::= IDEN ;
-E2 ::= ENT ;
-E2 ::= REAL ;
-E2 ::= PAP E0 PCIERRE;
-OP0 ::= MAS ;
-OP0 ::= MENOS ;
-OP1 ::= POR ;
-OP1 ::= DIV ;
+
+programa_tiny ::= bloque ;
+bloque ::= INIBLOQUE lista_opt_declaraciones lista_opt_instrucciones FINBLOQUE ;
+
+lista_opt_declaraciones ::= lista_declaraciones FINDECLARACIONES ;
+lista_opt_declaraciones ::= ;
+
+lista_declaraciones ::= declaracion lista_decs ;
+
+lista_decs ::= PUNTOYCOMA declaracion lista_decs ; 
+lista_decs ::= ;
+
+declaracion ::= declaracion_variable ;
+declaracion ::= declaracion_tipo ;
+declaracion ::= declaracion_proc ;
+
+declaracion_variable ::= tipo Identificador ;
+declaracion_tipo ::= TYPE tipo Identificador ;
+declaracion_proc ::= PROC Identificador INIPAR lista_opt_parametros_formales FINPAR bloque ; 
+
+lista_opt_parametros_formales ::= lista_parametros_formales ;
+lista_opt_parametros_formales ::= ;
+
+lista_parametros_formales ::= parametro_formal RECP ;
+RECP ::= COMA parametro_formal RECP ;
+RECP ::= ;
+
+parametro_formal ::= tipo RECpf ;
+RECpf ::= REFERENCIA Identificador ; 
+RECpf ::= Identificador ;
+
+tipo ::= tipo_array ;
+
+tipo_array ::= tipo_puntero RETA ;
+RETA ::= INIARRAY Entero FINARRAY RETA ; //////////////////////////////¿?
+RETA ::= ;
+
+tipo_puntero ::= PUNTERO tipo_puntero ;
+tipo_puntero ::= T2 ;
+
+T2 ::= tipo_basico ;
+T2 ::= tipo_registro ;
+T2 ::= tipo_definido ;
+
+tipo_basico ::= INT | REAL | BOOL | STRING ;
+tipo_registro ::= STRUCT INIBLOQUE lista_opt_parametros_registro FINBLOQUE ;
+tipo_definido ::= Identificador ;
+
+lista_opt_parametros_registro ::= lista_parametros_registro ;
+lista_opt_parametros_registro ::= ;
+
+lista_parametros_registro ::= parametro_registro REClpr ;
+REClpr ::= COMA parametro_registro REClpr ;
+REClpr ::= ;
+
+parametro_registro ::= tipo Identificador ;
+
+lista_opt_instrucciones ::= lista_instrucciones ;
+lista_opt_instrucciones ::= ;
+
+lista_instrucciones ::= instruccion RECI ;
+
+RECI ::= PUNTOYCOMA instruccion RECI ; 
+RECI ::= ;
+
+instruccion ::= instruccion_eval ;
+instruccion ::= instruccion_if ;
+instruccion ::= instruccion_while ;
+instruccion ::= instruccion_read ;
+instruccion ::= instruccion_write ;
+instruccion ::= instruccion_nl ;
+instruccion ::= instruccion_new ;
+instruccion ::= instruccion_delete ;
+instruccion ::= instruccion_call ;
+
+instruccion-eval ::= ARROBA expresion ; 
+
+expresion ::= E0 ;
+
+E0 ::= E1 ASIGNACION E0 ;
+FE0 ::= ASIGNACION E0 ;
+FE0 ::= ;
+
+E1 ::= E2 RE1 ;
+RE1 ::= OP1 E2 RE1 ;
+RE1 ::= ;
+
+E2 ::= E3 FE2 ;
+FE2 ::= MENOS E3 ;
+FE2 ::= RE2 ;
+RE2 ::= MAS E3 RE2 ;
+RE2 ::= ;
+
+E3 ::= E4 FE3 ;
+FE3 ::= AND E3 ;
+FE3 ::= OR E4 ;
+FE3 ::= ;
+
+E4 ::= E5 RE4 ;
+RE4 ::= OP4 E5 RE4 ;
+RE4 ::= ;
+
+E5 ::= OP5 E5 ;
+E5 ::= E6 ;
+
+E6 ::= E7 RE6 ;
+RE6 ::= OP6 RE6 ;
+RE6 ::= ;
+
+E7 ::= Entero ;
+E7 ::= Real ;
+E7 ::= TRUE ;
+E7 ::= FALSE ;
+E7 ::= NULL ;
+E7 ::= Cadena ;
+E7 ::= Identificador ;
+E7 ::= INIPAR E0 FINPAR ;
+
+OP1 ::= MAYOR ;
+OP1 ::= MAYORIGUAL ;
+OP1 ::= MENOR ;
+OP1 ::= MENORIGUAL ;
+OP1 ::= COMPARACION ;
+OP1 ::= DISTINTO ;
+
+OP4 ::= POR ;
+OP4 ::= ENTRE ;
+OP4 ::= MODULO ;
+
+OP5 ::= NOT ;
+OP5 ::= MENOS ;
+
+OP6 ::= INIARRAY E0 FINARRAY ;
+OP6 ::= PUNTO Identificador ;
+OP6 ::= PUNTERO ;
+
+instruccion-if ::= IF expresion bloque instruccion-else ;
+instruccion-else ::= ELSE bloque ;
+instruccion-else ::= ;               
+instruccion-while ::= WHILE bloque ;
+instruccion-read ::= READ expresion ;
+instruccion-write ::= WRITE expresion bloque ;
+instruccion-nl ::= NL ;
+instruccion-new ::= NEW expresion ;
+instruccion-delete ::= DELETE expresion ;
+instruccion-call ::= CALL Identificador parametros ;
+
+parametros ::= INIPAR lista_opt_parametros FINPAR ;
+
+lista_opt_parametros ::= lista_parametros ;
+lista_opt_parametros ::= ;               
+
+lista_parametros ::= expresion REClp ;
+REClp ::= COMA expresion REClp ;
+REClp ::= ;
+
+instruccion ::= instruccion-compuesta ;
+instruccion-compuesta ::= bloque ;

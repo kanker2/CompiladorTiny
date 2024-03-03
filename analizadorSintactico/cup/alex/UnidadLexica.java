@@ -1,17 +1,16 @@
 package alex;
 
-import java_cup.runtime.Symbol;
-
-public class UnidadLexica extends Symbol {
+public abstract class UnidadLexica {
+   protected ClaseLexica clase;
    private int fila;
    private int columna;
-   public UnidadLexica(int fila, int columna, int clase, String lexema) {
-     super(clase, lexema);  
+   public UnidadLexica(int fila, int columna, ClaseLexica clase) {
      this.fila = fila;
      this.columna = columna;
+     this.clase = clase;
    }
-   public int clase () {return sym;}
-   public String lexema() {return (String)value;}
+   public ClaseLexica clase () {return clase;}
+   public abstract String lexema();
    public int fila() {return fila;}
    public int columna() {return columna;}
 }
