@@ -3,7 +3,7 @@ package alexTiny0;
 public enum ClaseLexica {
 	Identificador, Entero, Real,
 	INT("<int>"), REAL("<real>"), BOOL("<bool>"),
-	NOT("<not>"), TRUE("true"), FALSE("false"),
+	NOT("<not>"), TRUE("<true>"), FALSE("<false>"),
 	POR("*"), ENTRE("/"), AND("<and>"), OR("<or>"), 
 	MAS("+"), MENOS("-"),
 	MENOR("<"), MAYOR(">"), MENORIGUAL("<="), MAYORIGUAL(">="), 

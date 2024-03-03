@@ -365,11 +365,7 @@ public class AnalizadorLexicoTiny {
 	}
  
 	private void error(Estado e) throws IOException {
-		//String msgError = "Carácter inesperado (" + filaActual + "," + columnaActual + "): " + (char)sigCar + "; " + caracterEsperado(e);
-		
-		sigCar();
-		estado = Estado.Inicio;
-		throw new ECaracterInesperado("ERROR");
+		errores.errorLexico(filaActual, columnaActual, (char)sigCar);
 	}
 	
 	private String caracterEsperado(Estado e) {
