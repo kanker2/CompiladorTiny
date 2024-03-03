@@ -1057,6 +1057,7 @@ public class AnalizadorSintacticoTiny implements AnalizadorSintacticoTinyConstan
     try {
 
       jj_consume_token(WHILE);
+      expresion();
       bloque();
     } finally {
       trace_return("instruccion_while");

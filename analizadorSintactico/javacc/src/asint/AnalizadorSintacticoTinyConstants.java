@@ -139,7 +139,7 @@ public interface AnalizadorSintacticoTinyConstants {
     "<parteExponencial>",
     "<token of kind 7>",
     "<token of kind 8>",
-    "\"int\"",
+    "<INT>",
     "<REAL>",
     "<BOOL>",
     "<STRING>",
