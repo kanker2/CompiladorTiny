@@ -1,4 +1,4 @@
-package asintTiny0;
+
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import asintTiny0.AnalizadorSintacticoTiny0DJ;
 import errorsTiny0.GestionErroresTiny0.ErrorLexico;
 import errorsTiny0.GestionErroresTiny0.ErrorSintactico;
 
