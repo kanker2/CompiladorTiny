@@ -280,17 +280,6 @@ public class AnalizadorSintacticoTiny0 {
 		   }
 	   }
 	   
-	   private void FE2() {
-		   switch (anticipo.clase()) {
-		   case MENOS:
-			   empareja(ClaseLexica.MENOS);
-			   break;
-		   default:
-			   esperados(ClaseLexica.MENOS);
-			   break;
-		   }
-	   }
-	   
 	   private void E3() {
 		   switch (anticipo.clase()) {
 		   case Entero: case Real:
@@ -326,7 +315,18 @@ public class AnalizadorSintacticoTiny0 {
 		   }
 	   }
 	   
-	   private void E4() {
+	   private void FE2() {
+		   switch (anticipo.clase()) {
+		   case MENOS:
+			   empareja(ClaseLexica.MENOS);
+			   E3();
+			   break;
+		   default:
+			   esperados(ClaseLexica.MENOS);
+			   break;
+		   }
+	   }
+	private void E4() {
 		   switch (anticipo.clase()) {
 		   case Entero: case Real:
 		   case TRUE: case FALSE:

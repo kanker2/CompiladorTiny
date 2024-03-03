@@ -1,0 +1,4 @@
+{
+## error lexico: caracter inesp. $
+@ x = $y
+}
