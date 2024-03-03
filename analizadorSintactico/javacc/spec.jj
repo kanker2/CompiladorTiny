@@ -15,9 +15,9 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN:{<#digito:<digitoPositivo>|"0">} 
   TOKEN:{<#parteEntera:<digitoPositivo>(<digito>)*|"0">} 
   TOKEN:{<#parteDecimal:(<digito>)* <digitoPositivo>|"0">}
-  TOKEN:{<#parteExponencial:["e","E"]i(["+","-"])?<parteEntera>>}
+  TOKEN:{<#parteExponencial:("e"|"E")(["+","-"])?<parteEntera>>}
   SKIP:{<["\t"," ","\r","\b","\n"]>}  
-  SKIP:{<"##"(~["\n",<EOF>])*>} 
+  SKIP:{<"##"(~["\n"])*>} 
 
   TOKEN:{<Identificador:(<letra>|"_")(<letra>|<digito>|"_")*>} 
   TOKEN:{<Entero:(["+","-"])?<parteEntera>>}
@@ -30,7 +30,7 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN:{<STRING:("s"|"S")("t"|"T")("r"|"R")("i"|"I")("n"|"N")("g"|"G")>}
   TOKEN:{<AND:("a"|"A")("n"|"N")("d"|"D")>}
   TOKEN:{<OR:("o"|"O")("r"|"R")>}
-  TOKEN:{<NOT:("n"|"N")("o"|O")("t"|"T")>}
+  TOKEN:{<NOT:("n"|"N")("o"|"O")("t"|"T")>}
   TOKEN:{<NULL:("n"|"N")("u"|"U")("l"|"L")("l"|"L")>}
   TOKEN:{<TRUE:("t"|"T")("r"|"R")("u"|"U")("e"|"E")>}
   TOKEN:{<FALSE:("f"|"F")("a"|"A")("l"|"L")("s"|"S")("e"|"E")+>}
@@ -42,46 +42,46 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN:{<NEW:("n"|"N")("e"|"E")("w"|"W")>}
   TOKEN:{<DELETE:("d"|"D")("e"|"E")("l"|"L")("e"|"E")("t"|"T")("e"|"E")>}
   TOKEN:{<READ:("r"|"R")("e"|"E")("a"|"A")("d"|"D")>}
-  TOKEN:{<WRITE:(w|W)(r|R)(i|I)(t|T)(e|E)>}
+  TOKEN:{<WRITE:("w"|"W")("r"|"R")("i"|"I")("t"|"T")("e"|"E")>}
   TOKEN:{<NL:("n"|"N"|"l"|"L")>}
   TOKEN:{<TYPE:("t"|"T")("y"|"Y")("p"|"P")("e"|"E")>}
   TOKEN:{<CALL:("c"|"C")("a"|"A")("l"|"L")("l"|"L")>}
-	TOKEN:{<POR:"\*">}
+	TOKEN:{<POR:"*">}
 	TOKEN:{<ENTRE:"/">}
-	TOKEN:{<MAS:"\+">}
-	TOKEN:{<MENOS:"\-">}
-	TOKEN:{<MENOR:"\<">}
-	TOKEN:{<MENORIGUAL:"\<=">}
-	TOKEN:{<MAYOR:"\>">}
-	TOKEN:{<MAYORIGUAL:"\>=">}
+	TOKEN:{<MAS:"+">}
+	TOKEN:{<MENOS:"-">}
+	TOKEN:{<MENOR:"<">}
+	TOKEN:{<MENORIGUAL:"<=">}
+	TOKEN:{<MAYOR:">">}
+	TOKEN:{<MAYORIGUAL:">=">}
 	TOKEN:{<COMPARACION:"==">}
 	TOKEN:{<DISTINTO:"!=">}
 	TOKEN:{<ASIGNACION:"=">}
-	TOKEN:{<INIPAR:"\(">}
-	TOKEN:{<FINPAR:"\)">}
+	TOKEN:{<INIPAR:"(">}
+	TOKEN:{<FINPAR:")">}
 	TOKEN:{<INIBLOQUE:"{">}
 	TOKEN:{<FINBLOQUE:"}">}
 	TOKEN:{<ARROBA:"@">}
 	TOKEN:{<FINDECLARACIONES:"&&">}
 	TOKEN:{<PUNTOYCOMA:";">}
-	TOKEN:{<INIARRAY:"\[">}
-	TOKEN:{<FINARRAY:"\]">}
+	TOKEN:{<INIARRAY:"[">}
+	TOKEN:{<FINARRAY:"]">}
 	TOKEN:{<PUNTERO:"^">}
 	TOKEN:{<MODULO:"%">}
-	TOKEN:{<COMA:"\,">}
+	TOKEN:{<COMA:",">}
 	TOKEN:{<REFERENCIA:"&">}
-	TOKEN:{<PUNTO:"\.">}
+	TOKEN:{<PUNTO:".">}
 
 
   void programa_tiny()									: {} {bloque() <EOF>}
   void bloque()  												: {} {"{" lista_opt_declaraciones() lista_opt_instrucciones() "}"}
-  void lista_opt_declaraciones()				: {} {lista_declaraciones() "&&"}
+  void lista_opt_declaraciones()				: {} {lista_declaraciones() "&&" | {}}
   void lista_declaraciones() 						: {} { declaracion() lista_decs()}
   void lista_decs() 										: {} {";" declaracion() lista_decs() | {}}
   void declaracion() 										: {} {declaracion_variable() | declaracion_tipo() | declaracion_proc()}
   void declaracion_variable()						: {} {tipo() <Identificador>}
   void declaracion_tipo() 							: {} { <TYPE> tipo() <Identificador>}
-  void declaracion_proc() 							: {} { <PROC> <Identificador> "(" lista_opt_parametros_formales  ")" bloque()}
+  void declaracion_proc() 							: {} { <PROC> <Identificador> "(" lista_opt_parametros_formales()  ")" bloque()}
   void lista_opt_parametros_formales()	: {} {lista_parametros_formales() | {}}
   void lista_parametros_formales()			: {} {parametro_formal() RECP()}
   void RECP()														: {} {"," parametro_formal() RECP() | {}}
