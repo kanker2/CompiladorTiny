@@ -7,7 +7,7 @@ public class DomJudge{
    public static void main(String[] args) throws Exception {
      try{  
       AnalizadorSintacticoTinyDJ asint = new AnalizadorSintacticoTinyDJ(new InputStreamReader(System.in));
-      asint.programa_tiny();;
+      asint.programa_tiny();
      }
      catch(ParseException e) {
         System.out.println("ERROR_SINTACTICO"); 
