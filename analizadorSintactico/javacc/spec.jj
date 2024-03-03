@@ -103,7 +103,7 @@ PARSER_END(AnalizadorSintacticoTiny)
 	void lista_opt_instrucciones()       	: {} {lista_instrucciones() | {}}
 	void lista_instrucciones()            : {} {instruccion() RECI()}
 	void RECI()                          	: {} {";" instruccion() RECI() | {}}
-	void instruccion()                   	: {} {instruccion_eval() | instruccion_if() | instruccion_if_else() | instruccion_while() | instruccion_read() | instruccion_write() | instruccion_nl() | instruccion_new() | instruccion_delete() | instruccion_call() | instruccion_compuesta()}
+	void instruccion()                   	: {} {instruccion_eval() | instruccion_if() | instruccion_while() | instruccion_read() | instruccion_write() | instruccion_nl() | instruccion_new() | instruccion_delete() | instruccion_call() | instruccion_compuesta()}
 	void instruccion_eval()               : {} {"@" expresion()}
 	void expresion()											: {} {E0()}
 	void E0()															: {} {E1() "=" E0()}
@@ -124,8 +124,8 @@ PARSER_END(AnalizadorSintacticoTiny)
 	void OP4()														: {} {"*" | "/" | "%"}
 	void OP5()														: {} {<NOT> | "-"}
 	void OP6()														: {} {"[" E0() "]" | "." <Identificador> | "^"}
-	void instruccion_if()                 : {} {<IF> expresion() bloque()}
-	void instruccion_if_else()            : {} {instruccion_if() <ELSE> bloque()}
+	void instruccion_if()                 : {} {<IF> expresion() bloque() instruccion_else()}
+	void instruccion_else()            		: {} {<ELSE> bloque() | {}}
 	void instruccion_while()              : {} {<WHILE> bloque()}
 	void instruccion_read()               : {} {<READ> expresion()}
 	void instruccion_write()              : {} {<WRITE> expresion()}
