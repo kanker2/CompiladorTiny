@@ -21,9 +21,9 @@ init with {:
 :};
 
 
-terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINPAR, INIARRAY, FINARRAY, PUNTERO, REFERENCIA, COMA, ARROBA, MAYOR, MAYORIGUAL, MENOR, MENORIGUAL, COMPARACION, DISTINTO, ASIGNACION, POR, ENTRE, AND, OR, MODULO, NOT, MAS, MENOS, IF, ELSE, WHILE, READ, WRITE, NL, NEW, DELETE, CALL, INT, REAL, BOOL, STRING, STRUCT, TYPE, PROC, TRUE, FALSE, NULL, Identificador, Entero, Real, Cadena;   
+terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINPAR, INIARRAY, FINARRAY, PUNTERO, REFERENCIA, COMA, ARROBA, MAYOR, MAYORIGUAL, MENOR, MENORIGUAL, COMPARACION, DISTINTO, POR, ENTRE, MODULO, NOT, MENOS, IF, ELSE, WHILE, READ, WRITE, NL, NEW, DELETE, CALL, INT, REAL, BOOL, STRING, STRUCT, TYPE, PROC, TRUE, FALSE, NULL, Identificador, Entero, Real, Cadena;   
 
-non terminal programa_tiny, bloque, lista_opt_declaraciones, lista_declaraciones, declaracion, declaracion_variable, declaracion_tipo, declaracion_proc, cabecera_proc, lista_opt_parametros_formales, lista_parametros_formales, parametro_formal, tipo, tipo_array, tipo_puntero, T2, tipo_basico, tipo_registro, tipo_definido, lista_opt_parametros_registro, lista_parametro_registro, parametro_registro, lista_opt_instrucciones, lista_instrucciones, instruccion, instruccion_eval, expresion, E0, E1, E2, E3, E4, E5, E6, E7, OP1, OP4, OP5, OP6, instruccion_if, instruccion_else, instruccion_while, instruccion_read, instruccion_write, instruccion_nl, instruccion_new, instruccion_delete, instruccion_call, parametros, lista_opt_parametros, lista_parametros, instruccion_compuesta
+non terminal programa_tiny, bloque, lista_opt_declaraciones, lista_declaraciones, declaracion, lista_decs, declaracion_variable, declaracion_tipo, declaracion_proc, lista_opt_parametros_formales, lista_parametros_formales, parametro_formal, RECpf, tipo, tipo_array, RETA, tipo_puntero, T2, tipo_basico, tipo_registro, tipo_definido, lista_opt_parametros_registro, lista_parametros_registro, parametro_registro, REClpr, lista_opt_instrucciones, lista_instrucciones, RECI, instruccion, instruccion_eval, instruccion_if, instruccion_else, instruccion_while, instruccion_read, instruccion_write, instruccion_nl, instruccion_new, instruccion_delete, instruccion_call, expresion, E0, E1, E2, OP0, OP1, FE0, RE1, FE2, RE2, FE3, RE3, FE4, RE4, E3, E4, E5, E6, E7, OP4, OP5, OP6, parametros, lista_opt_parametros, lista_parametros, REClp;
 
 
 programa_tiny ::= bloque ;
@@ -59,7 +59,7 @@ RECpf ::= Identificador ;
 tipo ::= tipo_array ;
 
 tipo_array ::= tipo_puntero RETA ;
-RETA ::= INIARRAY Entero FINARRAY RETA ;
+RETA ::= INIARRAY Entero FINARRAY RETA ; //////////////////////////////¿?
 RETA ::= ;
 
 tipo_puntero ::= PUNTERO tipo_puntero ;
