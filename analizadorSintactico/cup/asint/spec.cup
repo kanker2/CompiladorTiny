@@ -50,7 +50,7 @@ lista_opt_parametros_formales ::= ;
 lista_parametros_formales ::= lista_parametros_formales COMA parametro_formal ;
 lista_parametros_formales ::= parametro_formal ;
 
-parametro_formal ::= tipo PUNTERO Identificador ;
+parametro_formal ::= tipo REFERENCIA Identificador ;
 parametro_formal ::= tipo Identificador ;
 
 tipo ::= tipo_array ;
