@@ -3,12 +3,15 @@
 // source: /home/karce/uni/pl/CompiladorTiny/ImpFLEX/src/alex/spec.jflex
 
 package alex;
-
+import java_cup.runtime.*;
+import errors.GestionErroresTiny;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
-public class AnalizadorLexicoTiny {
+public class AnalizadorLexicoTiny implements Scanner{
 
+	public GestionErroresTiny err;
+	
   /** This character denotes the end of file. */
   public static final int YYEOF = -1;
 
@@ -1032,5 +1035,13 @@ public class AnalizadorLexicoTiny {
     }
   }
 
+	@Override
+	public Symbol next_token() throws Exception {
+		return yylex();
+	}
+
+	public void fijaGestionErrores(GestionErroresTiny err) {
+		this.err = err;
+	}
 
 }

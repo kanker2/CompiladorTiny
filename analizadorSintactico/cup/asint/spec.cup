@@ -59,7 +59,7 @@ RECpf ::= Identificador ;
 tipo ::= tipo_array ;
 
 tipo_array ::= tipo_puntero RETA ;
-RETA ::= INIARRAY Entero FINARRAY RETA ; //////////////////////////////¿?
+RETA ::= INIARRAY Entero FINARRAY RETA ;
 RETA ::= ;
 
 tipo_puntero ::= PUNTERO tipo_puntero ;

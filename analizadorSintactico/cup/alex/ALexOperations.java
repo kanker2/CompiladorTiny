@@ -15,7 +15,7 @@ public class ALexOperations {
 	}
 
 	UnidadLexica unidadNOT() {
-		return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(), ClaseLexica.NOT);
+		return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(), ClaseLexica.NOT, "<not>");
 	}
 
 	UnidadLexica unidadPOR() {
