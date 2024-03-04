@@ -32,10 +32,8 @@ bloque ::= INIBLOQUE lista_opt_declaraciones lista_opt_instrucciones FINBLOQUE ;
 lista_opt_declaraciones ::= lista_declaraciones FINDECLARACIONES ;
 lista_opt_declaraciones ::= ;
 
-lista_declaraciones ::= declaracion lista_decs ;
-
-lista_decs ::= PUNTOYCOMA declaracion lista_decs ; 
-lista_decs ::= ;
+lista_declaraciones ::= lista_declaraciones PUNTOYCOMA declaracion ;
+lista_declaraciones ::= declaracion ;
 
 declaracion ::= declaracion_variable ;
 declaracion ::= declaracion_tipo ;
@@ -43,24 +41,21 @@ declaracion ::= declaracion_proc ;
 
 declaracion_variable ::= tipo Identificador ;
 declaracion_tipo ::= TYPE tipo Identificador ;
-declaracion_proc ::= PROC Identificador INIPAR lista_opt_parametros_formales FINPAR bloque ; 
+declaracion_proc ::= cabecera_proc bloque ;
+cabecera_proc ::= PROC Identificador INIPAR lista_opt_parametros_formales FINPAR; 
 
 lista_opt_parametros_formales ::= lista_parametros_formales ;
 lista_opt_parametros_formales ::= ;
 
-lista_parametros_formales ::= parametro_formal RECP ;
-RECP ::= COMA parametro_formal RECP ;
-RECP ::= ;
+lista_parametros_formales ::= lista_parametros_formales COMA parametro_formal ;
+lista_parametros_formales ::= parametro_formal ;
 
-parametro_formal ::= tipo RECpf ;
-RECpf ::= REFERENCIA Identificador ; 
-RECpf ::= Identificador ;
+parametro_formal ::= tipo AMPERSAND Identificador ;
+parametro_formal ::= tipo Identificador ;
 
 tipo ::= tipo_array ;
-
-tipo_array ::= tipo_puntero RETA ;
-RETA ::= INIARRAY Entero FINARRAY RETA ; //////////////////////////////¿?
-RETA ::= ;
+tipo_array ::= tipo_array INIARRAY Entero FINARRAY ;
+tipo_array ::= tipo_puntero ;
 
 tipo_puntero ::= PUNTERO tipo_puntero ;
 tipo_puntero ::= T2 ;
@@ -69,29 +64,31 @@ T2 ::= tipo_basico ;
 T2 ::= tipo_registro ;
 T2 ::= tipo_definido ;
 
-tipo_basico ::= INT | REAL | BOOL | STRING ;
+tipo_basico ::= INT ;
+tipo_basico ::= REAL ;
+tipo_basico ::= BOOL ;
+tipo_basico ::= STRING ;
 tipo_registro ::= STRUCT INIBLOQUE lista_opt_parametros_registro FINBLOQUE ;
 tipo_definido ::= Identificador ;
 
 lista_opt_parametros_registro ::= lista_parametros_registro ;
 lista_opt_parametros_registro ::= ;
 
-lista_parametros_registro ::= parametro_registro REClpr ;
-REClpr ::= COMA parametro_registro REClpr ;
-REClpr ::= ;
+lista_parametros_registro ::= lista_parametros_registro COMA  parametro_registro ;
+lista_parametros_registro ::= parametro_registro ;
 
 parametro_registro ::= tipo Identificador ;
 
 lista_opt_instrucciones ::= lista_instrucciones ;
 lista_opt_instrucciones ::= ;
 
-lista_instrucciones ::= instruccion RECI ;
+lista_instrucciones ::= lista_instrucciones PUNTOYCOMA instruccion ;
+lista_instrucciones ::= instruccion ;
 
-RECI ::= PUNTOYCOMA instruccion RECI ; 
-RECI ::= ;
 
 instruccion ::= instruccion_eval ;
 instruccion ::= instruccion_if ;
+instruccion ::= instruccion-if-else ;
 instruccion ::= instruccion_while ;
 instruccion ::= instruccion_read ;
 instruccion ::= instruccion_write ;
@@ -99,40 +96,34 @@ instruccion ::= instruccion_nl ;
 instruccion ::= instruccion_new ;
 instruccion ::= instruccion_delete ;
 instruccion ::= instruccion_call ;
+instruccion ::= instruccion-compuesta ;
 
 instruccion-eval ::= ARROBA expresion ; 
 
 expresion ::= E0 ;
 
 E0 ::= E1 ASIGNACION E0 ;
-FE0 ::= ASIGNACION E0 ;
-FE0 ::= ;
+E0 ::= E1;
 
-E1 ::= E2 RE1 ;
-RE1 ::= OP1 E2 RE1 ;
-RE1 ::= ;
+E1 ::= E1 OP1 E2 ;
+E1 ::= E2 ;
 
-E2 ::= E3 FE2 ;
-FE2 ::= MENOS E3 ;
-FE2 ::= RE2 ;
-RE2 ::= MAS E3 RE2 ;
-RE2 ::= ;
+E2 ::= E2 MAS E3 ;
+E2 ::= E3 MENOS E3 ;
+E2 ::= E3 ;
 
-E3 ::= E4 FE3 ;
-FE3 ::= AND E3 ;
-FE3 ::= OR E4 ;
-FE3 ::= ;
+E3 ::= E4 AND E3 ;
+E3 ::= E4 OR E4 ;
+E3 ::= E4 ;
 
-E4 ::= E5 RE4 ;
-RE4 ::= OP4 E5 RE4 ;
-RE4 ::= ;
+E4 ::= E4 OP4 E5 ;
+E4 ::= E5 ;
 
 E5 ::= OP5 E5 ;
 E5 ::= E6 ;
 
-E6 ::= E7 RE6 ;
-RE6 ::= OP6 RE6 ;
-RE6 ::= ;
+E6 ::= E6 OP6 ;
+E6 ::= E7 ;
 
 E7 ::= Entero ;
 E7 ::= Real ;
@@ -164,9 +155,9 @@ OP6 ::= PUNTERO ;
 instruccion-if ::= IF expresion bloque instruccion-else ;
 instruccion-else ::= ELSE bloque ;
 instruccion-else ::= ;               
-instruccion-while ::= WHILE bloque ;
+instruccion-while ::= WHILE expresion bloque ;
 instruccion-read ::= READ expresion ;
-instruccion-write ::= WRITE expresion bloque ;
+instruccion-write ::= WRITE expresion ;
 instruccion-nl ::= NL ;
 instruccion-new ::= NEW expresion ;
 instruccion-delete ::= DELETE expresion ;
@@ -177,9 +168,10 @@ parametros ::= INIPAR lista_opt_parametros FINPAR ;
 lista_opt_parametros ::= lista_parametros ;
 lista_opt_parametros ::= ;               
 
-lista_parametros ::= expresion REClp ;
-REClp ::= COMA expresion REClp ;
-REClp ::= ;
 
-instruccion ::= instruccion-compuesta ;
+lista_parametros ::= lista_parametros COMA expresion ;
+lista_parametros ::= expresion ;
+
+
 instruccion-compuesta ::= bloque ;
+
