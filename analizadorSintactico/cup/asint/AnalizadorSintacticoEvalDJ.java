@@ -1,6 +1,5 @@
 package asint;
 
-import java_cup.runtime.Scanner;
 import java_cup.runtime.Symbol;
 
 public class AnalizadorSintacticoEvalDJ extends AnalizadorSintacticoEval {
