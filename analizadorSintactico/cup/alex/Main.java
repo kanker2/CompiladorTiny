@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import alex.ALexOperations.ECaracterInesperado;
+import asint.ClaseLexica;
 
 public class Main {
    public static void main(String[] args) throws FileNotFoundException, IOException {

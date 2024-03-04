@@ -4,8 +4,8 @@ import java.io.Reader;
 
 import alex.AnalizadorLexicoTiny;
 import asint.AnalizadorSintacticoTinyDJ;
-import errors.GestionErroresEval.ErrorLexico;
-import errors.GestionErroresEval.ErrorSintactico;
+import errors.GestionErroresTiny.ErrorLexico;
+import errors.GestionErroresTiny.ErrorSintactico;
 
 public class DomJudge {
    public static void main(String[] args) throws Exception {

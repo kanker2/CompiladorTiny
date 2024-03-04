@@ -1,6 +1,7 @@
 package alex;
 
-import java_cup.runtime.*;
+import asint.ClaseLexica;
+import java_cup.runtime.Symbol;
 
 public abstract class UnidadLexica extends Symbol{
    protected ClaseLexica clase;
