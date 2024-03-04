@@ -939,7 +939,7 @@ public class AnalizadorLexicoTiny implements Scanner{
             // fall through
           case 88: break;
           case 36:
-            { return ops.unidadINTP();
+            { return ops.unidadINT();
             }
             // fall through
           case 89: break;
@@ -954,7 +954,7 @@ public class AnalizadorLexicoTiny implements Scanner{
             // fall through
           case 91: break;
           case 39:
-            { return ops.unidadBOOLP();
+            { return ops.unidadBOOL();
             }
             // fall through
           case 92: break;
@@ -984,7 +984,7 @@ public class AnalizadorLexicoTiny implements Scanner{
             // fall through
           case 97: break;
           case 45:
-            { return ops.unidadREALP();
+            { return ops.unidadREAL();
             }
             // fall through
           case 98: break;
@@ -1019,7 +1019,7 @@ public class AnalizadorLexicoTiny implements Scanner{
             // fall through
           case 104: break;
           case 52:
-            { return ops.unidadSTRINGP();
+            { return ops.unidadSTRING();
             }
             // fall through
           case 105: break;

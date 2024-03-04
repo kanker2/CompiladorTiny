@@ -1,7 +1,5 @@
 package alex;
 
-import java.util.HashMap;
-
 public class UnidadLexicaUnivaluada extends UnidadLexica {
 	
    public UnidadLexicaUnivaluada(int fila, int columna, int clase, String lexema) {
