@@ -225,8 +225,8 @@ public class ALexOperations {
 	}
 
 	public void error() {
-		String msgError = "Carácter inesperado (" + alex.fila() + "," + alex.columna() + "); "+alex.yycharat(alex.yylength());
-		throw new ECaracterInesperado(msgError);
+		//String msgError = "Carácter inesperado (" + alex.fila() + "," + alex.columna() + "); "+alex.yycharat(alex.yylength());
+		this.alex.getGestionErrores().errorLexico(alex.fila(), alex.columna(), alex.lexema());
 	}
 
 }

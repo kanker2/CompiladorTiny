@@ -7,11 +7,16 @@ package alex;
 %type  UnidadLexica
 %unicode
 %public
+%cup
 %{
   private ALexOperations ops;
+  private GestionErroresTiny errores;
   public String lexema() {return yytext();}
   public int fila() {return yyline+1;}
   public int columna() {return yycolumn+1;}
+  public void fijaGestionErrores(GestionErroresTiny errores) {
+   this.errores = errores;
+  }
 %}
 
 %eofval{
@@ -87,10 +92,10 @@ comentario = ##([^\n])*
 {Entero}		      {return ops.unidadEntero();}
 {Real}			      {return ops.unidadReal();}
 {Cadena} 		      {return ops.unidadCadena();}
-{INT}			        {return ops.unidadINTP();}		
-{REAL}			      {return ops.unidadREALP();}
-{BOOL}			      {return ops.unidadBOOLP();}
-{String}		      {return ops.unidadSTRINGP();}
+{INT}			        {return ops.unidadINT();}		
+{REAL}			      {return ops.unidadREAL();}
+{BOOL}			      {return ops.unidadBOOL();}
+{String}		      {return ops.unidadSTRING();}
 {AND}			        {return ops.unidadAND();}
 {OR}			        {return ops.unidadOR();}
 {NOT}			        {return ops.unidadNOT();}
