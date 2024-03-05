@@ -1,4 +1,5 @@
 package alex;
+import errors.GestionErroresTiny;
 
 %%
 %line
@@ -16,6 +17,9 @@ package alex;
   public int columna() {return yycolumn+1;}
   public void fijaGestionErrores(GestionErroresTiny errores) {
    this.errores = errores;
+  }
+  public GestionErroresTiny getGestionErrores(){
+    return this.errores;
   }
 %}
 

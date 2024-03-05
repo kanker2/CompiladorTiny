@@ -1,5 +1,4 @@
 package errors;
-
 import alex.UnidadLexica;
 
 public class GestionErroresTiny {
