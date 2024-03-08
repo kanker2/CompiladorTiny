@@ -14,17 +14,17 @@ import errors.GestionErroresTiny.ErrorSintactico;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		 /*if (args.length < 2) {
+		 if (args.length < 2) {
 	            System.out.println("Error: Debes proporcionar el archivo y la opción (desc/asc).");
 	            return;
-	        }*/
-
+	        }
+	     boolean error =false;
 	     //String archivo = args[0];
 	     String archivo = "C:/Users/juand/eclipse-workspacep/royluna/src/in_tiny0_2.txt";
 	     String opcion = args[0];
 
 	     //"C://Users/Luna Santos/eclipse-workspace/ProgramaPrincipal/src/in_tiny0_1.txt"
-		Reader input = new InputStreamReader(new FileInputStream(archivo));
+		Reader input = new InputStreamReader(new FileInputStream(opcion));
 			
 		
 		if(opcion.equalsIgnoreCase("desc")) {
@@ -36,10 +36,12 @@ public class Main {
 		    	  asint.programa_tiny();
 		      }
 		      catch(ParseException e) {
-		         System.out.println("ERROR_SINTACTICO"); 
+		         System.out.println("ERROR_SINTACTICO");
+			 error =true;
 		      }
 		      catch(TokenMgrError e) {
 		         System.out.println("ERROR_LEXICO"); 
+			 error =true;
 		      }
 		    
 		}
@@ -53,14 +55,18 @@ public class Main {
 				asint.debug_parse();
 			} catch (ErrorLexico e) {
 				System.out.println("ERROR_LEXICO");
+				error =true;
+				
+				
 			} catch (ErrorSintactico e) {
 				System.out.println("ERROR_SINTACTICO");
+				error =true;
 			}
 		}
 		else {
-			System.out.println(opcion);
 			System.out.println("Error, tipo de analizador sintactico no valido");
 		}
+		if(!error) System.out.println("OK");
 	}
 
 }
