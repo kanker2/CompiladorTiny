@@ -1,4 +1,4 @@
-package cupAsint;
+package cubAsc;
 
 import java_cup.runtime.Scanner;
 import java_cup.runtime.Symbol;

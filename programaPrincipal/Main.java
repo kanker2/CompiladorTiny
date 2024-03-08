@@ -2,13 +2,13 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import javaccAsc.AnalizadorSintacticoTinyDJ;
-import javaccAsc.ParseException;
-import javaccAsc.TokenMgrError;
+import cubAsc.*;
 import cupAlex.AnalizadorLexicoTiny;
-import cupAsint.*;
 import errors.GestionErroresTiny.ErrorLexico;
 import errors.GestionErroresTiny.ErrorSintactico;
+import javaccDesc.AnalizadorSintacticoTinyDJ;
+import javaccDesc.ParseException;
+import javaccDesc.TokenMgrError;
 
 public class Main {
 

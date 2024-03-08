@@ -1,4 +1,4 @@
-package javaccAsc;
+package javaccDesc;
 
 import java.io.Reader;
 
