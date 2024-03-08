@@ -20,11 +20,11 @@ public class Main {
 	        }
 	     boolean error =false;
 	     //String archivo = args[0];
-	     String archivo = "C:/Users/juand/eclipse-workspacep/royluna/src/in_tiny0_2.txt";
-	     String opcion = args[0];
+	     String archivo = "C:/Users/juand/eclipse-workspace/proyluna/src/in_tiny0_2.txt";
+	     String opcion = args[1];
 
 	     //"C://Users/Luna Santos/eclipse-workspace/ProgramaPrincipal/src/in_tiny0_1.txt"
-		Reader input = new InputStreamReader(new FileInputStream(opcion));
+		Reader input = new InputStreamReader(new FileInputStream(args[0]));
 			
 		
 		if(opcion.equalsIgnoreCase("desc")) {
