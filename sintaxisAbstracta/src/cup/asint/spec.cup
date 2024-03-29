@@ -46,19 +46,19 @@ non terminal  LParam lista_parametros;
 
 
 programa_tiny ::= bloque: blq ;
-	{: RESULT = sem.prog_tiny(blq); :};
+	{: RESULT = (ProgT)sem.prog_tiny(blq); :};
 bloque ::= INIBLOQUE lista_opt_declaraciones: l_opt_dec lista_opt_instrucciones: l_opt_inst FINBLOQUE ;
-	{: RESULT = sem.bloque(l_opt_dec,l_opt_inst) :};
+	{: RESULT = (Blq)sem.bloque(l_opt_dec,l_opt_inst) :};
 
 lista_opt_declaraciones ::= lista_declaraciones: l_decs FINDECLARACIONES ;
-	{: RESULT = sem.si_lista_opt_decs(l_decs); :};
+	{: RESULT = (LOptDecs)sem.si_lista_opt_decs(l_decs); :};
 lista_opt_declaraciones ::= ;
-	{: RESULT = sem.no_lista_opt_decs(); :};
+	{: RESULT = (LOptDecs)sem.no_lista_opt_decs(); :};
 
 lista_declaraciones ::= lista_declaraciones: l_decs PUNTOYCOMA declaracion: dec ;
-	{: RESULT = sem.muchas_lista_decs(l_decs, dec); :};
+	{: RESULT = (LDecs)sem.muchas_lista_decs(l_decs, dec); :};
 lista_declaraciones ::= declaracion: dec ;
-	{: RESULT = sem.una_lista_decs(dec); :};
+	{: RESULT = (LDecs)sem.una_lista_decs(dec); :};
 
 declaracion ::= declaracion_variable: dec_var ;
 	{: RESULT = dec_var; :};
@@ -68,31 +68,36 @@ declaracion ::= declaracion_proc: dec_proc ;
 	{: RESULT = dec_proc; :};
 
 declaracion_variable ::= tipo: t Identificador: id ;
-	{: RESULT = sem.dec_var(t,id.str); :};
+	{: RESULT = (Dec)sem.dec_var(t,id.str); :};
 declaracion_tipo ::= TYPE tipo: t Identificador: id ;
-	{: RESULT = sem.dec_tipo(t,id.str()); :};
-declaracion_proc ::= PROC Identificador: id INIPAR lista_parametros_formales: l_param_form FINPAR bloque: blq ;
-	{: RESULT = sem.dec_proc(id.str(),l_param_form,blq); :};
+	{: RESULT = (Dec)sem.dec_tipo(t,id.str()); :};
+declaracion_proc ::= PROC Identificador: id INIPAR lista_opt_parametros_formales: l_opt_param_form FINPAR bloque: blq ;
+	{: RESULT = (Dec)sem.dec_proc(id.str(),l_opt_param_form,blq); :};
+
+lista_opt_parametros_formales ::= lista_parametros_formales: l_param_form ;
+	{: RESULT = (LOptParamForm)sem.si_lista_opt_param_form(l_param_form); :};
+lista_opt_parametros_formales ::= ;
+	{: RESULT = (LOptParamForm)sem.no_lista_opt_param_form(); :};
 
 lista_parametros_formales ::= lista_parametros_formales: l_param_form COMA parametro_formal: param_form ;
-	{: RESULT = sem.muchas_lista_param_form(l_param_form, param_form); :};
+	{: RESULT = (LParamForm)sem.muchas_lista_param_form(l_param_form, param_form); :};
 lista_parametros_formales ::= parametro_formal: param_form ;
-	{: RESULT = sem.una_lista_param_form(param_form); :};
+	{: RESULT = (LParamForm)sem.una_lista_param_form(param_form); :};
 
 parametro_formal ::= tipo: t REFERENCIA Identificador: id ;
-	{: RESULT = sem.param_form_ref(t,id.str()); :}
+	{: RESULT = (ParamForm)sem.param_form_ref(t,id.str()); :}
 parametro_formal ::= tipo: t Identificador: id ;
-	{: RESULT = sem.param_form(t,id.str()); :}
+	{: RESULT = (ParamForm)sem.param_form(t,id.str()); :}
 
 tipo ::= tipo_array: t_arr ;
 	{: RESULT = t_arr; :}
 tipo_array ::= tipo_array: t_arr INIARRAY Entero: num FINARRAY ;
-	{: RESULT = sem.tipo_array(t_arr,num.str()); :}
+	{: RESULT = (Tipo)sem.tipo_array(t_arr,num.str()); :}
 tipo_array ::= tipo_puntero: t_punt ;
 	{: RESULT = t_punt; :}
 
 tipo_puntero ::= PUNTERO tipo_puntero: t_punt ;
-	{: RESULT = sem.tipo_puntero(t_punt); :}
+	{: RESULT = (Tipo)sem.tipo_puntero(t_punt); :}
 tipo_puntero ::= T2: t2 ;
 	{: RESULT = t2; :}
 
@@ -104,35 +109,35 @@ T2 ::= tipo_definido: t_def ;
 	{: RESULT = t_def; :}
 
 tipo_basico ::= INT ;
-	{: RESULT = sem.int(); :}
+	{: RESULT = (Tipo)sem.int(); :}
 tipo_basico ::= REAL ;
-	{: RESULT = sem.real(); :}
+	{: RESULT = (Tipo)sem.real(); :}
 tipo_basico ::= BOOL ;
-	{: RESULT = sem.bool(); :}
+	{: RESULT = (Tipo)sem.bool(); :}
 tipo_basico ::= STRING ;
-	{: RESULT = sem.string(); :}
+	{: RESULT = (Tipo)sem.string(); :}
 tipo_registro ::= STRUCT INIBLOQUE lista_parametros_registro: l_param_reg FINBLOQUE ;
-	{: RESULT = sem.tipo_registro(l_param_reg); :}
+	{: RESULT = (Tipo)sem.tipo_registro(l_param_reg); :}
 tipo_definido ::= Identificador: id ;
-	{: RESULT = sem.tipo_definido(id.str()); :}
+	{: RESULT = (Tipo)sem.tipo_definido(id.str()); :}
 
 lista_parametros_registro ::= lista_parametros_registro: l_param_reg COMA  parametro_registro: param_reg ;
-	{: RESULT = sem.muchas_listas_param_reg(l_param_reg,param_reg); :}
+	{: RESULT = (LParamReg)sem.muchas_listas_param_reg(l_param_reg,param_reg); :}
 lista_parametros_registro ::= parametro_registro: param_reg ;
-	{: RESULT = sem.una_lista_param_reg(param_reg); :}
+	{: RESULT = (LParamReg)sem.una_lista_param_reg(param_reg); :}
 
 parametro_registro ::= tipo: t Identificador: id ;
-	{: RESULT = sem.param_reg(t,id.str()); :}
+	{: RESULT = (ParamReg)sem.param_reg(t,id.str()); :}
 
 lista_opt_instrucciones ::= lista_instrucciones: l_inst ;
-	{: RESULT = sem.si_lista_opt_inst(l_inst); :}
+	{: RESULT = (LOptInst)sem.si_lista_opt_inst(l_inst); :}
 lista_opt_instrucciones ::= ;
-	{: RESULT = sem.no_lista_opt_inst; :}
+	{: RESULT = (LOptInst)sem.no_lista_opt_inst; :}
 
 lista_instrucciones ::= lista_instrucciones: l_inst PUNTOYCOMA instruccion: inst ;
-	{: RESULT = sem.muchas_lista_inst(l_inst,inst); :}
+	{: RESULT = (LInst)sem.muchas_lista_inst(l_inst,inst); :}
 lista_instrucciones ::= instruccion: inst ;
-	{: RESULT = sem.una_lista_inst(inst); :}
+	{: RESULT = (LInst)sem.una_lista_inst(inst); :}
 
 
 instruccion ::= instruccion_eval ;
