@@ -19,14 +19,33 @@ init with {:
    AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
    alex.fijaGestionErrores(errores);
 :};
-
+action code {:
+  ClaseSemanticaEval sem = new ClaseSemanticaEval();
+:}
 
 terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINPAR, INIARRAY, FINARRAY, PUNTERO, REFERENCIA, COMA, ARROBA, MAYOR, MAYORIGUAL, MENOR, MENORIGUAL, COMPARACION, DISTINTO, ASIGNACION, POR, ENTRE, AND, OR, MODULO, NOT, MAS, MENOS, IF, ELSE, WHILE, READ, WRITE, NL, NEW, DELETE, CALL, INT, REAL, BOOL, STRING, STRUCT, TYPE, PROC, TRUE, FALSE, NULL, Identificador, Entero, Real, Cadena;   
 
-non terminal programa_tiny, bloque, lista_opt_declaraciones, lista_declaraciones, declaracion, declaracion_variable, declaracion_tipo, declaracion_proc, cabecera_proc, lista_opt_parametros_formales, lista_parametros_formales, parametro_formal, tipo, tipo_array, tipo_puntero, T2, tipo_basico, tipo_registro, tipo_definido, lista_opt_parametros_registro, lista_parametros_registro, parametro_registro, lista_opt_instrucciones, lista_instrucciones, instruccion, instruccion_eval, expresion, E0, E1, E2, E3, E4, E5, E6, E7, OP1, OP4, OP5, OP6, instruccion_if, instruccion_else, instruccion_while, instruccion_read, instruccion_write, instruccion_nl, instruccion_new, instruccion_delete, instruccion_call, parametros, lista_opt_parametros, lista_parametros, instruccion_compuesta;
+non terminal  ProgT programa_tiny;
+non terminal  Blq bloque;
+non terminal  LOptDecs lista_opt_declaraciones;
+non terminal  LDecs lista_declaraciones;
+non terminal  Dec declaracion, declaracion_variable, declaracion_tipo, declaracion_proc;
+non terminal  LOptParamForm lista_opt_parametros_formales;
+non terminal  LParamForm lista_parametros_formales;
+non terminal  ParamForm parametro_formal;
+non terminal  Tipo tipo, tipo_definido, tipo_ registro, tipo_basico, T2, tipo_puntero, tipo_array;
+non terminal  LParamReg lista_parametros_registro;
+non terminal  ParamReg parametro_registro;
+non terminal  LOptInst lista_opt_instrucciones;
+non terminal  LInst lista_instrucciones;
+non terminal  Inst instruccion, instruccion_eval, instruccion_if, instruccion_if_else, instruccion_while, instrucción_read, instruccion_write, instruccion_nl, instruccion_new, instruccion_delete, instruccion_call, instruccion_compuesta;
+non terminal  Exp expresion, E0, E1, E2, E3, E4, E5, E6, E7;
+non terminal  LOptParam lista_opt_parametros;
+non terminal  LParam lista_parametros;
 
 
 programa_tiny ::= bloque ;
+	{: RESULT = sem.prog :};
 bloque ::= INIBLOQUE lista_opt_declaraciones lista_opt_instrucciones FINBLOQUE ;
 
 lista_opt_declaraciones ::= lista_declaraciones FINDECLARACIONES ;
