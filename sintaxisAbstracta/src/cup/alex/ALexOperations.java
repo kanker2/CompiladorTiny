@@ -1,5 +1,5 @@
 package cup.alex;
-import asint.ClaseLexica;
+import cup.asint.ClaseLexica;
 
 public class ALexOperations {
 

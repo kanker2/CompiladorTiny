@@ -1,5 +1,5 @@
 package cup.errors;
-import alex.UnidadLexica;
+import cup.alex.UnidadLexica;
 
 public class GestionErroresTiny {
    public class ErrorLexico extends RuntimeException {
