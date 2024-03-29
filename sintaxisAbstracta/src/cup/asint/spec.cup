@@ -1,9 +1,9 @@
 package asint;
 
 import java_cup.runtime.*;
-import alex.AnalizadorLexicoTiny;
-import alex.UnidadLexica;
-import errors.GestionErroresTiny;
+import cup.alex.AnalizadorLexicoTiny;
+import cup.alex.UnidadLexica;
+import cup.errors.GestionErroresTiny;
 
 scan with {: 
   return getScanner().next_token(); 
