@@ -44,22 +44,32 @@ non terminal  LOptParam lista_opt_parametros;
 non terminal  LParam lista_parametros;
 
 
-programa_tiny ::= bloque ;
-	{: RESULT = sem.prog :};
-bloque ::= INIBLOQUE lista_opt_declaraciones lista_opt_instrucciones FINBLOQUE ;
+programa_tiny ::= bloque: blq ;
+	{: RESULT = sem.prog_tiny(blq); :};
+bloque ::= INIBLOQUE lista_opt_declaraciones: l_opt_dec lista_opt_instrucciones: l_opt_inst FINBLOQUE ;
+	{: RESULT = sem.bloque(l_opt_dec,l_opt_inst) :};
 
-lista_opt_declaraciones ::= lista_declaraciones FINDECLARACIONES ;
+lista_opt_declaraciones ::= lista_declaraciones: l_decs FINDECLARACIONES ;
+	{: RESULT = si_lista_opt_decs(l_decs); :};
 lista_opt_declaraciones ::= ;
+	{: RESULT = no_lista_opt_decs(); :};
 
-lista_declaraciones ::= lista_declaraciones PUNTOYCOMA declaracion ;
-lista_declaraciones ::= declaracion ;
+lista_declaraciones ::= lista_declaraciones: l_decs PUNTOYCOMA declaracion: dec ;
+	{: RESULT = muchas_lista_decs(l_decs, dec); :};
+lista_declaraciones ::= declaracion: dec ;
+	{: RESULT = una_lista_decs(dec); :};
 
-declaracion ::= declaracion_variable ;
-declaracion ::= declaracion_tipo ;
-declaracion ::= declaracion_proc ;
+declaracion ::= declaracion_variable: dec_var ;
+	{: RESULT = dec_var; :};
+declaracion ::= declaracion_tipo: dec_tipo ;
+	{: RESULT = dec_tipo; :};
+declaracion ::= declaracion_proc: dec_proc ;
+	{: RESULT = dec_proc; :};
 
-declaracion_variable ::= tipo Identificador ;
-declaracion_tipo ::= TYPE tipo Identificador ;
+declaracion_variable ::= tipo: t Identificador: id ;
+	{: RESULT = dec_var(t,id); :};
+declaracion_tipo ::= TYPE tipo: t Identificador: id ;
+	{: RESULT = dec_tipo(t,id); :};
 declaracion_proc ::= cabecera_proc bloque ;
 cabecera_proc ::= PROC Identificador INIPAR lista_opt_parametros_formales FINPAR; 
 
