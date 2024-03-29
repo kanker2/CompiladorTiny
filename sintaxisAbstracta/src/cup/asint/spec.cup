@@ -23,7 +23,8 @@ action code {:
   ClaseSemanticaEval sem = new ClaseSemanticaEval();
 :}
 
-terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINPAR, INIARRAY, FINARRAY, PUNTERO, REFERENCIA, COMA, ARROBA, MAYOR, MAYORIGUAL, MENOR, MENORIGUAL, COMPARACION, DISTINTO, ASIGNACION, POR, ENTRE, AND, OR, MODULO, NOT, MAS, MENOS, IF, ELSE, WHILE, READ, WRITE, NL, NEW, DELETE, CALL, INT, REAL, BOOL, STRING, STRUCT, TYPE, PROC, TRUE, FALSE, NULL, Identificador, Entero, Real, Cadena;   
+terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINPAR, INIARRAY, FINARRAY, PUNTERO, REFERENCIA, COMA, ARROBA, MAYOR, MAYORIGUAL, MENOR, MENORIGUAL, COMPARACION, DISTINTO, ASIGNACION, POR, ENTRE, AND, OR, MODULO, NOT, MAS, MENOS, IF, ELSE, WHILE, READ, WRITE, NL, NEW, DELETE, CALL, INT, REAL, BOOL, STRING, STRUCT, TYPE, PROC, TRUE, FALSE, NULL;
+terminal StringLocalizado Identificador, Entero, Real, Cadena;
 
 non terminal  ProgT programa_tiny;
 non terminal  Blq bloque;
@@ -50,14 +51,14 @@ bloque ::= INIBLOQUE lista_opt_declaraciones: l_opt_dec lista_opt_instrucciones:
 	{: RESULT = sem.bloque(l_opt_dec,l_opt_inst) :};
 
 lista_opt_declaraciones ::= lista_declaraciones: l_decs FINDECLARACIONES ;
-	{: RESULT = si_lista_opt_decs(l_decs); :};
+	{: RESULT = sem.si_lista_opt_decs(l_decs); :};
 lista_opt_declaraciones ::= ;
-	{: RESULT = no_lista_opt_decs(); :};
+	{: RESULT = sem.no_lista_opt_decs(); :};
 
 lista_declaraciones ::= lista_declaraciones: l_decs PUNTOYCOMA declaracion: dec ;
-	{: RESULT = muchas_lista_decs(l_decs, dec); :};
+	{: RESULT = sem.muchas_lista_decs(l_decs, dec); :};
 lista_declaraciones ::= declaracion: dec ;
-	{: RESULT = una_lista_decs(dec); :};
+	{: RESULT = sem.una_lista_decs(dec); :};
 
 declaracion ::= declaracion_variable: dec_var ;
 	{: RESULT = dec_var; :};
@@ -67,52 +68,71 @@ declaracion ::= declaracion_proc: dec_proc ;
 	{: RESULT = dec_proc; :};
 
 declaracion_variable ::= tipo: t Identificador: id ;
-	{: RESULT = dec_var(t,id); :};
+	{: RESULT = sem.dec_var(t,id.str); :};
 declaracion_tipo ::= TYPE tipo: t Identificador: id ;
-	{: RESULT = dec_tipo(t,id); :};
-declaracion_proc ::= cabecera_proc bloque ;
-cabecera_proc ::= PROC Identificador INIPAR lista_opt_parametros_formales FINPAR; 
+	{: RESULT = sem.dec_tipo(t,id.str()); :};
+declaracion_proc ::= PROC Identificador: id INIPAR lista_parametros_formales: l_param_form FINPAR bloque: blq ;
+	{: RESULT = sem.dec_proc(id.str(),l_param_form,blq); :};
 
-lista_opt_parametros_formales ::= lista_parametros_formales ;
-lista_opt_parametros_formales ::= ;
+lista_parametros_formales ::= lista_parametros_formales: l_param_form COMA parametro_formal: param_form ;
+	{: RESULT = sem.muchas_lista_param_form(l_param_form, param_form); :};
+lista_parametros_formales ::= parametro_formal: param_form ;
+	{: RESULT = sem.una_lista_param_form(param_form); :};
 
-lista_parametros_formales ::= lista_parametros_formales COMA parametro_formal ;
-lista_parametros_formales ::= parametro_formal ;
+parametro_formal ::= tipo: t REFERENCIA Identificador: id ;
+	{: RESULT = sem.param_form_ref(t,id.str()); :}
+parametro_formal ::= tipo: t Identificador: id ;
+	{: RESULT = sem.param_form(t,id.str()); :}
 
-parametro_formal ::= tipo REFERENCIA Identificador ;
-parametro_formal ::= tipo Identificador ;
+tipo ::= tipo_array: t_arr ;
+	{: RESULT = t_arr; :}
+tipo_array ::= tipo_array: t_arr INIARRAY Entero: num FINARRAY ;
+	{: RESULT = sem.tipo_array(t_arr,num.str()); :}
+tipo_array ::= tipo_puntero: t_punt ;
+	{: RESULT = t_punt; :}
 
-tipo ::= tipo_array ;
-tipo_array ::= tipo_array INIARRAY Entero FINARRAY ;
-tipo_array ::= tipo_puntero ;
+tipo_puntero ::= PUNTERO tipo_puntero: t_punt ;
+	{: RESULT = sem.tipo_puntero(t_punt); :}
+tipo_puntero ::= T2: t2 ;
+	{: RESULT = t2; :}
 
-tipo_puntero ::= PUNTERO tipo_puntero ;
-tipo_puntero ::= T2 ;
-
-T2 ::= tipo_basico ;
-T2 ::= tipo_registro ;
-T2 ::= tipo_definido ;
+T2 ::= tipo_basico: t_bas ;
+	{: RESULT = t_bas; :}
+T2 ::= tipo_registro: t_reg ;
+	{: RESULT = t_reg; :}
+T2 ::= tipo_definido: t_def ;
+	{: RESULT = t_def; :}
 
 tipo_basico ::= INT ;
+	{: RESULT = sem.int(); :}
 tipo_basico ::= REAL ;
+	{: RESULT = sem.real(); :}
 tipo_basico ::= BOOL ;
+	{: RESULT = sem.bool(); :}
 tipo_basico ::= STRING ;
-tipo_registro ::= STRUCT INIBLOQUE lista_opt_parametros_registro FINBLOQUE ;
-tipo_definido ::= Identificador ;
+	{: RESULT = sem.string(); :}
+tipo_registro ::= STRUCT INIBLOQUE lista_parametros_registro: l_param_reg FINBLOQUE ;
+	{: RESULT = sem.tipo_registro(l_param_reg); :}
+tipo_definido ::= Identificador: id ;
+	{: RESULT = sem.tipo_definido(id.str()); :}
 
-lista_opt_parametros_registro ::= lista_parametros_registro ;
-lista_opt_parametros_registro ::= ;
+lista_parametros_registro ::= lista_parametros_registro: l_param_reg COMA  parametro_registro: param_reg ;
+	{: RESULT = sem.muchas_listas_param_reg(l_param_reg,param_reg); :}
+lista_parametros_registro ::= parametro_registro: param_reg ;
+	{: RESULT = sem.una_lista_param_reg(param_reg); :}
 
-lista_parametros_registro ::= lista_parametros_registro COMA  parametro_registro ;
-lista_parametros_registro ::= parametro_registro ;
+parametro_registro ::= tipo: t Identificador: id ;
+	{: RESULT = sem.param_reg(t,id.str()); :}
 
-parametro_registro ::= tipo Identificador ;
-
-lista_opt_instrucciones ::= lista_instrucciones ;
+lista_opt_instrucciones ::= lista_instrucciones: l_inst ;
+	{: RESULT = sem.si_lista_opt_inst(l_inst); :}
 lista_opt_instrucciones ::= ;
+	{: RESULT = sem.no_lista_opt_inst; :}
 
-lista_instrucciones ::= lista_instrucciones PUNTOYCOMA instruccion ;
-lista_instrucciones ::= instruccion ;
+lista_instrucciones ::= lista_instrucciones: l_inst PUNTOYCOMA instruccion: inst ;
+	{: RESULT = sem.muchas_lista_inst(l_inst,inst); :}
+lista_instrucciones ::= instruccion: inst ;
+	{: RESULT = sem.una_lista_inst(inst); :}
 
 
 instruccion ::= instruccion_eval ;
@@ -180,9 +200,8 @@ OP6 ::= INIARRAY E0 FINARRAY ;
 OP6 ::= PUNTO Identificador ;
 OP6 ::= PUNTERO ;
 
-instruccion_if ::= IF expresion bloque instruccion_else ;
-instruccion_else ::= ELSE bloque ;
-instruccion_else ::= ;               
+instruccion_if ::= IF expresion bloque ;
+instruccion_if_else ::= IF expresion bloque ELSE bloque ;
 instruccion_while ::= WHILE expresion bloque ;
 instruccion_read ::= READ expresion ;
 instruccion_write ::= WRITE expresion ;
