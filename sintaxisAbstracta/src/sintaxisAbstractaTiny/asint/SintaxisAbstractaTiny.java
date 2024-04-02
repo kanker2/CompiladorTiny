@@ -215,7 +215,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class Exp {
+	static abstract class Exp {
 		protected Exp op1;
 		protected Exp op2;
 		protected String cadena;

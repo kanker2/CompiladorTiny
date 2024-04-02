@@ -1,18 +1,51 @@
 package cup.alex;
+
 import java_cup.runtime.Symbol;
 import cup.asint.ClaseLexica;
 
-public class UnidadLexica extends Symbol{
-   protected ClaseLexica clase;
-   private int fila;
-   private int columna;
-   public UnidadLexica(int fila, int columna, int clase, String lexema) {
-	 super(clase, lexema);
-     this.fila = fila;
-     this.columna = columna;
-   }
-   public int clase () {return sym;}
-   public String lexema() { return (String) value; }
-   public int fila() {return fila;}
-   public int columna() {return columna;}
+public class UnidadLexica extends Symbol {
+	public static class StringLocalizado {
+		private int fila;
+		private int col;
+		private String s;
+
+		public StringLocalizado(String s, int fila, int col) {
+			this.s = s;
+			this.fila = fila;
+			this.col = col;
+		}
+
+		public int fila() {
+			return fila;
+		}
+
+		public int col() {
+			return col;
+		}
+
+		public String str() {
+			return s;
+		}
+	}
+
+	public UnidadLexica(int fila, int columna, int clase, String lexema) {
+		super(clase, new StringLocalizado(lexema, fila, columna));
+	}
+
+	public int clase() {
+		return sym;
+	}
+
+	public int fila() {
+		return ((StringLocalizado) value).fila();
+	}
+
+	public int columna() {
+		return ((StringLocalizado) value).col();
+	}
+
+	public String lexema() {
+		return ((StringLocalizado) value).str();
+	}
+
 }
