@@ -1,11 +1,38 @@
-package sintaxisAbstractaTiny.asint;
+package asint;
 
 public class SintaxisAbstractaTiny {
 	public SintaxisAbstractaTiny() {
 	};
 
+	public static abstract class Nodo {
+		public Nodo() {
+			fila = col = -1;
+		}
+
+		private int fila;
+		private int col;
+
+		public Nodo ponFila(int fila) {
+			this.fila = fila;
+			return this;
+		}
+
+		public Nodo ponCol(int col) {
+			this.col = col;
+			return this;
+		}
+
+		public int leeFila() {
+			return fila;
+		}
+
+		public int leeCol() {
+			return col;
+		}
+	}
+
 	// Clases abstractas (Generos)
-	private static abstract class ProgT {
+	public static abstract class ProgT {
 		protected Blq bloque;
 
 		public ProgT(Blq bloque) {
@@ -13,7 +40,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class Blq {
+	public static abstract class Blq {
 		protected LOptDecs lista_opt_declaraciones;
 		protected LOptInst lista_opt_instrucciones;
 
@@ -23,7 +50,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class LOptDecs {
+	public static abstract class LOptDecs {
 		protected LDecs lista_declaraciones;
 
 		public LOptDecs(LDecs lista_declaraciones) {
@@ -34,7 +61,7 @@ public class SintaxisAbstractaTiny {
 		};
 	}
 
-	private static abstract class LDecs {
+	public static abstract class LDecs {
 		protected LDecs lista_declaraciones;
 		protected Dec declaracion;
 
@@ -48,7 +75,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class Dec {
+	public static abstract class Dec {
 		protected Tipo tipo;
 		protected String cadena;
 		protected Blq bloque;
@@ -66,7 +93,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class LOptParamForm {
+	public static abstract class LOptParamForm {
 		protected LParamForm lista_parametros_formales;
 
 		public LOptParamForm(LParamForm lista_parametros_formales) {
@@ -77,7 +104,7 @@ public class SintaxisAbstractaTiny {
 		};
 	}
 
-	private static abstract class LParamForm {
+	public static abstract class LParamForm {
 		protected LParamForm lista_parametros_formales;
 		protected ParamForm parametro_formal;
 
@@ -91,7 +118,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class ParamForm {
+	public static abstract class ParamForm {
 		protected Tipo tipo;
 		protected String cadena;
 
@@ -104,7 +131,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class Tipo {
+	public static abstract class Tipo {
 		protected Tipo tipo;
 		protected String cadena;
 		protected LParamReg lista_parametros_registro;
@@ -130,7 +157,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class LParamReg {
+	public static abstract class LParamReg {
 		protected LParamReg lista_parametros_registro;
 		protected ParamReg parametro_registro;
 
@@ -144,7 +171,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class ParamReg {
+	public static abstract class ParamReg {
 		protected Tipo tipo;
 		protected String cadena;
 
@@ -154,7 +181,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class LOptInst {
+	public static abstract class LOptInst {
 		protected LInst lista_instrucciones;
 
 		public LOptInst() {
@@ -166,7 +193,7 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	private static abstract class LInst {
+	public static abstract class LInst {
 		protected LInst lista_instrucciones;
 		protected Inst instruccion;
 
@@ -180,7 +207,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class Inst {
+	public static abstract class Inst {
 		protected Exp expresion;
 		protected Blq bloque1;
 		protected Blq bloque2;
@@ -215,7 +242,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	static abstract class Exp {
+	public static abstract class Exp extends Nodo {
 		protected Exp op1;
 		protected Exp op2;
 		protected String cadena;
@@ -242,7 +269,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	private static abstract class LOptParam {
+	public static abstract class LOptParam {
 		protected LParam lista_parametros;
 
 		public LOptParam() {
@@ -254,7 +281,7 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	private static abstract class LParam {
+	public static abstract class LParam {
 		protected LParam lista_parametros;
 		protected Exp expresion;
 
@@ -787,15 +814,15 @@ public class SintaxisAbstractaTiny {
 	public Tipo string_t() {
 		return new String_t();
 	}
-	
+
 	public Tipo tipo_registro(LParamReg lista_parametros_registro) {
 		return new Tipo_registro(lista_parametros_registro);
 	}
-	
+
 	public Tipo tipo_definido(String cadena) {
 		return new Tipo_definido(cadena);
 	}
-	
+
 	public LParamReg muchas_lista_param_reg(LParamReg lista_parametros_registro, ParamReg parametro_registro) {
 		return new Muchas_lista_param_reg(lista_parametros_registro, parametro_registro);
 	}
@@ -803,169 +830,187 @@ public class SintaxisAbstractaTiny {
 	public LParamReg una_lista_param_reg(ParamReg parametro_registro) {
 		return new Una_lista_param_reg(parametro_registro);
 	}
-	
+
 	public ParamReg param_reg(Tipo tipo, String cadena) {
 		return new Param_reg(tipo, cadena);
 	}
-	
-	public LOptInst si_lista_opt_inst (LInst lista_instrucciones) {
+
+	public LOptInst si_lista_opt_inst(LInst lista_instrucciones) {
 		return new Si_lista_opt_inst(lista_instrucciones);
 	}
-	
-	public LOptInst no_lista_opt_inst () {
+
+	public LOptInst no_lista_opt_inst() {
 		return new No_lista_opt_inst();
 	}
-	
+
 	public LInst muchas_lista_inst(LInst lista_instrucciones, Inst instruccion) {
 		return new Muchas_lista_inst(lista_instrucciones, instruccion);
 	}
-	
+
 	public LInst una_lista_inst(Inst instruccion) {
 		return new Una_lista_inst(instruccion);
 	}
-	
+
 	public Inst inst_eval(Exp expresion) {
 		return new Inst_eval(expresion);
 	}
-	
+
 	public Inst inst_if(Exp expresion, Blq bloque) {
 		return new Inst_if(expresion, bloque);
 	}
-	
+
 	public Inst inst_if_else(Exp expresion, Blq bloque, Blq bloque2) {
 		return new Inst_if_else(expresion, bloque, bloque2);
 	}
-	
+
 	public Inst inst_while(Exp expresion, Blq bloque) {
 		return new Inst_while(expresion, bloque);
 	}
-	
+
 	public Inst inst_read(Exp expresion) {
 		return new Inst_read(expresion);
 	}
+
 	public Inst inst_write(Exp expresion) {
 		return new Inst_write(expresion);
 	}
-	
+
 	public Inst inst_nl() {
 		return new Inst_nl();
 	}
-	
+
 	public Inst inst_new(Exp expresion) {
 		return new Inst_new(expresion);
 	}
-	
+
 	public Inst inst_delete(Exp expresion) {
 		return new Inst_delete(expresion);
 	}
-	
+
 	public Inst inst_call(String cadena, LOptParam lista_opt_parametros) {
 		return new Inst_call(cadena, lista_opt_parametros);
 	}
-	
+
 	public Inst inst_comp(Blq bloque) {
 		return new Inst_comp(bloque);
 	}
-	
+
 	public Exp mayor(Exp op1, Exp op2) {
 		return new Mayor(op1, op2);
 	}
-	
+
 	public Exp mayor_igual(Exp op1, Exp op2) {
 		return new Mayor_igual(op1, op2);
 	}
+
 	public Exp menor(Exp op1, Exp op2) {
 		return new Menor(op1, op2);
 	}
+
 	public Exp menor_igual(Exp op1, Exp op2) {
 		return new Menor_igual(op1, op2);
 	}
+
+	public Exp asignacion(Exp op1, Exp op2) {
+		return new Asignacion(op1, op2);
+	}
+
 	public Exp comparacion(Exp op1, Exp op2) {
 		return new Comparacion(op1, op2);
 	}
+
 	public Exp distinto(Exp op1, Exp op2) {
 		return new Distinto(op1, op2);
 	}
+
 	public Exp suma(Exp op1, Exp op2) {
 		return new Suma(op1, op2);
 	}
+
 	public Exp resta(Exp op1, Exp op2) {
 		return new Resta(op1, op2);
 	}
+
 	public Exp and(Exp op1, Exp op2) {
 		return new And(op1, op2);
 	}
+
 	public Exp or(Exp op1, Exp op2) {
 		return new Or(op1, op2);
 	}
+
 	public Exp mult(Exp op1, Exp op2) {
 		return new Mult(op1, op2);
 	}
+
 	public Exp div(Exp op1, Exp op2) {
 		return new Div(op1, op2);
 	}
+
 	public Exp mod(Exp op1, Exp op2) {
 		return new Mod(op1, op2);
 	}
+
 	public Exp not_unario(Exp op1) {
 		return new Not_unario(op1);
 	}
-	
+
 	public Exp resta_unario(Exp op1) {
 		return new Resta_unario(op1);
 	}
-	
+
 	public Exp indexacion(Exp op1, Exp op2) {
 		return new Indexacion(op1, op2);
 	}
-	
+
 	public Exp acc_reg(Exp op1, String cadena) {
 		return new Acc_reg(op1, cadena);
 	}
-	
+
 	public Exp indireccion(Exp op1) {
 		return new Indireccion(op1);
 	}
-	
+
 	public Exp lit_ent(String cadena) {
 		return new Lit_ent(cadena);
 	}
-	
+
 	public Exp lit_real(String cadena) {
 		return new Lit_real(cadena);
 	}
-	
+
 	public Exp true_e() {
 		return new True_e();
 	}
-	
+
 	public Exp false_e() {
 		return new False_e();
 	}
+
 	public Exp null_e() {
 		return new Null_e();
 	}
-	
+
 	public Exp cadena(String cadena) {
 		return new Cadena(cadena);
 	}
-	
+
 	public Exp iden(String cadena) {
 		return new Iden(cadena);
 	}
-	
+
 	public LOptParam si_lista_opt_param(LParam lista_parametros) {
 		return new Si_lista_opt_param(lista_parametros);
 	}
-	
+
 	public LOptParam no_lista_opt_param() {
 		return new No_lista_opt_param();
 	}
-	
+
 	public LParam muchas_lista_param(LParam lista_parametros, Exp expresion) {
 		return new Muchas_lista_param(lista_parametros, expresion);
 	}
-	
+
 	public LParam una_lista_param(Exp expresion) {
 		return new Una_lista_param(expresion);
 	}

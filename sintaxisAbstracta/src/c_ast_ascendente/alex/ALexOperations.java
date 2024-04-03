@@ -1,5 +1,5 @@
-package cup.alex;
-import cup.asint.ClaseLexica;
+package c_ast_ascendente.alex;
+import c_ast_ascendente.asint.ClaseLexica;
 
 public class ALexOperations {
 

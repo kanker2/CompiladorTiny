@@ -1,7 +1,7 @@
-package cup.alex;
+package c_ast_ascendente.alex;
 
+import c_ast_ascendente.asint.ClaseLexica;
 import java_cup.runtime.Symbol;
-import cup.asint.ClaseLexica;
 
 public class UnidadLexica extends Symbol {
 	public static class StringLocalizado {
