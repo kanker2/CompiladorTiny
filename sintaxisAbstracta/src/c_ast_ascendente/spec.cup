@@ -60,7 +60,7 @@ non terminal  LOptInst lista_opt_instrucciones;
 non terminal  LInst lista_instrucciones;
 non terminal  Inst instruccion, instruccion_eval, instruccion_if, instruccion_if_else, instruccion_while, instruccion_read, instruccion_write, instruccion_nl, instruccion_new, instruccion_delete, instruccion_call, instruccion_compuesta;
 non terminal  Exp expresion, E0, E1, E2, E3, E4, E5, E6, E7;
-non terminal  LOptParam lista_opt_parametros;
+non terminal  LOptParam lista_opt_parametros, parametros;
 non terminal  LParam lista_parametros;
 non terminal  String OP1, OP4, OP5;
 
@@ -291,8 +291,11 @@ instruccion_new ::= NEW expresion: exp
 	{: RESULT = sem.inst_new(exp); :};
 instruccion_delete ::= DELETE expresion: exp
 	{: RESULT = sem.inst_delete(exp); :};
-instruccion_call ::= CALL Identificador: id INIPAR lista_opt_parametros: l_opt_param FINPAR
-	{: RESULT = sem.inst_call(id.str(), l_opt_param); :}; 
+instruccion_call ::= CALL Identificador: id parametros: param 
+	{: RESULT = sem.inst_call(id.str(), param); :}; 
+
+parametros ::= INIPAR lista_opt_parametros: l_opt_param FINPAR
+	{: RESULT = l_opt_param; :};
 
 lista_opt_parametros ::= lista_parametros: l_param
 	{: RESULT = sem.si_lista_opt_param(l_param); :};
