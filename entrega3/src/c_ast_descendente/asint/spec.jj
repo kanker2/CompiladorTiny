@@ -281,10 +281,10 @@ void tipo_basico() :
 	}
 
 void tipo_registro() : 
-	{LOptParamReg l_opt_param_reg;}
+	{LParamReg l_param_reg;}
 	{
-		<STRUCT> "{" l_opt_param_reg = lista_opt_parametros_registro() "}"
-			{return sem.tipo_registro(l_opt_param_reg);}
+		<STRUCT> "{" l_param_reg = lista_parametros_registro() "}"
+			{return sem.tipo_registro(l_param_reg);}
 	}
 
 void tipo_definido() :
@@ -292,15 +292,6 @@ void tipo_definido() :
 	{
 		t = <Identificador>
 			{return sem.tipo_definido(t.image);}
-	}
-
-void lista_opt_parametros_registro() :
-	{LParamReg l_param_reg;}
-	{
-		l_param_reg = lista_parametros_registro()
-			{return sem.si_lista_opt_param_reg(l_param_reg);}
-		|
-			{return sem.no_lista_opt_param_reg();}
 	}
 
 void lista_parametros_registro() :
