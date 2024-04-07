@@ -15,7 +15,6 @@ import asint.SintaxisAbstractaTiny.LOptParamForm;
 import asint.SintaxisAbstractaTiny.LParamForm;
 import asint.SintaxisAbstractaTiny.ParamForm;
 import asint.SintaxisAbstractaTiny.Tipo;
-import asint.SintaxisAbstractaTiny.LOptParamReg
 import asint.SintaxisAbstractaTiny.LParamReg;
 import asint.SintaxisAbstractaTiny.ParamReg;
 import asint.SintaxisAbstractaTiny.LOptInst;
