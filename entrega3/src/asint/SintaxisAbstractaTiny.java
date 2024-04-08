@@ -298,9 +298,13 @@ public class SintaxisAbstractaTiny {
 	// Clases concretas (Constructoras de AST's)
 
 	public static class Prog_tiny extends ProgT {
-
 		public Prog_tiny(Blq bloque) {
 			super(bloque);
+			this.bloque = bloque;
+		}
+		
+		public String toString() {
+			return "prog_tiny("+bloque+")";
 		}
 
 	}
@@ -310,6 +314,10 @@ public class SintaxisAbstractaTiny {
 		public Bloque(LOptDecs lista_opt_declaraciones, LOptInst lista_opt_instrucciones) {
 			super(lista_opt_declaraciones, lista_opt_instrucciones);
 		}
+		
+		public String toString() {
+			return "bloque("+lista_opt_declaraciones+","+lista_opt_instrucciones+")";
+		}
 
 	}
 
@@ -318,11 +326,19 @@ public class SintaxisAbstractaTiny {
 		public Si_lista_opt_decs(LDecs lista_declaraciones) {
 			super(lista_declaraciones);
 		}
+		
+		public String toString() {
+			return "si_lista_opt_decs("+lista_declaraciones+")";
+		}
 	}
 
 	public static class No_lista_opt_decs extends LOptDecs {
 		public No_lista_opt_decs() {
 			super();
+		}
+		
+		public String toString() {
+			return "no_lista_opt_decs()";
 		}
 	}
 
@@ -330,11 +346,19 @@ public class SintaxisAbstractaTiny {
 		public Muchas_lista_decs(LDecs lista_declaraciones, Dec declaracion) {
 			super(lista_declaraciones, declaracion);
 		}
+		
+		public String toString() {
+			return "muchas_lista_decs("+lista_declaraciones+","+declaracion+")";
+		}
 	}
 
 	public static class Una_lista_decs extends LDecs {
 		public Una_lista_decs(Dec declaracion) {
 			super(declaracion);
+		}
+		
+		public String toString() {
+			return "una_lista_decs("+declaracion+")";
 		}
 	}
 
@@ -342,17 +366,30 @@ public class SintaxisAbstractaTiny {
 		public Dec_var(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
+		
+		public String toString() {
+			return "dec_var("+tipo+","+cadena+")";
+		}
 	}
 
 	public static class Dec_tipo extends Dec {
 		public Dec_tipo(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
+		
+		public String toString() {
+			return "dec_tipo("+tipo+","+cadena+")";
+		}
+		
 	}
 
 	public static class Dec_proc extends Dec {
 		public Dec_proc(String cadena, LOptParamForm lista_opt_parametros_formales, Blq bloque) {
 			super(cadena, lista_opt_parametros_formales, bloque);
+		}
+		
+		public String toString() {
+			return "dec_proc("+cadena+","+lista_opt_parametros_formales+", "+bloque+")";
 		}
 	}
 
@@ -360,17 +397,29 @@ public class SintaxisAbstractaTiny {
 		public Si_lista_opt_param_form(LParamForm lista_parametros_formales) {
 			super(lista_parametros_formales);
 		}
+		
+		public String toString() {
+			return "si_lista_opt_param_form("+lista_parametros_formales+")";
+		}
 	}
 
 	public static class No_lista_opt_param_form extends LOptParamForm {
 		public No_lista_opt_param_form() {
 			super();
 		}
+		
+		public String toString() {
+			return "no_lista_opt_param_form()";
+		}
 	}
 
 	public static class Muchas_lista_param_form extends LParamForm {
 		public Muchas_lista_param_form(LParamForm lista_parametros_formales, ParamForm parametro_formal) {
 			super(lista_parametros_formales, parametro_formal);
+		}
+		
+		public String toString() {
+			return "muchas_lista_param_form("+lista_parametros_formales+","+parametro_formal+")";
 		}
 	}
 
@@ -379,11 +428,18 @@ public class SintaxisAbstractaTiny {
 			super(parametro_formal);
 		}
 
+		public String toString() {
+			return "una_lista_param_form("+parametro_formal+")";
+		}
 	}
 
 	public static class Param_form_ref extends ParamForm {
 		public Param_form_ref(Tipo tipo, String cadena) {
 			super(tipo, cadena);
+		}
+		
+		public String toString() {
+			return "param_form_ref("+tipo+","+cadena+")";
 		}
 	}
 
@@ -391,11 +447,19 @@ public class SintaxisAbstractaTiny {
 		public Param_form(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
+		
+		public String toString() {
+			return "param_form("+tipo+","+cadena+")";
+		}
 	}
 
 	public static class Tipo_array extends Tipo {
 		public Tipo_array(Tipo tipo, String cadena) {
 			super(tipo, cadena);
+		}
+		
+		public String toString() {
+			return "tipo_array("+tipo+","+cadena+")";
 		}
 	}
 
@@ -403,11 +467,19 @@ public class SintaxisAbstractaTiny {
 		public Tipo_puntero(Tipo tipo) {
 			super(tipo);
 		}
+		
+		public String toString() {
+			return "tipo_puntero("+tipo+","+cadena+")";
+		}
 	}
 
 	public static class Int_t extends Tipo {
 		public Int_t() {
 			super();
+		}
+		
+		public String toString() {
+			return "Int_t()";
 		}
 	}
 
@@ -415,11 +487,19 @@ public class SintaxisAbstractaTiny {
 		public Real_t() {
 			super();
 		}
+		
+		public String toString() {
+			return "real_t()";
+		}
 	}
 
 	public static class Bool_t extends Tipo {
 		public Bool_t() {
 			super();
+		}
+		
+		public String toString() {
+			return "bool_t()";
 		}
 	}
 
@@ -427,11 +507,19 @@ public class SintaxisAbstractaTiny {
 		public String_t() {
 			super();
 		}
+		
+		public String toString() {
+			return "string_t()";
+		}
 	}
 
 	public static class Tipo_registro extends Tipo {
 		public Tipo_registro(LParamReg lista_parametros_registro) {
 			super(lista_parametros_registro);
+		}
+		
+		public String toString() {
+			return "tipo_registro("+lista_parametros_registro+")";
 		}
 	}
 
@@ -439,11 +527,19 @@ public class SintaxisAbstractaTiny {
 		public Tipo_definido(String cadena) {
 			super(cadena);
 		}
+		
+		public String toString() {
+			return "tipo_definido("+cadena+")";
+		}
 	}
 
 	public static class Muchas_lista_param_reg extends LParamReg {
 		public Muchas_lista_param_reg(LParamReg lista_parametros_registro, ParamReg parametro_registro) {
 			super(lista_parametros_registro, parametro_registro);
+		}
+		
+		public String toString() {
+			return "muchas_lista_param_reg("+lista_parametros_registro+","+parametro_registro+")";
 		}
 	}
 
@@ -451,11 +547,19 @@ public class SintaxisAbstractaTiny {
 		public Una_lista_param_reg(ParamReg parametro_registro) {
 			super(parametro_registro);
 		}
+		
+		public String toString() {
+			return "una_lista_param_reg("+parametro_registro+")";
+		}
 	}
 
 	public static class Param_reg extends ParamReg {
 		public Param_reg(Tipo tipo, String cadena) {
 			super(tipo, cadena);
+		}
+		
+		public String toString() {
+			return "param_reg("+tipo+","+cadena+")";
 		}
 	}
 
@@ -463,11 +567,19 @@ public class SintaxisAbstractaTiny {
 		public Si_lista_opt_inst(LInst lista_instrucciones) {
 			super(lista_instrucciones);
 		}
+		
+		public String toString() {
+			return "si_lista_opt_inst("+lista_instrucciones+")";
+		}
 	}
 
 	public static class No_lista_opt_inst extends LOptInst {
 		public No_lista_opt_inst() {
 			super();
+		}
+		
+		public String toString() {
+			return "no_lista_opt_inst()";
 		}
 	}
 
@@ -475,11 +587,19 @@ public class SintaxisAbstractaTiny {
 		public Muchas_lista_inst(LInst lista_instrucciones, Inst instruccion) {
 			super(lista_instrucciones, instruccion);
 		}
+		
+		public String toString() {
+			return "muchas_lista_inst("+lista_instrucciones+","+instruccion+")";
+		}
 	}
 
 	public static class Una_lista_inst extends LInst {
 		public Una_lista_inst(Inst instruccion) {
 			super(instruccion);
+		}
+		
+		public String toString() {
+			return "una_lista_inst("+instruccion+")";
 		}
 	}
 
@@ -487,23 +607,46 @@ public class SintaxisAbstractaTiny {
 		public Inst_eval(Exp expresion) {
 			super(expresion);
 		}
+		
+		public String toString() {
+			return "inst_eval("+expresion+")";
+		}
 	}
 
 	public static class Inst_if extends Inst {
+		Blq bloque;
 		public Inst_if(Exp expresion, Blq bloque) {
 			super(expresion, bloque);
+			this.bloque = bloque;
+		}
+		
+		public String toString() {
+			return "inst_if("+expresion+","+bloque+")";
 		}
 	}
 
 	public static class Inst_if_else extends Inst {
+		Blq bloque, bloque2;
 		public Inst_if_else(Exp expresion, Blq bloque, Blq bloque2) {
 			super(expresion, bloque, bloque2);
+			this.bloque = bloque;
+			this.bloque2 = bloque2;
+		}
+		
+		public String toString() {
+			return "inst_if_else("+expresion+","+bloque+","+bloque2+")";
 		}
 	}
 
 	public static class Inst_while extends Inst {
+		Blq bloque;
 		public Inst_while(Exp expresion, Blq bloque) {
 			super(expresion, bloque);
+			this.bloque = bloque;
+		}
+		
+		public String toString() {
+			return "inst_while("+expresion+","+bloque+")";
 		}
 	}
 
@@ -511,11 +654,19 @@ public class SintaxisAbstractaTiny {
 		public Inst_read(Exp expresion) {
 			super(expresion);
 		}
+		
+		public String toString() {
+			return "inst_read("+expresion+")";
+		}
 	}
 
 	public static class Inst_write extends Inst {
 		public Inst_write(Exp expresion) {
 			super(expresion);
+		}
+		
+		public String toString() {
+			return "inst_write("+expresion+")";
 		}
 	}
 
@@ -523,11 +674,19 @@ public class SintaxisAbstractaTiny {
 		public Inst_nl() {
 			super();
 		}
+		
+		public String toString() {
+			return "inst_nl()";
+		}
 	}
 
 	public static class Inst_new extends Inst {
 		public Inst_new(Exp expresion) {
 			super(expresion);
+		}
+		
+		public String toString() {
+			return "inst_new("+expresion+")";
 		}
 	}
 
@@ -535,17 +694,33 @@ public class SintaxisAbstractaTiny {
 		public Inst_delete(Exp expresion) {
 			super(expresion);
 		}
+		
+		public String toString() {
+			return "inst_delete("+expresion+")";
+		}
 	}
 
 	public static class Inst_call extends Inst {
+		LOptParam lista_opt_parametros;
 		public Inst_call(String cadena, LOptParam lista_opt_parametros) {
 			super(cadena, lista_opt_parametros);
+			this.lista_opt_parametros = lista_opt_parametros;
+		}
+		
+		public String toString() {
+			return "inst_call("+cadena+","+lista_opt_parametros+")";
 		}
 	}
 
 	public static class Inst_comp extends Inst {
+		Blq bloque;
 		public Inst_comp(Blq bloque) {
 			super(bloque);
+			this.bloque = bloque;
+		}
+		
+		public String toString() {
+			return "tipo_puntero("+bloque+")";
 		}
 	}
 
@@ -553,11 +728,19 @@ public class SintaxisAbstractaTiny {
 		public Asignacion(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
+		
+		public String toString() {
+			return "asignacion("+op1+","+op2+")";
+		}
 	}
 
 	public static class Mayor extends Exp {
 		public Mayor(Exp op1, Exp op2) {
 			super(op1, op2);
+		}
+		
+		public String toString() {
+			return "mayor("+op1+","+op2+")";
 		}
 	}
 
@@ -565,11 +748,19 @@ public class SintaxisAbstractaTiny {
 		public Mayor_igual(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
+		
+		public String toString() {
+			return "mayor_igual("+op1+","+op2+")";
+		}
 	}
 
 	public static class Menor extends Exp {
 		public Menor(Exp op1, Exp op2) {
 			super(op1, op2);
+		}
+		
+		public String toString() {
+			return "menor("+op1+","+op2+")";
 		}
 	}
 
@@ -577,11 +768,19 @@ public class SintaxisAbstractaTiny {
 		public Menor_igual(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
+		
+		public String toString() {
+			return "menor_igual("+op1+","+op2+")";
+		}
 	}
 
 	public static class Comparacion extends Exp {
 		public Comparacion(Exp op1, Exp op2) {
 			super(op1, op2);
+		}
+		
+		public String toString() {
+			return "comparacion("+op1+","+op2+")";
 		}
 	}
 
@@ -589,11 +788,19 @@ public class SintaxisAbstractaTiny {
 		public Distinto(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
+		
+		public String toString() {
+			return "distinto("+op1+","+op2+")";
+		}
 	}
 
 	public static class Suma extends Exp {
 		public Suma(Exp op1, Exp op2) {
 			super(op1, op2);
+		}
+		
+		public String toString() {
+			return "suma("+op1+","+op2+")";
 		}
 	}
 
@@ -601,11 +808,19 @@ public class SintaxisAbstractaTiny {
 		public Resta(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
+		
+		public String toString() {
+			return "resta("+op1+","+op2+")";
+		}
 	}
 
 	public static class And extends Exp {
 		public And(Exp op1, Exp op2) {
 			super(op1, op2);
+		}
+		
+		public String toString() {
+			return "and("+op1+","+op2+")";
 		}
 	}
 
@@ -613,11 +828,19 @@ public class SintaxisAbstractaTiny {
 		public Or(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
+		
+		public String toString() {
+			return "or("+op1+","+op2+")";
+		}
 	}
 
 	public static class Mult extends Exp {
 		public Mult(Exp op1, Exp op2) {
 			super(op1, op2);
+		}
+		
+		public String toString() {
+			return "mult("+op1+","+op2+")";
 		}
 	}
 
@@ -625,11 +848,19 @@ public class SintaxisAbstractaTiny {
 		public Div(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
+		
+		public String toString() {
+			return "div("+op1+","+op2+")";
+		}
 	}
 
 	public static class Mod extends Exp {
 		public Mod(Exp op1, Exp op2) {
 			super(op1, op2);
+		}
+		
+		public String toString() {
+			return "mod("+op1+","+op2+")";
 		}
 	}
 
@@ -637,11 +868,19 @@ public class SintaxisAbstractaTiny {
 		public Not_unario(Exp op1) {
 			super(op1);
 		}
+		
+		public String toString() {
+			return "not_unario("+op1+")";
+		}
 	}
 
 	public static class Resta_unario extends Exp {
 		public Resta_unario(Exp op1) {
 			super(op1);
+		}
+		
+		public String toString() {
+			return "resta_unario("+op1+"+)";
 		}
 	}
 
@@ -649,11 +888,19 @@ public class SintaxisAbstractaTiny {
 		public Indexacion(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
+		
+		public String toString() {
+			return "indexacion("+op1+","+op2+")";
+		}
 	}
 
 	public static class Acc_reg extends Exp {
 		public Acc_reg(Exp op1, String cadena) {
 			super(op1, cadena);
+		}
+		
+		public String toString() {
+			return "acc_reg("+op1+","+cadena+")";
 		}
 	}
 
@@ -661,11 +908,19 @@ public class SintaxisAbstractaTiny {
 		public Indireccion(Exp op1) {
 			super(op1);
 		}
+		
+		public String toString() {
+			return "indireccion("+op1+")";
+		}
 	}
 
 	public static class Lit_ent extends Exp {
 		public Lit_ent(String cadena) {
 			super(cadena);
+		}
+		
+		public String toString() {
+			return "lit_ent("+cadena+"["+leeFila()+","+leeCol()+"])";
 		}
 	}
 
@@ -673,11 +928,19 @@ public class SintaxisAbstractaTiny {
 		public Lit_real(String cadena) {
 			super(cadena);
 		}
+		
+		public String toString() {
+			return "lit_real("+cadena+"["+leeFila()+","+leeCol()+"])";
+		}
 	}
 
 	public static class True_e extends Exp {
 		public True_e() {
 			super();
+		}
+		
+		public String toString() {
+			return "true_e()";
 		}
 	}
 
@@ -685,11 +948,19 @@ public class SintaxisAbstractaTiny {
 		public False_e() {
 			super();
 		}
+		
+		public String toString() {
+			return "false_e()";
+		}
 	}
 
 	public static class Null_e extends Exp {
 		public Null_e() {
 			super();
+		}
+		
+		public String toString() {
+			return "null_e()";
 		}
 	}
 
@@ -697,11 +968,19 @@ public class SintaxisAbstractaTiny {
 		public Cadena(String cadena) {
 			super(cadena);
 		}
+		
+		public String toString() {
+			return "cadena("+cadena+"["+leeFila()+","+leeCol()+"])";
+		}
 	}
 
 	public static class Iden extends Exp {
 		public Iden(String cadena) {
 			super(cadena);
+		}
+		
+		public String toString() {
+			return "iden("+cadena+"["+leeFila()+","+leeCol()+"])";
 		}
 	}
 
@@ -709,11 +988,19 @@ public class SintaxisAbstractaTiny {
 		public Si_lista_opt_param(LParam lista_parametros) {
 			super(lista_parametros);
 		}
+		
+		public String toString() {
+			return "si_lista_opt_param("+lista_parametros+")";
+		}
 	}
 
 	public static class No_lista_opt_param extends LOptParam {
 		public No_lista_opt_param() {
 			super();
+		}
+		
+		public String toString() {
+			return "no_lista_opt_param()";
 		}
 	}
 
@@ -721,11 +1008,19 @@ public class SintaxisAbstractaTiny {
 		public Muchas_lista_param(LParam lista_parametros, Exp expresion) {
 			super(lista_parametros, expresion);
 		}
+		
+		public String toString() {
+			return "muchas_lista_param("+lista_parametros+","+expresion+")";
+		}
 	}
 
 	public static class Una_lista_param extends LParam {
 		public Una_lista_param(Exp expresion) {
 			super(expresion);
+		}
+		
+		public String toString() {
+			return "una_lista_param("+expresion+")";
 		}
 	}
 
