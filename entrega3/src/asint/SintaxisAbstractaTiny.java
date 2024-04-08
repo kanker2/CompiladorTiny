@@ -75,7 +75,7 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static abstract class Dec {
+	public static abstract class Dec extends Nodo{
 		protected Tipo tipo;
 		protected String cadena;
 		protected Blq bloque;

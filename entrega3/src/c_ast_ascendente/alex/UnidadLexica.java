@@ -1,6 +1,5 @@
 package c_ast_ascendente.alex;
 
-import c_ast_ascendente.asint.ClaseLexica;
 import java_cup.runtime.Symbol;
 
 public class UnidadLexica extends Symbol {
