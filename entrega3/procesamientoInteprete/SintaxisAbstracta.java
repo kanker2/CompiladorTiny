@@ -925,18 +925,17 @@ public class SintaxisAbstractaEval {
     }
     
     public static class inst_nl extends inst {
-        private Exp exp;
-        public inst_nl(Exp e) {
-            this.exp=e;
+        public inst_nl() {
+            
         }
         public void imprime() {
         	System.out.println("<nl>");
-        	exp.imprime();
+        	
         	
         	
         }
         public String toString() {
-            return "inst_nl(["+leeFila()+","+leeCol()+"],"+exp+")";
+            return "inst_nl(["+leeFila()+","+leeCol()+"]")";
         } 
     }
     
