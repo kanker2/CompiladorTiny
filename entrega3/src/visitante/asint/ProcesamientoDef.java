@@ -6,8 +6,8 @@ import visitante.asint.SintaxisAbstractaTiny.*;
 public class ProcesamientoDef implements Procesamiento {
 
 	
-	public void procesa(Prog_tiny prog) {}
-	public void procesa (Bloque blq){}   
+	public void procesa(ProgT prog) {}
+	public void procesa (Blq blq){}   
 	public void procesa(LOptDecs ld){}
 	public void procesa(LDecs ld){}
 	public void procesa(Dec d){}

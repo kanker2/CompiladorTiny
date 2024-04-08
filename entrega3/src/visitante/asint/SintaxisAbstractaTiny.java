@@ -41,6 +41,11 @@ public class SintaxisAbstractaTiny {
 			this.bloque = bloque;
 		}
 		
+		public void procesa(Procesamiento p)
+		{
+			p.procesa(this);
+		}
+		
 		
 	}
 

@@ -17,10 +17,11 @@ public class Main {
 			ConstructorASTTiny asint = new ConstructorASTTiny(alex);
 			ProgT prog = (ProgT) asint.parse().value;
 			prog.procesa(new Impresion());
-		} else {
-			ConstructorASTTiny asint = new ConstructorASTTiny(new FileReader(args[1]));
-			asint.disable_tracing();
-			asint.analiza().procesa(new Impresion());
 		}
+//		else {
+//			ConstructorASTTiny asint = new ConstructorASTTiny(new FileReader(args[1]));
+//			asint.disable_tracing();
+//			asint.analiza().procesa(new Impresion());
+//		}
 	}
 }

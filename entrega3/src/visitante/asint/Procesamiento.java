@@ -4,8 +4,8 @@ import visitante.asint.SintaxisAbstractaTiny.*;
 
 public interface Procesamiento {
 
-    void procesa(Prog_tiny prog);
-    void procesa (Bloque blq);    
+    void procesa(ProgT prog);
+    void procesa (Blq blq);    
     void procesa(LOptDecs ld);
     void procesa(LDecs ld);
     void procesa(Dec d);
