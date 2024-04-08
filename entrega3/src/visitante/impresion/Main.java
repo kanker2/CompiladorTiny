@@ -5,9 +5,9 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import asint.SintaxisAbstractaTiny.ProgT;
-import c_ast_ascendente.alex.AnalizadorLexicoTiny;
-import c_ast_ascendente.asint.ConstructorASTTiny;
+import visitante.asint.SintaxisAbstractaTiny.ProgT;
+import visitante.c_ast_ascendente.alex.AnalizadorLexicoTiny;
+import visitante.c_ast_ascendente.asint.ConstructorASTTiny;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
