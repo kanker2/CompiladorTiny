@@ -247,8 +247,6 @@ public class Impresion extends ProcesamientoDef {
 		 }
 		 public void procesa(Inst_nl i) {
 			 System.out.print("<nl>"); 
-			 i.e.procesa(this);
-
 		 }
 		 public void procesa(Inst_new i) {
 			 System.out.print("<new>"); 
