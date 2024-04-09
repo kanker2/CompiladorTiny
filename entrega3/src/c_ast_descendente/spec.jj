@@ -157,21 +157,21 @@ Dec declaracion_variable() :
 	{Tipo tipo; Token t;}
 	{
 		tipo = tipo() t = <Identificador>
-			{return sem.dec_var(tipo, t.image);}
+			{return (Dec)sem.dec_var(tipo, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 	}
 
 Dec declaracion_tipo() : 
 	{Tipo tipo; Token t;}
 	{
 		<TYPE> tipo = tipo() t = <Identificador>
-			{return sem.dec_tipo(tipo, t.image);}
+			{return (Dec)sem.dec_tipo(tipo, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 	}
 
 Dec declaracion_proc() :
 	{Token t; LOptParamForm l_opt_param_form; Blq bloque;}
 	{
 		<PROC> t = <Identificador> "(" l_opt_param_form = lista_opt_parametros_formales() ")" bloque = bloque()
-			{return sem.dec_proc(t.image, l_opt_param_form, bloque); }
+			{return (Dec)sem.dec_proc(t.image, l_opt_param_form, bloque).ponFila(t.beginLine).ponCol(t.beginColumn); }
 	}
 
 
@@ -348,9 +348,6 @@ Inst instruccion() :
 		inst = instruccion_eval()
 			{return inst;}
 		|
-		inst = instruccion_if()
-			{return inst;}
-		|
 		inst = instruccion_if_else()
 			{return inst;}
 		| 
@@ -523,10 +520,10 @@ Exp E7() :
 	{Exp e; Token t;}
 	{
 		t = <Entero> 
-			{return sem.lit_ent(t.image);}
+			{return (Exp)sem.lit_ent(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 		t = <Real> 
-			{return sem.lit_real(t.image);}
+			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		| 
 		<TRUE> 
 			{return sem.true_e();}
@@ -538,10 +535,10 @@ Exp E7() :
 			{return sem.null_e();}
 		|
 		t = <Cadena> 
-			{return sem.cadena(t.image);}
+			{return (Exp)sem.cadena(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 		t = <Identificador> 
-			{return sem.iden(t.image);}
+			{return (Exp)sem.iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		"(" e = E0() ")"
 			{return e;}
 	}
@@ -592,19 +589,20 @@ String OP5() :
 			{return "-";}
 	}	
 
-Inst instruccion_if() :
-	{Exp e; Blq bloque;}
-	{
-		<IF> e = expresion() bloque = bloque()
-			{return sem.inst_if(e, bloque);}
-	}
-
-
 Inst instruccion_if_else() : 
 	{Blq b1, b2; Exp e;}
 	{
-		<IF> e = expresion() b1 = bloque() <ELSE> b2 = bloque()
+		<IF> e = expresion() b1 = bloque() b2 = then_else()
 			{return sem.inst_if_else(e, b1, b2);}
+	}
+
+Blq then_else() :
+	{Blq blq;}
+	{
+		<ELSE> blq = bloque()
+			{return blq;}
+		| 
+			{return sem.else_vacio();}	
 	}
 
 Inst instruccion_while() :

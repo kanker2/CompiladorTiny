@@ -8,6 +8,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		ConstructorASTTinyDesc asint = new ConstructorASTTinyDesc(new FileReader(args[0]));
 		asint.disable_tracing();
+		System.out.println("Descendente:\n");
 		System.out.println(asint.analiza());
 	}
 }

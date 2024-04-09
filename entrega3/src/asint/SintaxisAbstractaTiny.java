@@ -44,10 +44,13 @@ public class SintaxisAbstractaTiny {
 		protected LOptDecs lista_opt_declaraciones;
 		protected LOptInst lista_opt_instrucciones;
 
+		public Blq() {}
+			
 		public Blq(LOptDecs lista_opt_declaraciones, LOptInst lista_opt_instrucciones) {
 			this.lista_opt_declaraciones = lista_opt_declaraciones;
 			this.lista_opt_instrucciones = lista_opt_instrucciones;
 		}
+	
 	}
 
 	public static abstract class LOptDecs {
@@ -613,18 +616,6 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static class Inst_if extends Inst {
-		Blq bloque;
-		public Inst_if(Exp expresion, Blq bloque) {
-			super(expresion, bloque);
-			this.bloque = bloque;
-		}
-		
-		public String toString() {
-			return "inst_if("+expresion+","+bloque+")";
-		}
-	}
-
 	public static class Inst_if_else extends Inst {
 		Blq bloque, bloque2;
 		public Inst_if_else(Exp expresion, Blq bloque, Blq bloque2) {
@@ -635,6 +626,16 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "inst_if_else("+expresion+","+bloque+","+bloque2+")";
+		}
+	}
+	
+	public static class Else_vacio extends Blq {
+		public Else_vacio() {
+			super();
+		}
+		
+		public String toString() {
+			return "else_vacio()";
 		}
 	}
 
@@ -1150,12 +1151,12 @@ public class SintaxisAbstractaTiny {
 		return new Inst_eval(expresion);
 	}
 
-	public Inst inst_if(Exp expresion, Blq bloque) {
-		return new Inst_if(expresion, bloque);
+	public Inst inst_if_else(Exp expresion, Blq bloque1, Blq bloque2) {
+		return new Inst_if_else(expresion, bloque1, bloque2);
 	}
 
-	public Inst inst_if_else(Exp expresion, Blq bloque, Blq bloque2) {
-		return new Inst_if_else(expresion, bloque, bloque2);
+	public Blq else_vacio() {
+		return new Else_vacio();
 	}
 
 	public Inst inst_while(Exp expresion, Blq bloque) {

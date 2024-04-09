@@ -13,6 +13,7 @@ public class Main {
 		AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
 		ConstructorASTTiny asint = new ConstructorASTTiny(alex);
 		// asint.setScanner(alex);
+		System.out.println("Ascendente:\n");
 		System.out.println(asint.parse().value);
 	}
 }
