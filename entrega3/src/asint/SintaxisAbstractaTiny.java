@@ -270,6 +270,8 @@ public class SintaxisAbstractaTiny {
 		public Exp(String cadena) {
 			this.cadena = cadena;
 		}
+
+		public Exp op1() { throw new UnsupportedOperationException(); }
 	}
 
 	public static abstract class LOptParam {
