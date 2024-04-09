@@ -78,7 +78,7 @@ lista_opt_declaraciones ::=
 lista_declaraciones ::= lista_declaraciones: l_decs PUNTOYCOMA declaracion: dec 
 	{: RESULT = sem.muchas_lista_decs(l_decs, dec); :};
 lista_declaraciones ::= declaracion: dec 
-	{: RESULT = sem.una_lista_decs(dec); :};
+	{: RESULT = sem.una_lista_dec(dec); :};
 
 declaracion ::= declaracion_variable: dec_var 
 	{: RESULT = dec_var; :};

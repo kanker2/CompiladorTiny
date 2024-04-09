@@ -115,7 +115,7 @@ Blq bloque() :
 			{return sem.bloque(l_opt_decs, l_opt_inst);}
 	}
 
-void lista_opt_declaraciones() :
+LOptDecs lista_opt_declaraciones() :
 	{LDecs l_decs;}
 	{
 		l_decs = lista_declaraciones() "&&"
@@ -124,14 +124,14 @@ void lista_opt_declaraciones() :
 			{return sem.no_lista_opt_decs();}
 	}
 
-void lista_declaraciones() : 
+LDecs lista_declaraciones() : 
 	{LDecs l_decs; Dec dec;}
 	{ 
 		dec = declaracion() l_decs = lista_decs(sem.una_lista_dec(dec)) 
 			{return l_decs;}	
 	}
 
-void lista_decs(LDecs l_decsh) : 
+LDecs lista_decs(LDecs l_decsh) : 
 	{Dec dec; LDecs l_decs;}
 	{
 		";" dec = declaracion() l_decs = lista_decs(sem.muchas_lista_decs(l_decsh, dec))
@@ -140,7 +140,7 @@ void lista_decs(LDecs l_decsh) :
 			{return l_decsh;}
 	}
 
-void declaracion() : 
+Dec declaracion() : 
 	{Dec dec;}
 	{
 		dec = declaracion_variable()
@@ -153,21 +153,21 @@ void declaracion() :
 			{return dec;}
 	}
 
-void declaracion_variable() : 
+Dec declaracion_variable() : 
 	{Tipo tipo; Token t;}
 	{
 		tipo = tipo() t = <Identificador>
 			{return sem.dec_var(tipo, t.image);}
 	}
 
-void declaracion_tipo() : 
+Dec declaracion_tipo() : 
 	{Tipo tipo; Token t;}
 	{
 		<TYPE> tipo = tipo() t = <Identificador>
 			{return sem.dec_tipo(tipo, t.image);}
 	}
 
-void declaracion_proc() :
+Dec declaracion_proc() :
 	{Token t; LOptParamForm l_opt_param_form; Blq bloque;}
 	{
 		<PROC> t = <Identificador> "(" l_opt_param_form = lista_opt_parametros_formales() ")" bloque = bloque()
@@ -175,7 +175,7 @@ void declaracion_proc() :
 	}
 
 
-void lista_opt_parametros_formales() :
+LOptParamForm lista_opt_parametros_formales() :
 	{LParamForm l_param_form;}
 	{
 		l_param_form = lista_parametros_formales()
@@ -184,14 +184,14 @@ void lista_opt_parametros_formales() :
 			{return sem.no_lista_opt_param_form();}
 	}
 
-void lista_parametros_formales() :
+LParamForm lista_parametros_formales() :
 	{ParamForm pf; LParamForm l_param_form;}
 	{
 		pf = parametro_formal() l_param_form = RECP(sem.una_lista_param_form(pf))
 			{return l_param_form;}
 	}
 
-void RECP(LParamForm l_param_formh) :
+LParamForm RECP(LParamForm l_param_formh) :
 	{ParamForm pf; LParamForm l_param_form;}
 	{
 		"," pf = parametro_formal() l_param_form = RECP(sem.muchas_lista_param_form(l_param_formh, pf))
@@ -200,47 +200,47 @@ void RECP(LParamForm l_param_formh) :
 			{return l_param_formh;}
 	}
 
-void parametro_formal() : 
+ParamForm parametro_formal() : 
 	{Tipo tipo; ParamForm pf;}
 	{
 		tipo = tipo() pf = RECpf(tipo)
 			{return pf;}
 	}
 
-void RECpf(ParamForm pfh) :
+ParamForm RECpf(Tipo th) :
 	{Token t;}
 	{
 		"&" t = <Identificador> 
-			{return sem.param_form_ref(pfh, t.image);}
+			{return sem.param_form_ref(th, t.image);}
 		| 
 		t = <Identificador> 
-			{return sem.param_form(pfh, t.image);}
+			{return sem.param_form(th, t.image);}
 	}
 
-void tipo() : 
+Tipo tipo() : 
 	{Tipo tipo;}
 	{
 		tipo = tipo_array()
 			{return tipo;}
 	}
 
-void tipo_array() :
+Tipo tipo_array() :
 	{Tipo tipo1, tipo2;}
 	{
 		tipo1 = tipo_puntero() tipo2 = RETA(tipo1)
 			{return tipo2;}
 	}
 
-void RETA(Tipo tipoh) : 
+Tipo RETA(Tipo tipoh) : 
 	{Token t; Tipo tipo;}
 	{
-		"[" t = <Entero> "]" tipo = RETA(sem.tipo__array(tipoh, t.image))
+		"[" t = <Entero> "]" tipo = RETA(sem.tipo_array(tipoh, t.image))
 			{return tipo;}
 		| 
 			{return tipoh;}
 	}
 
-void tipo_puntero() :
+Tipo tipo_puntero() :
 	{Tipo tipo;}
 	{
 		"^" tipo = tipo_puntero() 
@@ -250,7 +250,7 @@ void tipo_puntero() :
 			{return tipo;}
 	}
 
-void T2() :
+Tipo T2() :
 	{Tipo tipo;}
 	{
 		tipo = tipo_basico()
@@ -263,7 +263,7 @@ void T2() :
 			{return tipo;}
 	}
 
-void tipo_basico() :
+Tipo tipo_basico() :
 	{}
 	{
 		<INT> 
@@ -272,51 +272,51 @@ void tipo_basico() :
 		<REAL>
 			{return sem.real_t();}
 		| 
-		<BOOl> 
+		<BOOL> 
 			{return sem.bool_t();}
 		|
 		<STRING>
 			{return sem.string_t();}
 	}
 
-void tipo_registro() : 
+Tipo tipo_registro() : 
 	{LParamReg l_param_reg;}
 	{
 		<STRUCT> "{" l_param_reg = lista_parametros_registro() "}"
 			{return sem.tipo_registro(l_param_reg);}
 	}
 
-void tipo_definido() :
+Tipo tipo_definido() :
 	{Token t;}
 	{
 		t = <Identificador>
 			{return sem.tipo_definido(t.image);}
 	}
 
-void lista_parametros_registro() :
+LParamReg lista_parametros_registro() :
 	{ParamReg param_reg; LParamReg l_param_reg;}
 	{
-		param_reg = parametros_registro() l_param_reg = REClpr(sem.una_lista_param_reg(param_reg))
+		param_reg = parametro_registro() l_param_reg = REClpr(sem.una_lista_param_reg(param_reg))
 			{return l_param_reg;}
 	}
 
-void REClpr(LParamReg l_param_regh) : 
+LParamReg REClpr(LParamReg l_param_regh) : 
 	{ParamReg param_reg; LParamReg l_param_reg;}
 	{
-		"," param_reg = parametros_registro() l_param_reg = REClpr(sem.muchas_lista_param_reg(l_param_regh, param_reg))
+		"," param_reg = parametro_registro() l_param_reg = REClpr(sem.muchas_lista_param_reg(l_param_regh, param_reg))
 			{return l_param_reg;}
 		| 
 			{return l_param_regh;}
 	}
 
-void parametro_registro() :
+ParamReg parametro_registro() :
 	{Tipo tipo; Token t;}
 	{
 		tipo = tipo() t = <Identificador>
-			{return sem.param_reg(tipo, t.image)}
+			{return sem.param_reg(tipo, t.image);}
 	}
 
-void lista_opt_instrucciones() :
+LOptInst lista_opt_instrucciones() :
 	{LInst l_inst;}
 	{
 		l_inst = lista_instrucciones()
@@ -325,14 +325,14 @@ void lista_opt_instrucciones() :
 			{return sem.no_lista_opt_inst();}
 	}
 
-void lista_instrucciones() :
+LInst lista_instrucciones() :
 	{Inst inst; LInst l_inst;}
 	{
-		inst = instruccion() LInst = RECI(sem.una_lista_inst(inst))
-			{return LInst;}
+		inst = instruccion() l_inst = RECI(sem.una_lista_inst(inst))
+			{return l_inst;}
 	}
 
-void RECI(LInst l_insth)	:
+LInst RECI(LInst l_insth)	:
 	{Inst inst; LInst l_inst;}
 	{
 		";" inst = instruccion() l_inst = RECI(sem.muchas_lista_inst(l_insth, inst))
@@ -342,7 +342,7 @@ void RECI(LInst l_insth)	:
 	}
 
 
-void instruccion() : 
+Inst instruccion() : 
 	{Inst inst;}
 	{
 		inst = instruccion_eval()
@@ -379,28 +379,28 @@ void instruccion() :
 			{return inst;}
 	}
 
-void instruccion_eval() : 
+Inst instruccion_eval() : 
 	{Exp exp;}
 	{
 		"@" exp = expresion()
-			{return sem.inst_eval(exp):}
+			{return sem.inst_eval(exp);}
 	}
 
-void expresion() :
+Exp expresion() :
 	{Exp e;}
 	{
 		e = E0()
 			{return e;}
 	}
 
-void E0() :
+Exp E0() :
 	{Exp e1, e2;}
 	{
 		e1 = E1() e2 = FE0(e1)
 			{return e2;}
 	}
 
-void FE0(Exp eh) : 
+Exp FE0(Exp eh) : 
 	{Exp e;}
 	{
 		"=" e = E0()
@@ -409,14 +409,14 @@ void FE0(Exp eh) :
 			{return eh;}
 	}
 
-void E1() : 
+Exp E1() : 
 	{Exp e1, e2;}
 	{
 		e1 = E2() e2 = RE1(e1)
 			{return e2;}
 	}
 
-void RE1(Exp eh) : 
+Exp RE1(Exp eh) : 
 	{String op; Exp e1, e2;}
 	{
 		op = OP1() e1 = E2() e2 = RE1(sem.mkop1(op, eh, e1))
@@ -425,14 +425,14 @@ void RE1(Exp eh) :
 			{return eh;}
 	}
 
-void E2() :
+Exp E2() :
 	{Exp e1, e2, e3;}
 	{
 		e1 = E3() e2 = FE2(e1) e3 = RE2(e2)
 			{return e3;}
 	}
 
-void RE2(Exp eh) : 
+Exp RE2(Exp eh) : 
 	{Exp e1, e2;}
 	{
 		"+" e1 = E3() e2 = RE2(sem.suma(eh, e1))
@@ -441,7 +441,7 @@ void RE2(Exp eh) :
 			{return eh;}
 	}
 
-void FE2(Exp eh) :
+Exp FE2(Exp eh) :
 	{Exp e;}
 	{
 		"-" e = E3()
@@ -450,7 +450,7 @@ void FE2(Exp eh) :
 			{return eh;}
 	}
 
-void E3() :
+Exp E3() :
 	{Exp e1, e2;}
 	{
 		e1 = E4() e2 = FE3(e1)
@@ -458,7 +458,7 @@ void E3() :
 
 	}
 
-void FE3(Exp eh) :
+Exp FE3(Exp eh) :
 	{Exp e;}
 	{
 		<AND> e = E3() 
@@ -470,14 +470,14 @@ void FE3(Exp eh) :
 			{return eh;}
 	}
 
-void E4() :
+Exp E4() :
 	{Exp e1, e2;}
 	{
-		e1 = E5 e2 = RE4(e1)
+		e1 = E5() e2 = RE4(e1)
 			{return e2;}
 	}
 
-void RE4(Exp eh) :
+Exp RE4(Exp eh) :
 	{String op; Exp e1, e2;}
 	{
 		op = OP4() e1 = E5() e2 = RE4(sem.mkop4(op, eh, e1))
@@ -486,7 +486,7 @@ void RE4(Exp eh) :
 			{return eh;}
 	}
 
-void E5() :
+Exp E5() :
 	{String op; Exp e;}
 	{
 		op = OP5() e = E5()
@@ -496,7 +496,7 @@ void E5() :
 			{return e;}
 	}
 
-void E6() :
+Exp E6() :
 	{Exp e1, e2;}
 	{
 		e1 = E7() e2 = RE6(e1)
@@ -504,7 +504,7 @@ void E6() :
 
 	}
 
-void RE6(Exp eh) :
+Exp RE6(Exp eh) :
 	{Exp e1, e2; Token t;}
 	{
 		"[" e1 = E0() "]" e2 = RE6(sem.indexacion(eh, e1))
@@ -519,7 +519,7 @@ void RE6(Exp eh) :
 			{return eh;}
 	}
 
-void E7() :
+Exp E7() :
 	{Exp e; Token t;}
 	{
 		t = <Entero> 
@@ -546,7 +546,7 @@ void E7() :
 			{return e;}
 	}
 
-void OP1() :
+String OP1() :
 	{}
 	{
 		">"
@@ -569,7 +569,7 @@ void OP1() :
 	}
 
 
-void OP4() : 
+String OP4() : 
 	{}
 	{
 		"*"
@@ -582,7 +582,7 @@ void OP4() :
 			{return "%";}
 	}
 
-void OP5() :
+String OP5() :
 	{}
 	{
 		<NOT>
@@ -592,7 +592,7 @@ void OP5() :
 			{return "-";}
 	}	
 
-void instruccion_if() :
+Inst instruccion_if() :
 	{Exp e; Blq bloque;}
 	{
 		<IF> e = expresion() bloque = bloque()
@@ -600,21 +600,21 @@ void instruccion_if() :
 	}
 
 
-void instruccion_if_else() : 
+Inst instruccion_if_else() : 
 	{Blq b1, b2; Exp e;}
 	{
 		<IF> e = expresion() b1 = bloque() <ELSE> b2 = bloque()
 			{return sem.inst_if_else(e, b1, b2);}
 	}
 
-void instruccion_while() :
+Inst instruccion_while() :
 	{Exp e; Blq bloque;}
 	{
 		<WHILE> e = expresion() bloque = bloque()
 			{return sem.inst_while(e, bloque);}
 	}
 
-void instruccion_read() :
+Inst instruccion_read() :
 	{Exp e;}
 	{
 		<READ> e = expresion()
@@ -622,7 +622,7 @@ void instruccion_read() :
 	}
 
 
-void instruccion_write() : 
+Inst instruccion_write() : 
 	{Exp e;}
 	{
 		<WRITE> e = expresion()
@@ -630,7 +630,7 @@ void instruccion_write() :
 	}
 
 
-void instruccion_nl() :
+Inst instruccion_nl() :
 	{}
 	{
 		<NL>
@@ -638,7 +638,7 @@ void instruccion_nl() :
 	}
 
 
-void instrucicon_new() :
+Inst instruccion_new() :
 	{Exp e;}
 	{
 		<NEW> e = expresion()
@@ -646,29 +646,29 @@ void instrucicon_new() :
 	}
 
 
-void instruccion_delete() :
+Inst instruccion_delete() :
 	{Exp e;}
 	{
 		<DELETE> e = expresion()
 			{return sem.inst_delete(e);}
 	}
 
-void instruccion_call() :
-	{Param p; Token t;}
+Inst instruccion_call() :
+	{LOptParam l_opt_param; Token t;}
 	{
-		<CALL> t = <Identificador> p = parametros()
-			{return sem.inst_call(t.image, p);}
+		<CALL> t = <Identificador> l_opt_param = parametros()
+			{return sem.inst_call(t.image, l_opt_param);}
 	}
 
 
-void parametros() :
+LOptParam parametros() :
 	{LOptParam l_opt_param;}
 	{
 		"(" l_opt_param = lista_opt_parametros() ")"
 			{return l_opt_param;}
 	}
 
-void lista_opt_parametros() :
+LOptParam lista_opt_parametros() :
 	{LParam l_param;}
 	{
 		l_param = lista_parametros()
@@ -677,14 +677,14 @@ void lista_opt_parametros() :
 			{return sem.no_lista_opt_param();}
 	}
  
-void lista_parametros() :
+LParam lista_parametros() :
 	{Exp e; LParam l_param;}
 	{
 		e = expresion() l_param = REClp(sem.una_lista_param(e))
 			{return l_param;}
 	}
 
-void REClp(LParam l_paramh) :
+LParam REClp(LParam l_paramh) :
 	{Exp e; LParam l_param;}
 	{
 		"," e = expresion() l_param = REClp(sem.muchas_lista_param(l_paramh, e))
@@ -694,7 +694,7 @@ void REClp(LParam l_paramh) :
 	}
 
 
-void instruccion_compuesta() :
+Inst instruccion_compuesta() :
 	{Blq bloque;}
 	{
 		bloque = bloque()

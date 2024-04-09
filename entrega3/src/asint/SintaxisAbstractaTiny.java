@@ -352,8 +352,8 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static class Una_lista_decs extends LDecs {
-		public Una_lista_decs(Dec declaracion) {
+	public static class Una_lista_dec extends LDecs {
+		public Una_lista_dec(Dec declaracion) {
 			super(declaracion);
 		}
 		
@@ -1046,8 +1046,8 @@ public class SintaxisAbstractaTiny {
 		return new Muchas_lista_decs(lista_declaraciones, declaracion);
 	}
 
-	public LDecs una_lista_decs(Dec declaracion) {
-		return new Una_lista_decs(declaracion);
+	public LDecs una_lista_dec(Dec declaracion) {
+		return new Una_lista_dec(declaracion);
 	}
 
 	public Dec dec_var(Tipo tipo, String cadena) {
