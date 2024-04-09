@@ -5,10 +5,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import c_ast_ascendente.alex.AnalizadorLexicoTiny;
-import c_ast_ascendente.asint.ConstructorASTTiny;
+import c_ast_ascendente.asint.ConstructorASTTinyDJ;
 import c_ast_ascendente.errors.GestionErroresTiny.ErrorLexico;
 import c_ast_ascendente.errors.GestionErroresTiny.ErrorSintactico;
 import c_ast_descendente.asint.ConstructorASTTinyDesc;
+import c_ast_descendente.asint.ConstructorASTTinyDescDJ;
 import c_ast_descendente.asint.ParseException;
 import c_ast_descendente.asint.TokenMgrError;
 
@@ -21,51 +22,49 @@ public class Main {
 		try {
 			primerCaracter = (char) input.read();
 		} catch (IOException e1) {
-			System.out.println("Error al leer el primer caracter\n");
+			System.out.println("Error al leer el primer caracter");
 		}
 
 		if (primerCaracter == 'a') {
-			AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
-			ConstructorASTTiny asint = new ConstructorASTTiny(alex);
-			// asint.setScanner(alex);
-			System.out.println("CONSTRUCCION AST ASCENDENTE:\n");
-					
-			//Impresion de las trazas
+			// Impresion de las trazas
 			try {
+				AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
+				ConstructorASTTinyDJ asint = new ConstructorASTTinyDJ(alex);
+				// asint.setScanner(alex);
+				System.out.println("CONSTRUCCION AST ASCENDENTE:");
 				asint.debug_parse();
 			} catch (ErrorLexico e) {
 				System.out.println("ERROR_LEXICO");
 			} catch (ErrorSintactico e) {
 				System.out.println("ERROR_SINTACTICO");
 			}
-			
-			//Impresion del procesamiento recursivo
-			//System.out.println(asint.parse().value);
-			
-			//Impresion del procesamiento interprete
-			
-			//Impresion del procesamiento visitante
+
+			// Impresion del procesamiento recursivo
+			// System.out.println(asint.parse().value);
+
+			// Impresion del procesamiento interprete
+
+			// Impresion del procesamiento visitante
 		} else {
-			ConstructorASTTinyDesc asint = new ConstructorASTTinyDesc(new FileReader(args[0]));
-			asint.disable_tracing();
-			System.out.println("CONSTRUCCION AST DESCENDENTE:\n");
-			
-			//Impresion de las trazas
+
+			// Impresion de las trazas
 			try {
-				asint.programa_tiny();
+				ConstructorASTTinyDescDJ asint = new ConstructorASTTinyDescDJ(new FileReader(args[0]));
+				System.out.println("CONSTRUCCION AST DESCENDENTE:");
+				asint.analiza();
 			} catch (ParseException e) {
 				System.out.println("ERROR_SINTACTICO");
 			} catch (TokenMgrError e) {
 				System.out.println("ERROR_LEXICO");
 			}
-			
-			//Impresion del procesamiento recursivo
-			//System.out.println(asint.analiza());
-			
-			//Impresion del procesamiento interprete
-			
-			//Impresion del procesamiento visitante
-			
+
+			// Impresion del procesamiento recursivo
+			// System.out.println(asint.analiza());
+
+			// Impresion del procesamiento interprete
+
+			// Impresion del procesamiento visitante
+
 		}
 
 	}
