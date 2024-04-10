@@ -31,7 +31,7 @@ public class Main {
 				AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
 				ConstructorASTTinyDJ asint = new ConstructorASTTinyDJ(alex);
 				// asint.setScanner(alex);
-				System.out.println("CONSTRUCCION AST ASCENDENTE:");
+				System.out.println("CONSTRUCCION AST ASCENDENTE");
 				asint.debug_parse();
 			} catch (ErrorLexico e) {
 				System.out.println("ERROR_LEXICO");
@@ -49,8 +49,8 @@ public class Main {
 
 			// Impresion de las trazas
 			try {
-				ConstructorASTTinyDescDJ asint = new ConstructorASTTinyDescDJ(new FileReader(args[0]));
-				System.out.println("CONSTRUCCION AST DESCENDENTE:");
+				ConstructorASTTinyDescDJ asint = new ConstructorASTTinyDescDJ(input);
+				System.out.println("CONSTRUCCION AST DESCENDENTE");
 				asint.analiza();
 			} catch (ParseException e) {
 				System.out.println("ERROR_SINTACTICO");
