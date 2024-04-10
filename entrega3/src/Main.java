@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import c_ast_ascendente.alex.AnalizadorLexicoTiny;
+import c_ast_ascendente.asint.ConstructorASTTiny;
 import c_ast_ascendente.asint.ConstructorASTTinyDJ;
 import c_ast_ascendente.errors.GestionErroresTiny.ErrorLexico;
 import c_ast_ascendente.errors.GestionErroresTiny.ErrorSintactico;
@@ -17,6 +18,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		Reader input = new InputStreamReader(new FileInputStream(args[0]));
+		
 
 		char primerCaracter = ' ';
 		try {
@@ -24,15 +26,17 @@ public class Main {
 		} catch (IOException e1) {
 			System.out.println("Error al leer el primer caracter");
 		}
-
-		if (primerCaracter == 'a') {
+			
+		if (primerCaracter == 'a') {			
+			AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
+			ConstructorASTTinyDJ asint = new ConstructorASTTinyDJ(alex);
 			// Impresion de las trazas
 			try {
-				AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
-				ConstructorASTTinyDJ asint = new ConstructorASTTinyDJ(alex);
+
 				// asint.setScanner(alex);
 				System.out.println("CONSTRUCCION AST ASCENDENTE");
-				asint.debug_parse();
+				//asint.debug_parse();
+
 			} catch (ErrorLexico e) {
 				System.out.println("ERROR_LEXICO");
 			} catch (ErrorSintactico e) {
@@ -40,7 +44,7 @@ public class Main {
 			}
 
 			// Impresion del procesamiento recursivo
-			// System.out.println(asint.parse().value);
+			System.out.println(asint.parse().value);
 
 			// Impresion del procesamiento interprete
 

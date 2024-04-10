@@ -38,6 +38,8 @@ public class SintaxisAbstractaTiny {
 		public ProgT(Blq bloque) {
 			this.bloque = bloque;
 		}
+		
+		public Blq bloque() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class Blq {
@@ -50,6 +52,8 @@ public class SintaxisAbstractaTiny {
 			this.lista_opt_declaraciones = lista_opt_declaraciones;
 			this.lista_opt_instrucciones = lista_opt_instrucciones;
 		}
+		public LOptDecs lista_opt_declaraciones() {throw new UnsupportedOperationException();}
+		public LOptInst lista_opt_instrucciones() {throw new UnsupportedOperationException();}
 	
 	}
 
@@ -62,6 +66,8 @@ public class SintaxisAbstractaTiny {
 
 		public LOptDecs() {
 		};
+		
+		public LDecs lista_declaraciones() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class LDecs {
@@ -76,6 +82,9 @@ public class SintaxisAbstractaTiny {
 		public LDecs(Dec declaracion) {
 			this.declaracion = declaracion;
 		}
+		
+		public LDecs lista_declaraciones() {throw new UnsupportedOperationException();}
+		public Dec declaracion() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class Dec extends Nodo{
@@ -94,6 +103,11 @@ public class SintaxisAbstractaTiny {
 			this.lista_opt_parametros_formales = lista_opt_parametros_formales;
 			this.bloque = bloque;
 		}
+		
+		public Tipo tipo() {throw new UnsupportedOperationException();}
+		public String cadena() {throw new UnsupportedOperationException();}
+		public Blq bloque() {throw new UnsupportedOperationException();}
+		public LOptParamForm lista_opt_parametros_formales() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class LOptParamForm {
@@ -105,6 +119,8 @@ public class SintaxisAbstractaTiny {
 
 		public LOptParamForm() {
 		};
+		
+		public LParamForm lista_parametros_formales() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class LParamForm {
@@ -119,9 +135,12 @@ public class SintaxisAbstractaTiny {
 		public LParamForm(ParamForm parametro_formal) {
 			this.parametro_formal = parametro_formal;
 		}
+		
+		public LParamForm lista_parametros_formales() {throw new UnsupportedOperationException();}
+		public ParamForm parametro_formal() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class ParamForm {
+	public static abstract class ParamForm extends Nodo{
 		protected Tipo tipo;
 		protected String cadena;
 
@@ -132,9 +151,12 @@ public class SintaxisAbstractaTiny {
 			this.tipo = tipo;
 			this.cadena = cadena;
 		}
+		
+		public Tipo tipo() {throw new UnsupportedOperationException();}
+		public String cadena() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class Tipo {
+	public static abstract class Tipo extends Nodo {
 		protected Tipo tipo;
 		protected String cadena;
 		protected LParamReg lista_parametros_registro;
@@ -158,6 +180,10 @@ public class SintaxisAbstractaTiny {
 		public Tipo(LParamReg lista_parametros_registro) {
 			this.lista_parametros_registro = lista_parametros_registro;
 		}
+		
+		public Tipo tipo () {throw new UnsupportedOperationException();}
+		public String cadena() {throw new UnsupportedOperationException();}
+		public LParamReg lista_parametros_registro() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class LParamReg {
@@ -172,9 +198,12 @@ public class SintaxisAbstractaTiny {
 		public LParamReg(ParamReg parametro_registro) {
 			this.parametro_registro = parametro_registro;
 		}
+		
+		public LParamReg lista_parametros_registro() {throw new UnsupportedOperationException();}
+		public ParamReg parametro_registro() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class ParamReg {
+	public static abstract class ParamReg extends Nodo {
 		protected Tipo tipo;
 		protected String cadena;
 
@@ -182,6 +211,9 @@ public class SintaxisAbstractaTiny {
 			this.tipo = tipo;
 			this.cadena = cadena;
 		}
+		
+		public Tipo tipo() {throw new UnsupportedOperationException();}
+		public String cadena() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class LOptInst {
@@ -193,6 +225,8 @@ public class SintaxisAbstractaTiny {
 		public LOptInst(LInst lista_instrucciones) {
 			this.lista_instrucciones = lista_instrucciones;
 		}
+		
+		public LInst lista_instrucciones() {throw new UnsupportedOperationException();}
 
 	}
 
@@ -208,9 +242,12 @@ public class SintaxisAbstractaTiny {
 		public LInst(Inst instruccion) {
 			this.instruccion = instruccion;
 		}
+		
+		public LInst lista_instrucciones() {throw new UnsupportedOperationException();}
+		public Inst instruccion() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class Inst {
+	public static abstract class Inst extends Nodo {
 		protected Exp expresion;
 		protected Blq bloque1;
 		protected Blq bloque2;
@@ -243,6 +280,12 @@ public class SintaxisAbstractaTiny {
 		public Inst(Blq bloque) {
 			this.bloque1 = bloque;
 		}
+		
+		public Exp expresion() {throw new UnsupportedOperationException();}
+		public Blq bloque1() {throw new UnsupportedOperationException();}
+		public Blq bloque2() {throw new UnsupportedOperationException();}
+		public String cadena() {throw new UnsupportedOperationException();}
+		public LOptParam parametro() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class Exp extends Nodo {
@@ -270,6 +313,10 @@ public class SintaxisAbstractaTiny {
 		public Exp(String cadena) {
 			this.cadena = cadena;
 		}
+		
+		public Exp op1() {throw new UnsupportedOperationException();}
+		public Exp op2() {throw new UnsupportedOperationException();}
+		public String cadena() {throw new UnsupportedOperationException();}
 	}
 
 	public static abstract class LOptParam {
@@ -281,6 +328,8 @@ public class SintaxisAbstractaTiny {
 		public LOptParam(LParam lista_parametros) {
 			this.lista_parametros = lista_parametros;
 		}
+		
+		public LParam lista_parametros() {throw new UnsupportedOperationException();}
 
 	}
 
@@ -296,6 +345,9 @@ public class SintaxisAbstractaTiny {
 		public LParam(Exp expresion) {
 			this.expresion = expresion;
 		}
+		
+		public LParam lista_parametros() {throw new UnsupportedOperationException();}
+		public Exp expresion() {throw new UnsupportedOperationException();}
 	}
 
 	// Clases concretas (Constructoras de AST's)
@@ -307,7 +359,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "prog_tiny("+bloque+")";
+			return "";
+		}
+		
+		public Blq bloque() {
+			return bloque;
 		}
 
 	}
@@ -319,7 +375,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "bloque("+lista_opt_declaraciones+","+lista_opt_instrucciones+")";
+			return "";
+		}
+		
+		public LOptDecs lista_opt_declaraciones() {
+			return lista_opt_declaraciones;
+		}
+		
+		public LOptInst lista_opt_instrucciones() {
+			return lista_opt_instrucciones;
 		}
 
 	}
@@ -331,7 +395,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "si_lista_opt_decs("+lista_declaraciones+")";
+			return "";
+		}
+		
+		public LDecs lista_declaraciones() {
+			return lista_declaraciones;
 		}
 	}
 
@@ -341,7 +409,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "no_lista_opt_decs()";
+			return "";
 		}
 	}
 
@@ -351,7 +419,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "muchas_lista_decs("+lista_declaraciones+","+declaracion+")";
+			return "";
+		}
+		
+		public LDecs lista_declaraciones() {
+			return lista_declaraciones;
+		}
+		
+		public Dec declaracion() {
+			return declaracion;
 		}
 	}
 
@@ -361,7 +437,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "una_lista_decs("+declaracion+")";
+			return "";
+		}
+		
+		public Dec declaracion() {
+			return declaracion;
 		}
 	}
 
@@ -371,8 +451,17 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "dec_var("+tipo+","+cadena+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
+		
+		public Tipo tipo() {
+			return tipo;
+		}
+		
+		public String cadena() {
+			return cadena;
+		}
+		
 	}
 
 	public static class Dec_tipo extends Dec {
@@ -381,7 +470,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "dec_tipo("+tipo+","+cadena+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public Tipo tipo() {
+			return tipo;
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 		
 	}
@@ -392,8 +489,21 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "dec_proc("+cadena+","+lista_opt_parametros_formales+", "+bloque+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
+		
+		public String cadena() {
+			return cadena;
+		}
+		
+		public LOptParamForm lista_opt_parametros_formales() {
+			return lista_opt_parametros_formales;
+		}
+		
+		public Blq bloque() {
+			return bloque;
+		}
+		
 	}
 
 	public static class Si_lista_opt_param_form extends LOptParamForm {
@@ -402,7 +512,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "si_lista_opt_param_form("+lista_parametros_formales+")";
+			return "";
+		}
+		
+		public LParamForm lista_parametros_formales() {
+			return lista_parametros_formales;
 		}
 	}
 
@@ -412,7 +526,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "no_lista_opt_param_form()";
+			return "";
 		}
 	}
 
@@ -422,7 +536,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "muchas_lista_param_form("+lista_parametros_formales+","+parametro_formal+")";
+			return "";
+		}
+		
+		public LParamForm lista_parametros_formales() {
+			return lista_parametros_formales;
+		}
+		
+		public ParamForm parametro_formal() {
+			return parametro_formal;
 		}
 	}
 
@@ -432,7 +554,11 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return "una_lista_param_form("+parametro_formal+")";
+			return "";
+		}
+		
+		public ParamForm parametro_formal() {
+			return parametro_formal;
 		}
 	}
 
@@ -442,7 +568,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "param_form_ref("+tipo+","+cadena+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public Tipo tipo() {
+			return tipo;
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -452,7 +586,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "param_form("+tipo+","+cadena+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public Tipo tipo() {
+			return tipo;
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -462,7 +604,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "tipo_array("+tipo+","+cadena+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public Tipo tipo() {
+			return tipo;
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -472,7 +622,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "tipo_puntero("+tipo+","+cadena+")";
+			return "";
+		}
+		
+		public Tipo tipo() {
+			return tipo;
 		}
 	}
 
@@ -482,7 +636,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "Int_t()";
+			return "";
 		}
 	}
 
@@ -492,7 +646,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "real_t()";
+			return "";
 		}
 	}
 
@@ -502,7 +656,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "bool_t()";
+			return "";
 		}
 	}
 
@@ -512,7 +666,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "string_t()";
+			return "";
 		}
 	}
 
@@ -522,7 +676,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "tipo_registro("+lista_parametros_registro+")";
+			return "";
+		}
+		
+		public LParamReg lista_parametros_registro() {
+			return lista_parametros_registro;
 		}
 	}
 
@@ -532,7 +690,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "tipo_definido("+cadena+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -542,7 +704,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "muchas_lista_param_reg("+lista_parametros_registro+","+parametro_registro+")";
+			return "";
+		}
+		
+		public LParamReg lista_parametros_registro() {
+			return lista_parametros_registro;
+		}
+		
+		public ParamReg parametro_registro() {
+			return parametro_registro;
 		}
 	}
 
@@ -552,7 +722,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "una_lista_param_reg("+parametro_registro+")";
+			return "";
+		}
+		
+		public ParamReg parametro_registro() {
+			return parametro_registro;
 		}
 	}
 
@@ -562,7 +736,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "param_reg("+tipo+","+cadena+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public Tipo tipo() {
+			return tipo;
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -572,7 +754,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "si_lista_opt_inst("+lista_instrucciones+")";
+			return "";
+		}
+		
+		public LInst lista_instrucciones() {
+			return lista_instrucciones;
 		}
 	}
 
@@ -582,7 +768,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "no_lista_opt_inst()";
+			return "";
 		}
 	}
 
@@ -592,7 +778,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "muchas_lista_inst("+lista_instrucciones+","+instruccion+")";
+			return "";
+		}
+		
+		public LInst lista_instrucciones() {
+			return lista_instrucciones;
+		}
+		
+		public Inst instruccion() {
+			return instruccion;
 		}
 	}
 
@@ -602,7 +796,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "una_lista_inst("+instruccion+")";
+			return "";
+		}
+		
+		public Inst instruccion() {
+			return instruccion;
 		}
 	}
 
@@ -612,7 +810,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_eval("+expresion+")";
+			return "estoy en inst_eval";
+		}
+		
+		public Exp expresion() {
+			return expresion;
 		}
 	}
 
@@ -625,8 +827,22 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_if_else("+expresion+","+bloque+","+bloque2+")";
+			return "";
 		}
+		
+		public Exp expresion() {
+			return expresion;
+		}
+		
+		public Blq bloque1() {
+			return bloque1;
+		}
+		
+		public Blq bloque2() {
+			return bloque2;
+		}
+		
+		
 	}
 	
 	public static class Else_vacio extends Blq {
@@ -635,7 +851,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "else_vacio()";
+			return "";
 		}
 	}
 
@@ -647,7 +863,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_while("+expresion+","+bloque+")";
+			return "";
+		}
+		
+		public Exp expresion() {
+			return expresion;
+		}
+		
+		public Blq bloque() {
+			return bloque;
 		}
 	}
 
@@ -657,7 +881,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_read("+expresion+")";
+			return "";
+		}
+		
+		public Exp expresion() {
+			return expresion;
 		}
 	}
 
@@ -667,7 +895,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_write("+expresion+")";
+			return "";
+		}
+		
+		public Exp expresion() {
+			return expresion;
 		}
 	}
 
@@ -677,7 +909,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_nl()";
+			return "";
 		}
 	}
 
@@ -687,7 +919,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_new("+expresion+")";
+			return "";
+		}
+		
+		public Exp expresion() {
+			return expresion;
 		}
 	}
 
@@ -697,7 +933,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_delete("+expresion+")";
+			return "";
+		}
+		
+		public Exp expresion() {
+			return expresion;
 		}
 	}
 
@@ -709,7 +949,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "inst_call("+cadena+","+lista_opt_parametros+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public String cadena() {
+			return cadena;
+		}
+		
+		public LOptParam lista_opt_parametros() {
+			return lista_opt_parametros;
 		}
 	}
 
@@ -721,7 +969,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "tipo_puntero("+bloque+")";
+			return "";
+		}
+		
+		public Blq bloque() {
+			return bloque;
 		}
 	}
 
@@ -731,7 +983,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "asignacion("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -741,7 +1001,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "mayor("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -751,7 +1019,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "mayor_igual("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -761,7 +1037,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "menor("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -771,7 +1055,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "menor_igual("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -781,7 +1073,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "comparacion("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -791,7 +1091,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "distinto("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -801,7 +1109,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "suma("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -811,7 +1127,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "resta("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -821,7 +1145,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "and("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -831,7 +1163,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "or("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -841,7 +1181,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "mult("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -851,7 +1199,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "div("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -861,7 +1217,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "mod("+op1+","+op2+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -871,7 +1235,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "not_unario("+op1+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
 		}
 	}
 
@@ -881,8 +1249,13 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "resta_unario("+op1+"+)";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
 		}
+		
+		public Exp op1() {
+			return op1;
+		}
+
 	}
 
 	public static class Indexacion extends Exp {
@@ -891,7 +1264,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "indexacion("+op1+","+op2+")";
+			return "";
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public Exp op2() {
+			return op2;
 		}
 	}
 
@@ -901,7 +1282,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "acc_reg("+op1+","+cadena+")";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -911,7 +1300,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "indireccion("+op1+")";
+			return String.format("%s$f:%d,c:%d$", op1, leeFila(), leeCol());
+		}
+		
+		public Exp op1() {
+			return op1;
 		}
 	}
 
@@ -921,7 +1314,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "lit_ent("+cadena+"["+leeFila()+","+leeCol()+"])";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -931,7 +1328,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "lit_real("+cadena+"["+leeFila()+","+leeCol()+"])";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -971,7 +1372,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "cadena("+cadena+"["+leeFila()+","+leeCol()+"])";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -981,7 +1386,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "iden("+cadena+"["+leeFila()+","+leeCol()+"])";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+		}
+		
+		public String cadena() {
+			return cadena;
 		}
 	}
 
@@ -991,7 +1400,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "si_lista_opt_param("+lista_parametros+")";
+			return "";
+		}
+		
+		public LParam lista_parametros() {
+			return lista_parametros;
 		}
 	}
 
@@ -1001,7 +1414,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "no_lista_opt_param()";
+			return "";
 		}
 	}
 
@@ -1011,7 +1424,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "muchas_lista_param("+lista_parametros+","+expresion+")";
+			return "";
+		}
+		
+		public LParam lista_parametros() {
+			return lista_parametros;
+		}
+		
+		public Exp expresion() {
+			return expresion;
 		}
 	}
 
@@ -1021,7 +1442,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "una_lista_param("+expresion+")";
+			return "";
+		}
+		
+		public Exp expresion() {
+			return expresion;
 		}
 	}
 
