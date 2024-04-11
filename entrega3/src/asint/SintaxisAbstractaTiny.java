@@ -779,8 +779,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print("<int>");
 		}
 	}
 
@@ -795,8 +794,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print("<real>");
 		}
 	}
 
@@ -811,8 +809,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print("<bool>");
 		}
 	}
 
@@ -827,8 +824,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print("<string>");
 		}
 	}
 
@@ -1076,7 +1072,6 @@ public class SintaxisAbstractaTiny {
 		}	
 	}
 	
-	
 	public static class Si_else extends Blq {
 		private Blq bloque;
 		public Si_else(Blq bloque) {
@@ -1306,8 +1301,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.println(imprimeExpBin(this, op1, "=", op2, 1, 0));
 		}
 	}
 
@@ -1953,6 +1947,17 @@ public class SintaxisAbstractaTiny {
 	private static boolean claseDe(Object o, Class c) {
 		return o.getClass() == c;
 		}
+	
+	private static String imprimeExpBin(Exp padre, Exp opnd0, String op, Exp opnd1, int np0, int np1) {
+		StringBuilder s = new StringBuilder();
+		s.append(imprimeOpnd(opnd0, np0));
+		s.append("\n");
+		s.append(op);
+		s.append(getPosDJ(padre.leeFila(), padre.leeCol()));
+		s.append("\n");
+		s.append(imprimeOpnd(opnd1, np1));
+		return s.toString();
+	}
 	
 	private static String imprimeExpBin(Exp opnd0, String op, Exp opnd1, int np0, int np1) {
 		StringBuilder s = new StringBuilder();
