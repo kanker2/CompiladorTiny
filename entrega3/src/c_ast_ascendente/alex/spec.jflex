@@ -1,5 +1,5 @@
-package alex;
-import errors.GestionErroresTiny;
+package c_ast_ascendente.alex;
+import c_ast_ascendente.errors.GestionErroresTiny;
 
 %%
 %line
