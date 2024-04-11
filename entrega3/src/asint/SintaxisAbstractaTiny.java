@@ -405,7 +405,7 @@ public class SintaxisAbstractaTiny {
 			if(prioridad(opnd) < p) {
 				s.append("(");
 			}
-			s.append(String.format("%s$f:%d,c:%d$", opnd.cadena(), opnd.leeFila(), opnd.leeCol()));
+			s.append(opnd.toString());
 			
 			if(prioridad(opnd) < p) {
 				s.append(")");
@@ -1791,7 +1791,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return imprimeOpnd(op1, 6) + "\n" + String.format("%s$f:%d,c:%d$","^",leeFila(), leeCol());
+			return op1.toString()+"\n.\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Exp op1() {
@@ -1817,8 +1817,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol()) 
-					+"\n^\n";
+			return op1.toString()+"\n"+String.format("^$f:%d,c:%d$", leeFila(), leeCol());
 		}
 		
 		public Exp op1() {
