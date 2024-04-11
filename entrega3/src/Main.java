@@ -44,7 +44,6 @@ public class Main {
 				System.out.println("CONSTRUCCION AST DESCENDENTE");
 				prog = asint.analiza();
 			}
-			
 			procesar(prog);
 
 		} catch (ParseException e) {
@@ -55,10 +54,13 @@ public class Main {
 	}
 	
 	public static void procesar(ProgT prog) {
+		System.out.println("--------------Recursivo--------------");
 		ImpresorBonito e = new ImpresorBonitoRecursivo();
 		e.procesa(prog);
+		System.out.println("--------------Interprete--------------");
 		e = new ImpresorBonitoInterprete();
 		e.procesa(prog);
+		System.out.println("--------------Visitante--------------");
 		e = new ImpresorBonitoVisitante();
 		e.procesa(prog);
 	}
