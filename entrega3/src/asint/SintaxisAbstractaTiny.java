@@ -8,6 +8,10 @@ public class SintaxisAbstractaTiny {
 		public abstract void imprime();
 	}
 	
+	public static String getPosDJ(Integer f, Integer c) {
+		return "$f:"+f.toString()+",c:"+c.toString()+"$";
+	}
+	
 	public static abstract class Nodo {
 		public Nodo() {
 			fila = col = -1;
@@ -377,6 +381,11 @@ public class SintaxisAbstractaTiny {
 			return bloque;
 		}
 
+		@Override
+		public void imprime() {
+			bloque.imprime();
+		}
+
 	}
 
 	public static class Bloque extends Blq {
@@ -397,6 +406,15 @@ public class SintaxisAbstractaTiny {
 			return lista_opt_instrucciones;
 		}
 
+		@Override
+		public void imprime() {
+			System.out.println("{");
+			lista_opt_declaraciones.imprime();
+			System.out.println();
+			lista_opt_instrucciones.imprime();
+			System.out.print("}");
+		}
+
 	}
 
 	public static class Si_lista_opt_decs extends LOptDecs {
@@ -412,6 +430,13 @@ public class SintaxisAbstractaTiny {
 		public LDecs lista_declaraciones() {
 			return lista_declaraciones;
 		}
+
+		@Override
+		public void imprime() {
+			lista_declaraciones.imprime();
+			System.out.println();
+			System.out.print("&&");
+		}
 	}
 
 	public static class No_lista_opt_decs extends LOptDecs {
@@ -421,6 +446,11 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "";
+		}
+
+		@Override
+		public void imprime() {
+			
 		}
 	}
 
@@ -440,6 +470,15 @@ public class SintaxisAbstractaTiny {
 		public Dec declaracion() {
 			return declaracion;
 		}
+
+		@Override
+		public void imprime() {
+			lista_declaraciones.imprime();
+			System.out.println();
+			System.out.print(",");
+			System.out.println();
+			declaracion.imprime();
+		}
 	}
 
 	public static class Una_lista_dec extends LDecs {
@@ -453,6 +492,11 @@ public class SintaxisAbstractaTiny {
 		
 		public Dec declaracion() {
 			return declaracion;
+		}
+
+		@Override
+		public void imprime() {
+			declaracion.imprime();
 		}
 	}
 
@@ -472,6 +516,13 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {
 			return cadena;
 		}
+
+		@Override
+		public void imprime() {
+			tipo.imprime();
+			System.out.println();
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+		}
 		
 	}
 
@@ -490,6 +541,14 @@ public class SintaxisAbstractaTiny {
 		
 		public String cadena() {
 			return cadena;
+		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<type>");
+			tipo.imprime();
+			System.out.println();
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
 		
 	}
@@ -515,6 +574,15 @@ public class SintaxisAbstractaTiny {
 		public Blq bloque() {
 			return bloque;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<proc>");
+			System.out.println(cadena+getPosDJ(leeFila(), leeCol()));
+			lista_opt_parametros_formales.imprime();
+			System.out.println();
+			bloque.imprime();
+		}
 		
 	}
 
@@ -530,6 +598,14 @@ public class SintaxisAbstractaTiny {
 		public LParamForm lista_parametros_formales() {
 			return lista_parametros_formales;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println("(");
+			lista_parametros_formales.imprime();
+			System.out.println();
+			System.out.print(")");
+		}
 	}
 
 	public static class No_lista_opt_param_form extends LOptParamForm {
@@ -539,6 +615,12 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "";
+		}
+
+		@Override
+		public void imprime() {
+			System.out.println("(");
+			System.out.print(")");
 		}
 	}
 
@@ -558,6 +640,14 @@ public class SintaxisAbstractaTiny {
 		public ParamForm parametro_formal() {
 			return parametro_formal;
 		}
+
+		@Override
+		public void imprime() {
+			lista_parametros_formales.imprime();
+			System.out.println();
+			System.out.println(",");
+			parametro_formal.imprime();
+		}
 	}
 
 	public static class Una_lista_param_form extends LParamForm {
@@ -571,6 +661,11 @@ public class SintaxisAbstractaTiny {
 		
 		public ParamForm parametro_formal() {
 			return parametro_formal;
+		}
+
+		@Override
+		public void imprime() {
+			parametro_formal.imprime();
 		}
 	}
 
@@ -590,6 +685,14 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {
 			return cadena;
 		}
+
+		@Override
+		public void imprime() {
+			tipo.imprime();
+			System.out.println();
+			System.out.println("&");
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+		}
 	}
 
 	public static class Param_form extends ParamForm {
@@ -607,6 +710,13 @@ public class SintaxisAbstractaTiny {
 		
 		public String cadena() {
 			return cadena;
+		}
+
+		@Override
+		public void imprime() {
+			tipo.imprime();
+			System.out.println();
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -627,6 +737,15 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {
 			return cadena;
 		}
+
+		@Override
+		public void imprime() {
+			tipo.imprime();
+			System.out.println();
+			System.out.println("[");
+			System.out.println(cadena);
+			System.out.print("]"+getPosDJ(leeFila(), leeCol()));
+		}
 	}
 
 	public static class Tipo_puntero extends Tipo {
@@ -640,6 +759,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Tipo tipo() {
 			return tipo;
+		}
+
+		@Override
+		public void imprime() {
+			System.out.println("^");
+			tipo.imprime();
 		}
 	}
 
@@ -695,6 +820,15 @@ public class SintaxisAbstractaTiny {
 		public LParamReg lista_parametros_registro() {
 			return lista_parametros_registro;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<struct>");
+			System.out.println("{");
+			lista_parametros_registro.imprime();
+			System.out.println();
+			System.out.print("}");
+		}
 	}
 
 	public static class Tipo_definido extends Tipo {
@@ -708,6 +842,11 @@ public class SintaxisAbstractaTiny {
 		
 		public String cadena() {
 			return cadena;
+		}
+
+		@Override
+		public void imprime() {
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -727,6 +866,14 @@ public class SintaxisAbstractaTiny {
 		public ParamReg parametro_registro() {
 			return parametro_registro;
 		}
+
+		@Override
+		public void imprime() {
+			lista_parametros_registro.imprime();
+			System.out.println();
+			System.out.println(",");
+			parametro_registro.imprime();
+		}
 	}
 
 	public static class Una_lista_param_reg extends LParamReg {
@@ -740,6 +887,11 @@ public class SintaxisAbstractaTiny {
 		
 		public ParamReg parametro_registro() {
 			return parametro_registro;
+		}
+
+		@Override
+		public void imprime() {
+			parametro_registro.imprime();
 		}
 	}
 
@@ -759,6 +911,13 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {
 			return cadena;
 		}
+
+		@Override
+		public void imprime() {
+			tipo.imprime();
+			System.out.println();
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+		}
 	}
 
 	public static class Si_lista_opt_inst extends LOptInst {
@@ -773,6 +932,11 @@ public class SintaxisAbstractaTiny {
 		public LInst lista_instrucciones() {
 			return lista_instrucciones;
 		}
+
+		@Override
+		public void imprime() {
+			lista_instrucciones.imprime();
+		}
 	}
 
 	public static class No_lista_opt_inst extends LOptInst {
@@ -782,6 +946,10 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "";
+		}
+
+		@Override
+		public void imprime() {
 		}
 	}
 
@@ -801,6 +969,14 @@ public class SintaxisAbstractaTiny {
 		public Inst instruccion() {
 			return instruccion;
 		}
+
+		@Override
+		public void imprime() {
+			lista_instrucciones.imprime();
+			System.out.println();
+			System.out.println(",");
+			instruccion.imprime();
+		}
 	}
 
 	public static class Una_lista_inst extends LInst {
@@ -815,6 +991,11 @@ public class SintaxisAbstractaTiny {
 		public Inst instruccion() {
 			return instruccion;
 		}
+
+		@Override
+		public void imprime() {
+			instruccion.imprime();
+		}
 	}
 
 	public static class Inst_eval extends Inst {
@@ -828,6 +1009,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp expresion() {
 			return expresion;
+		}
+
+		@Override
+		public void imprime() {
+			System.out.println("@");
+			expresion.imprime();
 		}
 	}
 
@@ -853,6 +1040,15 @@ public class SintaxisAbstractaTiny {
 		
 		public Blq bloque2() {
 			return bloque2;
+		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<if>");
+			expresion.imprime();
+			System.out.println();
+			bloque.imprime();
+			bloque2.imprime();
 		}	
 	}
 	
@@ -871,6 +1067,13 @@ public class SintaxisAbstractaTiny {
 		public Blq bloque() {
 			return bloque;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println();
+			System.out.println("<else>");
+			bloque.imprime();
+		}
 	}
 	
 	public static class No_else extends Blq {
@@ -880,6 +1083,10 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "";
+		}
+
+		@Override
+		public void imprime() {
 		}
 	}
 
@@ -901,6 +1108,14 @@ public class SintaxisAbstractaTiny {
 		public Blq bloque() {
 			return bloque;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<while>");
+			expresion.imprime();
+			System.out.println();
+			bloque.imprime();
+		}
 	}
 
 	public static class Inst_read extends Inst {
@@ -914,6 +1129,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp expresion() {
 			return expresion;
+		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<read>");
+			expresion.imprime();
 		}
 	}
 
@@ -929,6 +1150,12 @@ public class SintaxisAbstractaTiny {
 		public Exp expresion() {
 			return expresion;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<write>");
+			expresion.imprime();
+		}
 	}
 
 	public static class Inst_nl extends Inst {
@@ -938,6 +1165,11 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "<nl>\n";
+		}
+
+		@Override
+		public void imprime() {
+			System.out.print("<nl>");
 		}
 	}
 
@@ -953,6 +1185,12 @@ public class SintaxisAbstractaTiny {
 		public Exp expresion() {
 			return expresion;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print("<new>");
+			expresion.imprime();
+		}
 	}
 
 	public static class Inst_delete extends Inst {
@@ -966,6 +1204,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp expresion() {
 			return expresion;
+		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<delete>");
+			expresion.imprime();
 		}
 	}
 
@@ -988,6 +1232,13 @@ public class SintaxisAbstractaTiny {
 		public LOptParam lista_opt_parametros() {
 			return lista_opt_parametros;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<call>");
+			System.out.println(cadena+getPosDJ(leeFila(), leeCol()));
+			lista_opt_parametros.imprime();
+		}
 	}
 
 	public static class Inst_comp extends Inst {
@@ -1003,6 +1254,11 @@ public class SintaxisAbstractaTiny {
 		
 		public Blq bloque() {
 			return bloque;
+		}
+
+		@Override
+		public void imprime() {
+			bloque.imprime();
 		}
 	}
 
@@ -1193,7 +1449,8 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+			return String.format();
+			System.out.print(")");"%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
 					+"\n"+"<and>\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
 					+"\n";
 		}
@@ -1470,6 +1727,14 @@ public class SintaxisAbstractaTiny {
 		public LParam lista_parametros() {
 			return lista_parametros;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println("(");
+			lista_parametros.imprime();
+			System.out.println();
+			System.out.print(")");
+		}
 	}
 
 	public static class No_lista_opt_param extends LOptParam {
@@ -1479,6 +1744,12 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "";
+		}
+
+		@Override
+		public void imprime() {
+			System.out.println("(");
+			System.out.print(")");
 		}
 	}
 
@@ -1498,6 +1769,14 @@ public class SintaxisAbstractaTiny {
 		public Exp expresion() {
 			return expresion;
 		}
+
+		@Override
+		public void imprime() {
+			lista_parametros.imprime();
+			System.out.println();
+			System.out.println(",");
+			expresion.imprime();
+		}
 	}
 
 	public static class Una_lista_param extends LParam {
@@ -1511,6 +1790,11 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp expresion() {
 			return expresion;
+		}
+
+		@Override
+		public void imprime() {
+			expresion.imprime();
 		}
 	}
 
