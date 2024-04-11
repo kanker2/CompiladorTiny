@@ -476,7 +476,7 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			lista_declaraciones.imprime();
 			System.out.println();
-			System.out.print(",");
+			System.out.print(";");
 			System.out.println();
 			declaracion.imprime();
 		}
