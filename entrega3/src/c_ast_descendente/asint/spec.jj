@@ -526,13 +526,13 @@ Exp E7() :
 			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		| 
 		t = <TRUE> 
-			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (Exp)sem.true_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 		t = <FALSE> 
-			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (Exp)sem.false_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 		t = <NULL> 
-			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (Exp)sem.null_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 		t = <Cadena> 
 			{return (Exp)sem.cadena(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
