@@ -504,14 +504,14 @@ Exp E6() :
 Exp RE6(Exp eh) :
 	{Exp e1, e2; Token t, op;}
 	{
-		op = "[" e1 = E0() "]" e2 = RE6(sem.indexacion(eh, e1))
-			{return (Exp) e2.ponFila(op.beginLine).ponCol(op.beginColumn);}
+		op = "[" e1 = E0() "]" e2 = RE6((Exp) sem.indexacion(eh, e1).ponFila(op.beginLine).ponCol(op.beginColumn))
+			{return (Exp) e2;}
 		|
-		op = "." t = <Identificador> e1 = RE6(sem.acc_reg(eh, t.image))
-			{return (Exp) e1.ponFila(op.beginLine).ponCol(op.beginColumn);}
+		op = "." t = <Identificador> e1 = RE6((Exp) sem.acc_reg(eh, t.image).ponFila(op.beginLine).ponCol(op.beginColumn))
+			{return (Exp) e1;}
 		|
-		op = "^" e1 = RE6(sem.indireccion(eh))
-			{return (Exp) e1.ponFila(op.beginLine).ponCol(op.beginColumn);}
+		op = "^" e1 = RE6((Exp) sem.indireccion(eh).ponFila(op.beginLine).ponCol(op.beginColumn))
+			{return (Exp) e1;}
 		|
 			{return eh;}
 	}

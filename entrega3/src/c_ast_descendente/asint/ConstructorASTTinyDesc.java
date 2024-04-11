@@ -912,19 +912,19 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
         op = jj_consume_token(INIARRAY);
         e1 = E0();
         jj_consume_token(FINARRAY);
-        e2 = RE6(sem.indexacion(eh, e1));
-                         {if (true) return (Exp) e2.ponFila(op.beginLine).ponCol(op.beginColumn);}
+        e2 = RE6((Exp) sem.indexacion(eh, e1).ponFila(op.beginLine).ponCol(op.beginColumn));
+                         {if (true) return (Exp) e2;}
         break;
       case PUNTO:
         op = jj_consume_token(PUNTO);
         t = jj_consume_token(Identificador);
-        e1 = RE6(sem.acc_reg(eh, t.image));
-                         {if (true) return (Exp) e1.ponFila(op.beginLine).ponCol(op.beginColumn);}
+        e1 = RE6((Exp) sem.acc_reg(eh, t.image).ponFila(op.beginLine).ponCol(op.beginColumn));
+                         {if (true) return (Exp) e1;}
         break;
       case PUNTERO:
         op = jj_consume_token(PUNTERO);
-        e1 = RE6(sem.indireccion(eh));
-                         {if (true) return (Exp) e1.ponFila(op.beginLine).ponCol(op.beginColumn);}
+        e1 = RE6((Exp) sem.indireccion(eh).ponFila(op.beginLine).ponCol(op.beginColumn));
+                         {if (true) return (Exp) e1;}
         break;
       default:
         jj_la1[21] = jj_gen;
