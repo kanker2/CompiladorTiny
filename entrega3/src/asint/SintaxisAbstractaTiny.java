@@ -395,7 +395,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "{\n"+lista_opt_declaraciones+lista_opt_instrucciones+"}\n";
+			return "{\n"+lista_opt_declaraciones+lista_opt_instrucciones+"}";
 		}
 		
 		public LOptDecs lista_opt_declaraciones() {
@@ -424,7 +424,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_declaraciones+"&&\n";
+			return lista_declaraciones+"\n&&\n";
 		}
 		
 		public LDecs lista_declaraciones() {
@@ -460,7 +460,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_declaraciones+";\n"+declaracion;
+			return lista_declaraciones+"\n;\n"+declaracion;
 		}
 		
 		public LDecs lista_declaraciones() {
@@ -487,7 +487,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return declaracion+"\n";
+			return declaracion.toString();
 		}
 		
 		public Dec declaracion() {
@@ -506,7 +506,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -532,7 +532,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<type>\n"+tipo+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return "<type>\n"+tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -560,7 +560,7 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "<proc>\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n"+ 
-					"(\n"+lista_opt_parametros_formales+")\n"+bloque;
+					lista_opt_parametros_formales+"\n"+bloque;
 		}
 		
 		public String cadena() {
@@ -592,7 +592,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros_formales.toString();
+			return "(\n"+lista_parametros_formales.toString()+"\n)";
 		}
 		
 		public LParamForm lista_parametros_formales() {
@@ -614,7 +614,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "";
+			return "(\n)";
 		}
 
 		@Override
@@ -630,7 +630,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros_formales+",\n"+parametro_formal;
+			return lista_parametros_formales+"\n,\n"+parametro_formal;
 		}
 		
 		public LParamForm lista_parametros_formales() {
@@ -656,7 +656,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return parametro_formal+"\n";
+			return parametro_formal.toString();
 		}
 		
 		public ParamForm parametro_formal() {
@@ -675,7 +675,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+"\n"+"&\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return tipo+"\n&\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -701,7 +701,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -726,7 +726,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+"[\n"+cadena+"]\n"+
+			return tipo+"\n[\n"+cadena+"\n]"+
 					String.format("$f:%d,c:%d$",leeFila(), leeCol());
 		}
 		
@@ -754,7 +754,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo.toString();
+			return "^\n"+tipo.toString();
 		}
 		
 		public Tipo tipo() {
@@ -774,7 +774,13 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<int>\n";
+			return "<int>";
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -784,7 +790,13 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<real>\n";
+			return "<real>";
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -794,7 +806,13 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<bool>\n";
+			return "<bool>";
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -804,7 +822,13 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<string>\n";
+			return "<string>";
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -814,7 +838,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<struct>\n"+"{\n"+lista_parametros_registro+"}\n";
+			return "<struct>\n"+"{\n"+lista_parametros_registro+"\n}";
 		}
 		
 		public LParamReg lista_parametros_registro() {
@@ -837,7 +861,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public String cadena() {
@@ -856,7 +880,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros_registro+",\n"+parametro_registro;
+			return lista_parametros_registro+"\n,\n"+parametro_registro;
 		}
 		
 		public LParamReg lista_parametros_registro() {
@@ -901,7 +925,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -959,7 +983,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_instrucciones+";\n"+instruccion;
+			return lista_instrucciones+"\n;\n"+instruccion;
 		}
 		
 		public LInst lista_instrucciones() {
@@ -985,7 +1009,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return instruccion.toString();
+			return instruccion.toString()+"\n";
 		}
 		
 		public Inst instruccion() {
@@ -1027,7 +1051,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<if>\n"+expresion+bloque; 
+			return "<if>\n"+expresion+"\n"+bloque+bloque2; 
 		}
 		
 		public Exp expresion() {
@@ -1061,7 +1085,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<else>\n"+bloque;
+			return "\n<else>\n"+bloque;
 		}
 		
 		public Blq bloque() {
@@ -1098,7 +1122,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<while>\n"+expresion+bloque;
+			return "<while>\n"+expresion+"\n"+bloque;
 		}
 		
 		public Exp expresion() {
@@ -1164,7 +1188,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<nl>\n";
+			return "<nl>";
 		}
 
 		@Override
@@ -1222,7 +1246,7 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "<call>\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())
-			+"\n"+ "(\n"+lista_opt_parametros+")\n";
+			+"\n"+lista_opt_parametros;
 		}
 		
 		public String cadena() {
@@ -1268,9 +1292,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"=\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"=",op2, 1,0);
 		}
 
 		
@@ -1280,6 +1302,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1289,9 +1317,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+">\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,">",op2, 1,2);
 		}
 		
 		public Exp op1() {
@@ -1300,6 +1326,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1309,9 +1341,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+">=\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,">=",op2, 1,2);
 		}
 		
 		public Exp op1() {
@@ -1320,6 +1350,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1329,9 +1365,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"<\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"<",op2, 1,2);
 		}
 		
 		public Exp op1() {
@@ -1340,6 +1374,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1349,9 +1389,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"<=\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"<=",op2, 1,2);
 		}
 		
 		public Exp op1() {
@@ -1360,6 +1398,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1369,9 +1413,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"==\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"==",op2, 1,2);
 		}
 		
 		public Exp op1() {
@@ -1380,6 +1422,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1389,9 +1437,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"!=\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"!=",op2, 1,2);
 		}
 		
 		public Exp op1() {
@@ -1400,6 +1446,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1409,9 +1461,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"+\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"+",op2, 2,3);
 		}
 		
 		public Exp op1() {
@@ -1420,6 +1470,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1429,9 +1485,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"-\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"-",op2, 3,3);
 		}
 		
 		public Exp op1() {
@@ -1440,6 +1494,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1449,10 +1509,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format();
-			System.out.print(")");"%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"<and>\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"<and>",op2, 4,3);
 		}
 		
 		public Exp op1() {
@@ -1461,6 +1518,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1470,9 +1533,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"<or>\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"<or>",op2, 4,4);
 		}
 		
 		public Exp op1() {
@@ -1481,6 +1542,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1490,9 +1557,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"*\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"*",op2, 4,5);
 		}
 		
 		public Exp op1() {
@@ -1501,6 +1566,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1510,9 +1581,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"/\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"/",op2, 4,5);
 		}
 		
 		public Exp op1() {
@@ -1521,6 +1590,12 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1530,9 +1605,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"%\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n";
+			return imprimeExpBin(op1,"%",op2, 4,5);
 		}
 		
 		public Exp op1() {
@@ -1542,6 +1615,12 @@ public class SintaxisAbstractaTiny {
 		public Exp op2() {
 			return op2;
 		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Not_unario extends Exp {
@@ -1550,12 +1629,18 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<not>\n"+String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n";
+			return "<not>"+String.format("$f:%d,c:%d$",leeFila(), leeCol())
+				+ "\n" + imprimeOpnd(op1, 5);
 		}
 		
 		public Exp op1() {
 			return op1;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1565,12 +1650,18 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "-\n"+String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-			+"\n";
+			return "-"+String.format("$f:%d,c:%d$",leeFila(), leeCol())
+			+ "\n" + imprimeOpnd(op1, 5);
 		}
 		
 		public Exp op1() {
 			return op1;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 
 	}
@@ -1581,9 +1672,8 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n"+"[\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
-					+"\n]\n";
+			return imprimeOpnd(op1, 6) +"\n"+ String.format("%s$f:%d,c:%d$","[",leeFila(), leeCol())
+			+ "\n" + imprimeOpnd(op2, 0) + "\n]"; 
 		}
 		
 		public Exp op1() {
@@ -1593,6 +1683,12 @@ public class SintaxisAbstractaTiny {
 		public Exp op2() {
 			return op2;
 		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Acc_reg extends Exp {
@@ -1601,8 +1697,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
-					+"\n.\n"+ String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol()) +"\n";
+			return imprimeOpnd(op1, 6) + "\n" + String.format("%s$f:%d,c:%d$","^",leeFila(), leeCol());
 		}
 		
 		public Exp op1() {
@@ -1611,6 +1706,12 @@ public class SintaxisAbstractaTiny {
 		
 		public String cadena() {
 			return cadena;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1627,6 +1728,12 @@ public class SintaxisAbstractaTiny {
 		public Exp op1() {
 			return op1;
 		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Lit_ent extends Exp {
@@ -1635,11 +1742,17 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public String cadena() {
 			return cadena;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1649,11 +1762,17 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public String cadena() {
 			return cadena;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1663,7 +1782,13 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<true>\n";
+			return String.format("%s$f:%d,c:%d$", "<true>", leeFila(), leeCol());
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1673,7 +1798,13 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<false>\n";
+			return String.format("%s$f:%d,c:%d$", "<false>", leeFila(), leeCol());
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1683,7 +1814,13 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<null>\n";
+			return String.format("%s$f:%d,c:%d$", "<null>", leeFila(), leeCol());
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1699,6 +1836,12 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {
 			return cadena;
 		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Iden extends Exp {
@@ -1707,11 +1850,17 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public String cadena() {
 			return cadena;
+		}
+
+		@Override
+		public void imprime() {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1721,7 +1870,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros.toString();
+			return "(\n"+lista_parametros.toString()+"\n)";
 		}
 		
 		public LParam lista_parametros() {
@@ -1743,7 +1892,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "";
+			return "(\n)";
 		}
 
 		@Override
@@ -1759,7 +1908,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros+",\n"+expresion;
+			return lista_parametros+"\n,\n"+expresion;
 		}
 		
 		public LParam lista_parametros() {
@@ -1798,8 +1947,99 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	// Funciones de llama a constructores
+	
+	// Funciones para la impresion de los operandos
+	
+	private static boolean claseDe(Object o, Class c) {
+		return o.getClass() == c;
+		}
+	
+	private static String imprimeExpBin(Exp opnd0, String op, Exp opnd1, int np0, int np1) {
+		StringBuilder s = new StringBuilder();
+		s.append(imprimeOpnd(opnd0, np0));
+		s.append("\n");
+		s.append(op);
+		s.append("\n");
+		s.append(imprimeOpnd(opnd1, np1));
+		return s.toString();
+	}
 
+	private static String imprimeOpnd(Exp opnd, int p) {
+		StringBuilder s = new StringBuilder();
+		if(prioridad(opnd) < p) {
+			s.append("(");
+		}
+		s.append(String.format("%s$f:%d,c:%d$", opnd.cadena(), opnd.leeFila(), opnd.leeCol()));
+		
+		if(prioridad(opnd) < p) {
+			s.append(")");
+		}	
+		return s.toString();
+	}
+	
+	private static int prioridad(Exp e) {
+		if(claseDe(e, Asignacion.class)) {
+			return 0;
+		}
+		else if(claseDe(e, Mayor.class)) {
+			return 1;
+		}
+		else if(claseDe(e, Mayor_igual.class)) {
+			return 1;
+		}
+		else if(claseDe(e, Menor.class)) {
+			return 1;
+		}
+		else if(claseDe(e, Menor_igual.class)) {
+			return 1;
+		}
+		else if(claseDe(e, Comparacion.class)) {
+			return 1;
+		}
+		else if(claseDe(e, Distinto.class)) {
+			return 1;
+		}
+		else if(claseDe(e, Suma.class)) {
+			return 2;
+		}
+		else if(claseDe(e, Resta.class)) {
+			return 2;
+		}
+		else if(claseDe(e, And.class)) {
+			return 3;
+		}
+		else if(claseDe(e, Or.class)) {
+			return 3;
+		}
+		else if(claseDe(e, Mult.class)) {
+			return 4;
+		}
+		else if(claseDe(e, Div.class)) {
+			return 4;
+		}
+		else if(claseDe(e, Mod.class)) {
+			return 4;
+		}
+		else if(claseDe(e, Not_unario.class)) {
+			return 5;
+		}
+		else if(claseDe(e, Resta_unario.class)) {
+			return 5;
+		}
+		else if(claseDe(e, Indexacion.class)) {
+			return 6;
+		}
+		else if(claseDe(e, Acc_reg.class)) {
+			return 6;
+		}
+		else if(claseDe(e, Indireccion.class)) {
+			return 6;
+		}
+		return 7;
+	}
+	
+	
+	// Funciones de llama a constructores
 	public ProgT prog_tiny(Blq bloque) {
 		return new Prog_tiny(bloque);
 	}
