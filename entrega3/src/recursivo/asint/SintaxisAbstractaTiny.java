@@ -1,4 +1,6 @@
-package recursivo.asint;
+package asint;
+
+import asint.SintaxisAbstractaTiny.Exp;
 
 public class SintaxisAbstractaTiny {
 	public SintaxisAbstractaTiny() {
@@ -29,29 +31,37 @@ public class SintaxisAbstractaTiny {
 		public int leeCol() {
 			return col;
 		}
+		
+		public abstract void procesa(Procesamiento p);
 	}
 
 	// Clases abstractas (Generos)
-	public static abstract class ProgT {
-		protected Blq bloque;
+	public static abstract class ProgT extends Nodo {
+		public Blq bloque;
 
 		public ProgT(Blq bloque) {
 			this.bloque = bloque;
 		}
+		
+		
+	
+		
 	}
 
-	public static abstract class Blq {
-		protected LOptDecs lista_opt_declaraciones;
-		protected LOptInst lista_opt_instrucciones;
+	public static abstract class Blq extends Nodo{
+		public LOptDecs lista_opt_declaraciones;
+		public LOptInst lista_opt_instrucciones;
 
 		public Blq(LOptDecs lista_opt_declaraciones, LOptInst lista_opt_instrucciones) {
 			this.lista_opt_declaraciones = lista_opt_declaraciones;
 			this.lista_opt_instrucciones = lista_opt_instrucciones;
 		}
+		
+		
 	}
 
-	public static abstract class LOptDecs {
-		protected LDecs lista_declaraciones;
+	public static abstract class LOptDecs extends Nodo {
+		public LDecs lista_declaraciones;
 
 		public LOptDecs(LDecs lista_declaraciones) {
 			this.lista_declaraciones = lista_declaraciones;
@@ -61,9 +71,9 @@ public class SintaxisAbstractaTiny {
 		};
 	}
 
-	public static abstract class LDecs {
-		protected LDecs lista_declaraciones;
-		protected Dec declaracion;
+	public static abstract class LDecs extends Nodo{
+		public LDecs lista_declaraciones;
+		public Dec declaracion;
 
 		public LDecs(LDecs lista_declaraciones, Dec declaracion) {
 			this.lista_declaraciones = lista_declaraciones;
@@ -75,11 +85,11 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static abstract class Dec extends Nodo{
-		protected Tipo tipo;
-		protected String cadena;
-		protected Blq bloque;
-		protected LOptParamForm lista_opt_parametros_formales;
+	public static abstract class Dec extends Nodo {
+		public Tipo tipo; 
+		public String cadena; //nombre de la variable
+		public Blq bloque;
+		public LOptParamForm lista_opt_parametros_formales;
 
 		public Dec(Tipo tipo, String cadena) {
 			this.tipo = tipo;
@@ -91,10 +101,12 @@ public class SintaxisAbstractaTiny {
 			this.lista_opt_parametros_formales = lista_opt_parametros_formales;
 			this.bloque = bloque;
 		}
+		
+		 
 	}
 
-	public static abstract class LOptParamForm {
-		protected LParamForm lista_parametros_formales;
+	public static abstract class LOptParamForm extends Nodo{
+		public LParamForm lista_parametros_formales;
 
 		public LOptParamForm(LParamForm lista_parametros_formales) {
 			this.lista_parametros_formales = lista_parametros_formales;
@@ -104,9 +116,9 @@ public class SintaxisAbstractaTiny {
 		};
 	}
 
-	public static abstract class LParamForm {
-		protected LParamForm lista_parametros_formales;
-		protected ParamForm parametro_formal;
+	public static abstract class LParamForm extends Nodo{
+		public LParamForm lista_parametros_formales;
+		public ParamForm parametro_formal;
 
 		public LParamForm(LParamForm lista_parametros_formales, ParamForm parametro_formal) {
 			this.lista_parametros_formales = lista_parametros_formales;
@@ -118,9 +130,9 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static abstract class ParamForm {
-		protected Tipo tipo;
-		protected String cadena;
+	public static abstract class ParamForm extends Nodo{
+		public Tipo tipo;
+		public String cadena;
 
 		public ParamForm() {
 		};
@@ -131,10 +143,10 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static abstract class Tipo {
-		protected Tipo tipo;
-		protected String cadena;
-		protected LParamReg lista_parametros_registro;
+	public static abstract class Tipo extends Nodo {
+		public Tipo tipo;
+		public String cadena;
+		public LParamReg lista_parametros_registro;
 
 		public Tipo() {
 		};
@@ -155,11 +167,12 @@ public class SintaxisAbstractaTiny {
 		public Tipo(LParamReg lista_parametros_registro) {
 			this.lista_parametros_registro = lista_parametros_registro;
 		}
+		
 	}
 
-	public static abstract class LParamReg {
-		protected LParamReg lista_parametros_registro;
-		protected ParamReg parametro_registro;
+	public static abstract class LParamReg extends Nodo{
+		public LParamReg lista_parametros_registro;
+		public ParamReg parametro_registro;
 
 		public LParamReg(LParamReg lista_parametros_registro, ParamReg parametro_registro) {
 			this.lista_parametros_registro = lista_parametros_registro;
@@ -171,9 +184,9 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static abstract class ParamReg {
-		protected Tipo tipo;
-		protected String cadena;
+	public static abstract class ParamReg extends Nodo{
+		public Tipo tipo;
+		public String cadena;
 
 		public ParamReg(Tipo tipo, String cadena) {
 			this.tipo = tipo;
@@ -181,8 +194,8 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static abstract class LOptInst {
-		protected LInst lista_instrucciones;
+	public static abstract class LOptInst extends Nodo {
+		public LInst lista_instrucciones;
 
 		public LOptInst() {
 		};
@@ -193,9 +206,9 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	public static abstract class LInst {
-		protected LInst lista_instrucciones;
-		protected Inst instruccion;
+	public static abstract class LInst extends Nodo {
+		public LInst lista_instrucciones;
+		public Inst instruccion;
 
 		public LInst(LInst lista_instrucciones, Inst instruccion) {
 			this.lista_instrucciones = lista_instrucciones;
@@ -207,12 +220,12 @@ public class SintaxisAbstractaTiny {
 		}
 	}
 
-	public static abstract class Inst {
-		protected Exp expresion;
-		protected Blq bloque1;
-		protected Blq bloque2;
-		protected String cadena;
-		protected LOptParam parametro;
+	public static abstract class Inst extends Nodo {
+		public Exp expresion;
+		public Blq bloque1;
+		public Blq bloque2;
+		public String cadena;
+		public LOptParam parametro;
 
 		public Inst() {
 		};
@@ -243,9 +256,9 @@ public class SintaxisAbstractaTiny {
 	}
 
 	public static abstract class Exp extends Nodo {
-		protected Exp op1;
-		protected Exp op2;
-		protected String cadena;
+		public Exp op1;
+		public Exp op2;
+		public String cadena;
 
 		public Exp() {
 		};
@@ -267,10 +280,14 @@ public class SintaxisAbstractaTiny {
 		public Exp(String cadena) {
 			this.cadena = cadena;
 		}
+			       
+	       
+	       public abstract int prioridad();
+		
 	}
 
-	public static abstract class LOptParam {
-		protected LParam lista_parametros;
+	public static abstract class LOptParam extends Nodo {
+		public LParam lista_parametros;
 
 		public LOptParam() {
 		};
@@ -281,9 +298,9 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	public static abstract class LParam {
-		protected LParam lista_parametros;
-		protected Exp expresion;
+	public static abstract class LParam extends Nodo {
+		public LParam lista_parametros;
+		public Exp expresion;
 
 		public LParam(LParam lista_parametros, Exp expresion) {
 			this.lista_parametros = lista_parametros;
@@ -303,12 +320,23 @@ public class SintaxisAbstractaTiny {
 			super(bloque);
 		}
 
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);
+		}
+
 	}
 
 	public static class Bloque extends Blq {
 
 		public Bloque(LOptDecs lista_opt_declaraciones, LOptInst lista_opt_instrucciones) {
 			super(lista_opt_declaraciones, lista_opt_instrucciones);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);
+			
 		}
 
 	}
@@ -318,11 +346,21 @@ public class SintaxisAbstractaTiny {
 		public Si_lista_opt_decs(LDecs lista_declaraciones) {
 			super(lista_declaraciones);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class No_lista_opt_decs extends LOptDecs {
 		public No_lista_opt_decs() {
 			super();
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -330,11 +368,21 @@ public class SintaxisAbstractaTiny {
 		public Muchas_lista_decs(LDecs lista_declaraciones, Dec declaracion) {
 			super(lista_declaraciones, declaracion);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Una_lista_decs extends LDecs {
 		public Una_lista_decs(Dec declaracion) {
 			super(declaracion);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -342,17 +390,38 @@ public class SintaxisAbstractaTiny {
 		public Dec_var(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);
+			
+		}
 	}
 
 	public static class Dec_tipo extends Dec {
 		public Dec_tipo(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);
+			
+		}
 	}
 
 	public static class Dec_proc extends Dec {
+		
 		public Dec_proc(String cadena, LOptParamForm lista_opt_parametros_formales, Blq bloque) {
 			super(cadena, lista_opt_parametros_formales, bloque);
+			
+		}
+		
+		
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);
 		}
 	}
 
@@ -360,23 +429,47 @@ public class SintaxisAbstractaTiny {
 		public Si_lista_opt_param_form(LParamForm lista_parametros_formales) {
 			super(lista_parametros_formales);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class No_lista_opt_param_form extends LOptParamForm {
 		public No_lista_opt_param_form() {
 			super();
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Muchas_lista_param_form extends LParamForm {
+		
 		public Muchas_lista_param_form(LParamForm lista_parametros_formales, ParamForm parametro_formal) {
 			super(lista_parametros_formales, parametro_formal);
+		
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Una_lista_param_form extends LParamForm {
 		public Una_lista_param_form(ParamForm parametro_formal) {
 			super(parametro_formal);
+			
+
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 
 	}
@@ -385,23 +478,45 @@ public class SintaxisAbstractaTiny {
 		public Param_form_ref(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Param_form extends ParamForm {
 		public Param_form(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Tipo_array extends Tipo {
+		
 		public Tipo_array(Tipo tipo, String cadena) {
 			super(tipo, cadena);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Tipo_puntero extends Tipo {
-		public Tipo_puntero(Tipo tipo) {
-			super(tipo);
+
+		public Tipo_puntero(Tipo tipo, String cadena) {
+			super(tipo, cadena);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -409,11 +524,22 @@ public class SintaxisAbstractaTiny {
 		public Int_t() {
 			super();
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
+		
 	}
 
 	public static class Real_t extends Tipo {
 		public Real_t() {
 			super();
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -421,11 +547,21 @@ public class SintaxisAbstractaTiny {
 		public Bool_t() {
 			super();
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class String_t extends Tipo {
 		public String_t() {
 			super();
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -433,17 +569,33 @@ public class SintaxisAbstractaTiny {
 		public Tipo_registro(LParamReg lista_parametros_registro) {
 			super(lista_parametros_registro);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Tipo_definido extends Tipo {
 		public Tipo_definido(String cadena) {
 			super(cadena);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Muchas_lista_param_reg extends LParamReg {
+		
 		public Muchas_lista_param_reg(LParamReg lista_parametros_registro, ParamReg parametro_registro) {
 			super(lista_parametros_registro, parametro_registro);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -451,11 +603,23 @@ public class SintaxisAbstractaTiny {
 		public Una_lista_param_reg(ParamReg parametro_registro) {
 			super(parametro_registro);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Param_reg extends ParamReg {
+		
 		public Param_reg(Tipo tipo, String cadena) {
 			super(tipo, cadena);
+			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -463,83 +627,173 @@ public class SintaxisAbstractaTiny {
 		public Si_lista_opt_inst(LInst lista_instrucciones) {
 			super(lista_instrucciones);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class No_lista_opt_inst extends LOptInst {
 		public No_lista_opt_inst() {
 			super();
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Muchas_lista_inst extends LInst {
+	
+
 		public Muchas_lista_inst(LInst lista_instrucciones, Inst instruccion) {
 			super(lista_instrucciones, instruccion);
+			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Una_lista_inst extends LInst {
+
 		public Una_lista_inst(Inst instruccion) {
 			super(instruccion);
+
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_eval extends Inst {
+		
 		public Inst_eval(Exp expresion) {
 			super(expresion);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_if extends Inst {
+		
 		public Inst_if(Exp expresion, Blq bloque) {
 			super(expresion, bloque);
+			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_if_else extends Inst {
+		
 		public Inst_if_else(Exp expresion, Blq bloque, Blq bloque2) {
 			super(expresion, bloque, bloque2);
+			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+			
 		}
 	}
 
 	public static class Inst_while extends Inst {
+	
 		public Inst_while(Exp expresion, Blq bloque) {
 			super(expresion, bloque);
+			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_read extends Inst {
+
 		public Inst_read(Exp expresion) {
 			super(expresion);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_write extends Inst {
+
 		public Inst_write(Exp expresion) {
 			super(expresion);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_nl extends Inst {
-		public Inst_nl() {
-			super();
+
+		public Inst_nl(Exp expresion) {
+			super(expresion);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_new extends Inst {
+
 		public Inst_new(Exp expresion) {
 			super(expresion);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_delete extends Inst {
+
 		public Inst_delete(Exp expresion) {
 			super(expresion);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
 	public static class Inst_call extends Inst {
+
 		public Inst_call(String cadena, LOptParam lista_opt_parametros) {
 			super(cadena, lista_opt_parametros);
+			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -547,89 +801,269 @@ public class SintaxisAbstractaTiny {
 		public Inst_comp(Blq bloque) {
 			super(bloque);
 		}
-	}
+		
 
-	public static class Asignacion extends Exp {
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
+	}
+	
+	public static abstract class ExpBin extends Exp {
+
+        public ExpBin(Exp opnd0, Exp opnd1) {
+            super();
+           
+        }
+  
+    }
+
+	public static class Asignacion extends ExpBin {
 		public Asignacion(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 0;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);
+			
 		}
 	}
 
-	public static class Mayor extends Exp {
+	public static class Mayor extends ExpBin {
 		public Mayor(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);
 		}
 	}
 
-	public static class Mayor_igual extends Exp {
+	public static class Mayor_igual extends ExpBin {
 		public Mayor_igual(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Menor extends Exp {
+	public static class Menor extends ExpBin {
 		public Menor(Exp op1, Exp op2) {
 			super(op1, op2);
+		
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Menor_igual extends Exp {
+	public static class Menor_igual extends ExpBin {
 		public Menor_igual(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Comparacion extends Exp {
+	public static class Comparacion extends ExpBin {
 		public Comparacion(Exp op1, Exp op2) {
 			super(op1, op2);
+		
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Distinto extends Exp {
+	public static class Distinto extends ExpBin {
 		public Distinto(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Suma extends Exp {
+	public static class Suma extends ExpBin {
 		public Suma(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 2;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Resta extends Exp {
+	public static class Resta extends ExpBin {
 		public Resta(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 2;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class And extends Exp {
+	public static class And extends ExpBin {
 		public And(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+		@Override
+		public int prioridad() {
+			return 3;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Or extends Exp {
+	public static class Or extends ExpBin {
 		public Or(Exp op1, Exp op2) {
 			super(op1, op2);
+		
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 3;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Mult extends Exp {
+	public static class Mult extends ExpBin {
 		public Mult(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 4;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Div extends Exp {
+	public static class Div extends ExpBin {
 		public Div(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+		}
+		@Override
+		public int prioridad() {
+			return 4;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
-	public static class Mod extends Exp {
+	public static class Mod extends ExpBin {
 		public Mod(Exp op1, Exp op2) {
 			super(op1, op2);
+		
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 4;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
@@ -637,23 +1071,66 @@ public class SintaxisAbstractaTiny {
 		public Not_unario(Exp op1) {
 			super(op1);
 		}
+
+		@Override
+		public int prioridad() {
+			return 5;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
+		}
 	}
 
 	public static class Resta_unario extends Exp {
 		public Resta_unario(Exp op1) {
 			super(op1);
 		}
+		@Override
+		public int prioridad() {
+			return 5;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
+		}
 	}
 
 	public static class Indexacion extends Exp {
 		public Indexacion(Exp op1, Exp op2) {
 			super(op1, op2);
+			
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 6;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
 	public static class Acc_reg extends Exp {
+		
 		public Acc_reg(Exp op1, String cadena) {
 			super(op1, cadena);
+			
+		}
+
+		@Override
+		public int prioridad() {
+			return 6;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
@@ -661,23 +1138,68 @@ public class SintaxisAbstractaTiny {
 		public Indireccion(Exp op1) {
 			super(op1);
 		}
+
+		@Override
+		public int prioridad() {
+			return 6;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
+		}
 	}
 
 	public static class Lit_ent extends Exp {
 		public Lit_ent(String cadena) {
 			super(cadena);
 		}
+		
+
+		@Override
+		public int prioridad() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
+		}
+
 	}
 
 	public static class Lit_real extends Exp {
 		public Lit_real(String cadena) {
 			super(cadena);
 		}
+		@Override
+		public int prioridad() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
+		}
+
 	}
 
 	public static class True_e extends Exp {
 		public True_e() {
 			super();
+
+		}
+
+		@Override
+		public int prioridad() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
@@ -685,29 +1207,79 @@ public class SintaxisAbstractaTiny {
 		public False_e() {
 			super();
 		}
+
+		@Override
+		public int prioridad() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
+		}
 	}
 
 	public static class Null_e extends Exp {
 		public Null_e() {
 			super();
 		}
+
+		@Override
+		public int prioridad() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
+		}
 	}
 
 	public static class Cadena extends Exp {
+		
 		public Cadena(String cadena) {
 			super(cadena);
+		}
+
+		 public String valor() {return cadena;}
+		@Override
+		public int prioridad() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
 		}
 	}
 
 	public static class Iden extends Exp {
-		public Iden(String cadena) {
-			super(cadena);
+        public Iden(String id) {
+            super();
+        }
+    
+		@Override
+		public int prioridad() {
+			// TODO Auto-generated method stub
+			return 0;
 		}
+		@Override
+		public void procesa(Procesamiento p) {
+			 p.procesa(this);			
+		} 
 	}
 
 	public static class Si_lista_opt_param extends LOptParam {
 		public Si_lista_opt_param(LParam lista_parametros) {
 			super(lista_parametros);
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -715,11 +1287,23 @@ public class SintaxisAbstractaTiny {
 		public No_lista_opt_param() {
 			super();
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
+		}
 	}
 
 	public static class Muchas_lista_param extends LParam {
+	
 		public Muchas_lista_param(LParam lista_parametros, Exp expresion) {
 			super(lista_parametros, expresion);
+			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			
 		}
 	}
 
@@ -727,9 +1311,15 @@ public class SintaxisAbstractaTiny {
 		public Una_lista_param(Exp expresion) {
 			super(expresion);
 		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+			p.procesa(this);			// TODO Auto-generated method stub
+			
+		}
 	}
 
-	// Funciones de llama a constructores
+	//////////////////////////////////////////////////// Funciones de llama a constructores
 
 	public ProgT prog_tiny(Blq bloque) {
 		return new Prog_tiny(bloque);
@@ -795,8 +1385,8 @@ public class SintaxisAbstractaTiny {
 		return new Tipo_array(tipo, cadena);
 	}
 
-	public Tipo tipo_puntero(Tipo tipo) {
-		return new Tipo_puntero(tipo);
+	public Tipo tipo_puntero(Tipo tipo, String cadena) {
+		return new Tipo_puntero(tipo, cadena);
 	}
 
 	public Tipo int_t() {
@@ -875,8 +1465,8 @@ public class SintaxisAbstractaTiny {
 		return new Inst_write(expresion);
 	}
 
-	public Inst inst_nl() {
-		return new Inst_nl();
+	public Inst inst_nl(Exp expresion) {
+		return new Inst_nl(expresion);
 	}
 
 	public Inst inst_new(Exp expresion) {
