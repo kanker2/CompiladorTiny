@@ -810,7 +810,7 @@ class CUP$ConstructorASTTiny$actions {
           case 31: // tipo_registro ::= STRUCT INIBLOQUE lista_parametros_registro FINBLOQUE 
             {
               Tipo RESULT =null;
-		LParamReg l_param_reg = (LParamReg)(CUP$ConstructorASTTiny$stack.elementAt(CUP$ConstructorASTTiny$top-1)).value;
+		LParamReg l_param_reg = (LParamReg)((java_cup.runtime.Symbol) CUP$ConstructorASTTiny$stack.elementAt(CUP$ConstructorASTTiny$top-1)).value;
 		 RESULT = (Tipo)sem.tipo_registro(l_param_reg); 
               CUP$ConstructorASTTiny$result = parser.getSymbolFactory().newSymbol("tipo_registro",14, RESULT);
             }
