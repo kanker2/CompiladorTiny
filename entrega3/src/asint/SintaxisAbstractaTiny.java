@@ -13,6 +13,7 @@ public class SintaxisAbstractaTiny {
 	}
 	
 	public static abstract class Nodo {
+		
 		public Nodo() {
 			fila = col = -1;
 		}
@@ -308,6 +309,110 @@ public class SintaxisAbstractaTiny {
 		protected Exp op2;
 		protected String cadena;
 
+		private static int prioridad(Exp e) {
+			if(claseDe(e, Asignacion.class)) {
+				return 0;
+			}
+			else if(claseDe(e, Mayor.class)) {
+				return 1;
+			}
+			else if(claseDe(e, Mayor_igual.class)) {
+				return 1;
+			}
+			else if(claseDe(e, Menor.class)) {
+				return 1;
+			}
+			else if(claseDe(e, Menor_igual.class)) {
+				return 1;
+			}
+			else if(claseDe(e, Comparacion.class)) {
+				return 1;
+			}
+			else if(claseDe(e, Distinto.class)) {
+				return 1;
+			}
+			else if(claseDe(e, Suma.class)) {
+				return 2;
+			}
+			else if(claseDe(e, Resta.class)) {
+				return 2;
+			}
+			else if(claseDe(e, And.class)) {
+				return 3;
+			}
+			else if(claseDe(e, Or.class)) {
+				return 3;
+			}
+			else if(claseDe(e, Mult.class)) {
+				return 4;
+			}
+			else if(claseDe(e, Div.class)) {
+				return 4;
+			}
+			else if(claseDe(e, Mod.class)) {
+				return 4;
+			}
+			else if(claseDe(e, Not_unario.class)) {
+				return 5;
+			}
+			else if(claseDe(e, Resta_unario.class)) {
+				return 5;
+			}
+			else if(claseDe(e, Indexacion.class)) {
+				return 6;
+			}
+			else if(claseDe(e, Acc_reg.class)) {
+				return 6;
+			}
+			else if(claseDe(e, Indireccion.class)) {
+				return 6;
+			}
+			return 7;
+		}
+
+		protected static String imprimeExpBinInterprete(Exp padre, Exp opnd0, String op, Exp opnd1, int np0, int np1) {
+			imprimeOpndInterprete(opnd0, np0);
+			System.out.println();
+			System.out.println(op+getPosDJ(padre.leeFila(), padre.leeCol()));
+			imprimeOpndInterprete(opnd1, np1);
+			return "";
+		}
+		
+		protected static void imprimeOpndInterprete(Exp opnd, int p) {
+			if(prioridad(opnd) < p) {
+				System.out.println("(");
+			}
+			opnd.imprime();
+			
+			if(prioridad(opnd) < p) {
+				System.out.println();
+				System.out.print(")");
+			}	
+		}
+		
+		protected static String imprimeExpBin(Exp opnd0, String op, Exp opnd1, int np0, int np1) {
+			StringBuilder s = new StringBuilder();
+			s.append(imprimeOpnd(opnd0, np0));
+			s.append("\n");
+			s.append(op);
+			s.append("\n");
+			s.append(imprimeOpnd(opnd1, np1));
+			return s.toString();
+		}
+
+		protected static String imprimeOpnd(Exp opnd, int p) {
+			StringBuilder s = new StringBuilder();
+			if(prioridad(opnd) < p) {
+				s.append("(");
+			}
+			s.append(String.format("%s$f:%d,c:%d$", opnd.cadena(), opnd.leeFila(), opnd.leeCol()));
+			
+			if(prioridad(opnd) < p) {
+				s.append(")");
+			}	
+			return s.toString();
+		}
+		
 		public Exp() {
 		};
 
@@ -408,7 +513,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.println("{");
+			System.out.print("{");
 			lista_opt_declaraciones.imprime();
 			lista_opt_instrucciones.imprime();
 			System.out.println();
@@ -433,6 +538,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
+			System.out.println();
 			lista_declaraciones.imprime();
 			System.out.println();
 			System.out.print("&&");
@@ -1302,7 +1408,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "=", op2, 1, 0));
+			System.out.print(imprimeExpBinInterprete(this, op1, "=", op2, 1, 0));
 		}
 	}
 
@@ -1325,7 +1431,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, ">", op2, 1, 2));
+			System.out.print(imprimeExpBinInterprete(this, op1, ">", op2, 1, 2));
 		}
 	}
 
@@ -1348,7 +1454,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, ">=", op2, 1, 2));			
+			System.out.print(imprimeExpBinInterprete(this, op1, ">=", op2, 1, 2));			
 		}
 	}
 
@@ -1371,7 +1477,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "<", op2, 1, 2));			
+			System.out.print(imprimeExpBinInterprete(this, op1, "<", op2, 1, 2));			
 		}
 	}
 
@@ -1394,7 +1500,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "<=", op2, 1, 2));
+			System.out.print(imprimeExpBinInterprete(this, op1, "<=", op2, 1, 2));
 		}
 	}
 
@@ -1417,7 +1523,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "==", op2, 1, 2));
+			System.out.print(imprimeExpBinInterprete(this, op1, "==", op2, 1, 2));
 		}
 	}
 
@@ -1440,7 +1546,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "!=", op2, 1, 2));			
+			System.out.print(imprimeExpBinInterprete(this, op1, "!=", op2, 1, 2));			
 		}
 	}
 
@@ -1463,7 +1569,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "+", op2, 2, 3));
+			System.out.print(imprimeExpBinInterprete(this, op1, "+", op2, 2, 3));
 		}
 	}
 
@@ -1486,7 +1592,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "-", op2, 3, 3));
+			System.out.print(imprimeExpBinInterprete(this, op1, "-", op2, 3, 3));
 		}
 	}
 
@@ -1509,7 +1615,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "<and>", op2, 4, 3));
+			System.out.print(imprimeExpBinInterprete(this, op1, "<and>", op2, 4, 3));
 		}
 	}
 
@@ -1532,7 +1638,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "<or>", op2, 4, 4));
+			System.out.print(imprimeExpBinInterprete(this, op1, "<or>", op2, 4, 4));
 		}
 	}
 
@@ -1555,7 +1661,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "*", op2, 4, 5));
+			System.out.print(imprimeExpBinInterprete(this, op1, "*", op2, 4, 5));
 		}
 	}
 
@@ -1578,7 +1684,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "/", op2, 4, 5));
+			System.out.print(imprimeExpBinInterprete(this, op1, "/", op2, 4, 5));
 			
 		}
 	}
@@ -1602,7 +1708,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print(imprimeExpBin(this, op1, "%", op2, 4, 5));
+			System.out.print(imprimeExpBinInterprete(this, op1, "%", op2, 4, 5));
 		}
 	}
 
@@ -1623,7 +1729,7 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void imprime() {
 			System.out.println("<not>"+getPosDJ(leeFila(), leeCol()));
-			System.out.print(imprimeOpnd(op1, 5));
+			imprimeOpndInterprete(op1, 5);
 			
 		}
 	}
@@ -1645,7 +1751,7 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void imprime() {
 			System.out.println("-"+getPosDJ(leeFila(), leeCol()));
-			System.out.print(imprimeOpnd(op1, 5));
+			imprimeOpndInterprete(op1, 5);
 		}
 
 	}
@@ -1670,9 +1776,11 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.println(imprimeOpnd(op1, 6));
+			imprimeOpndInterprete(op1, 6);
+			System.out.println();
 			System.out.println("["+getPosDJ(leeFila(), leeCol()));
-			System.out.println(imprimeOpnd(op2, 6));
+			imprimeOpndInterprete(op2, 6);
+			System.out.println();
 			System.out.print("]");
 		}
 	}
@@ -1696,7 +1804,8 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.println(imprimeOpnd(op1, 6));
+			imprimeOpndInterprete(op1, 6);
+			System.out.println();
 			System.out.println(".");
 			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
@@ -1718,7 +1827,8 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.println(imprimeOpnd(op1, 6));
+			imprimeOpndInterprete(op1, 6);
+			System.out.println();
 			System.out.print("^"+getPosDJ(leeFila(), leeCol()));
 		}
 	}
@@ -1933,102 +2043,6 @@ public class SintaxisAbstractaTiny {
 	private static boolean claseDe(Object o, Class c) {
 		return o.getClass() == c;
 		}
-	
-	private static String imprimeExpBin(Exp padre, Exp opnd0, String op, Exp opnd1, int np0, int np1) {
-		StringBuilder s = new StringBuilder();
-		s.append(imprimeOpnd(opnd0, np0));
-		s.append("\n");
-		s.append(op);
-		s.append(getPosDJ(padre.leeFila(), padre.leeCol()));
-		s.append("\n");
-		s.append(imprimeOpnd(opnd1, np1));
-		return s.toString();
-	}
-	
-	private static String imprimeExpBin(Exp opnd0, String op, Exp opnd1, int np0, int np1) {
-		StringBuilder s = new StringBuilder();
-		s.append(imprimeOpnd(opnd0, np0));
-		s.append("\n");
-		s.append(op);
-		s.append("\n");
-		s.append(imprimeOpnd(opnd1, np1));
-		return s.toString();
-	}
-
-	private static String imprimeOpnd(Exp opnd, int p) {
-		StringBuilder s = new StringBuilder();
-		if(prioridad(opnd) < p) {
-			s.append("(");
-		}
-		s.append(String.format("%s$f:%d,c:%d$", opnd.cadena(), opnd.leeFila(), opnd.leeCol()));
-		
-		if(prioridad(opnd) < p) {
-			s.append(")");
-		}	
-		return s.toString();
-	}
-	
-	private static int prioridad(Exp e) {
-		if(claseDe(e, Asignacion.class)) {
-			return 0;
-		}
-		else if(claseDe(e, Mayor.class)) {
-			return 1;
-		}
-		else if(claseDe(e, Mayor_igual.class)) {
-			return 1;
-		}
-		else if(claseDe(e, Menor.class)) {
-			return 1;
-		}
-		else if(claseDe(e, Menor_igual.class)) {
-			return 1;
-		}
-		else if(claseDe(e, Comparacion.class)) {
-			return 1;
-		}
-		else if(claseDe(e, Distinto.class)) {
-			return 1;
-		}
-		else if(claseDe(e, Suma.class)) {
-			return 2;
-		}
-		else if(claseDe(e, Resta.class)) {
-			return 2;
-		}
-		else if(claseDe(e, And.class)) {
-			return 3;
-		}
-		else if(claseDe(e, Or.class)) {
-			return 3;
-		}
-		else if(claseDe(e, Mult.class)) {
-			return 4;
-		}
-		else if(claseDe(e, Div.class)) {
-			return 4;
-		}
-		else if(claseDe(e, Mod.class)) {
-			return 4;
-		}
-		else if(claseDe(e, Not_unario.class)) {
-			return 5;
-		}
-		else if(claseDe(e, Resta_unario.class)) {
-			return 5;
-		}
-		else if(claseDe(e, Indexacion.class)) {
-			return 6;
-		}
-		else if(claseDe(e, Acc_reg.class)) {
-			return 6;
-		}
-		else if(claseDe(e, Indireccion.class)) {
-			return 6;
-		}
-		return 7;
-	}
-	
 	
 	// Funciones de llama a constructores
 	public ProgT prog_tiny(Blq bloque) {
