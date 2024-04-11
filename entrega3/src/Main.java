@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import asint.SintaxisAbstractaTiny.ProgT;
 import c_ast_ascendente.alex.AnalizadorLexicoTiny;
 import c_ast_ascendente.asint.ConstructorASTTiny;
 import c_ast_ascendente.asint.ConstructorASTTinyDJ;
@@ -13,6 +14,8 @@ import c_ast_descendente.asint.ConstructorASTTinyDesc;
 import c_ast_descendente.asint.ConstructorASTTinyDescDJ;
 import c_ast_descendente.asint.ParseException;
 import c_ast_descendente.asint.TokenMgrError;
+
+import procesamiento.*;
 
 public class Main {
 
@@ -27,50 +30,36 @@ public class Main {
 			System.out.println("Error al leer el primer caracter");
 		}
 			
-		if (primerCaracter == 'a') {			
-			AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
-			ConstructorASTTinyDJ asint = new ConstructorASTTinyDJ(alex);
-			// Impresion de las trazas
-			try {
-
-				// asint.setScanner(alex);
+		ProgT prog;
+		
+		// Impresion de las trazas
+		try {
+			if (primerCaracter == 'a') {
+				AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
+				ConstructorASTTinyDJ asint = new ConstructorASTTinyDJ(alex);
 				System.out.println("CONSTRUCCION AST ASCENDENTE");
-				//asint.debug_parse();
-
-			} catch (ErrorLexico e) {
-				System.out.println("ERROR_LEXICO");
-			} catch (ErrorSintactico e) {
-				System.out.println("ERROR_SINTACTICO");
-			}
-
-			// Impresion del procesamiento recursivo
-			System.out.println(asint.parse().value);
-
-			// Impresion del procesamiento interprete
-
-			// Impresion del procesamiento visitante
-		} else {
-
-			// Impresion de las trazas
-			try {
+				prog = (ProgT) asint.parse().value;
+			} else {
 				ConstructorASTTinyDescDJ asint = new ConstructorASTTinyDescDJ(input);
 				System.out.println("CONSTRUCCION AST DESCENDENTE");
-				asint.analiza();
-			} catch (ParseException e) {
-				System.out.println("ERROR_SINTACTICO");
-			} catch (TokenMgrError e) {
-				System.out.println("ERROR_LEXICO");
+				prog = asint.analiza();
 			}
+			
+			procesar(prog);
 
-			// Impresion del procesamiento recursivo
-			// System.out.println(asint.analiza());
-
-			// Impresion del procesamiento interprete
-
-			// Impresion del procesamiento visitante
-
+		} catch (ParseException e) {
+			System.out.println("ERROR_SINTACTICO");
+		} catch (TokenMgrError e) {
+			System.out.println("ERROR_LEXICO");
 		}
-
 	}
-
+	
+	public static void procesar(ProgT prog) {
+		ImpresorBonito e = new ImpresorBonitoRecursivo();
+		e.procesa(prog);
+		e = new ImpresorBonitoInterprete();
+		e.procesa(prog);
+		e = new ImpresorBonitoVisitante();
+		e.procesa(prog);
+	}
 }
