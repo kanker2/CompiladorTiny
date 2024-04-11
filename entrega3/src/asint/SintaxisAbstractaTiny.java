@@ -4,6 +4,10 @@ public class SintaxisAbstractaTiny {
 	public SintaxisAbstractaTiny() {
 	};
 
+	public interface ImpresionInterprete {
+		public abstract void imprime();
+	}
+	
 	public static abstract class Nodo {
 		public Nodo() {
 			fila = col = -1;
@@ -29,10 +33,12 @@ public class SintaxisAbstractaTiny {
 		public int leeCol() {
 			return col;
 		}
+		
+		public abstract void imprime();
 	}
 
 	// Clases abstractas (Generos)
-	public static abstract class ProgT {
+	public static abstract class ProgT implements ImpresionInterprete{
 		protected Blq bloque;
 
 		public ProgT(Blq bloque) {
@@ -42,7 +48,7 @@ public class SintaxisAbstractaTiny {
 		public Blq bloque() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class Blq {
+	public static abstract class Blq implements ImpresionInterprete{
 		protected Blq bloque;
 		protected LOptDecs lista_opt_declaraciones;
 		protected LOptInst lista_opt_instrucciones;
@@ -62,7 +68,7 @@ public class SintaxisAbstractaTiny {
 	
 	}
 
-	public static abstract class LOptDecs {
+	public static abstract class LOptDecs implements ImpresionInterprete{
 		protected LDecs lista_declaraciones;
 
 		public LOptDecs(LDecs lista_declaraciones) {
@@ -75,7 +81,7 @@ public class SintaxisAbstractaTiny {
 		public LDecs lista_declaraciones() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class LDecs {
+	public static abstract class LDecs implements ImpresionInterprete{
 		protected LDecs lista_declaraciones;
 		protected Dec declaracion;
 
@@ -92,7 +98,7 @@ public class SintaxisAbstractaTiny {
 		public Dec declaracion() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class Dec extends Nodo{
+	public static abstract class Dec extends Nodo implements ImpresionInterprete{
 		protected Tipo tipo;
 		protected String cadena;
 		protected Blq bloque;
@@ -115,7 +121,7 @@ public class SintaxisAbstractaTiny {
 		public LOptParamForm lista_opt_parametros_formales() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class LOptParamForm {
+	public static abstract class LOptParamForm implements ImpresionInterprete{
 		protected LParamForm lista_parametros_formales;
 
 		public LOptParamForm(LParamForm lista_parametros_formales) {
@@ -128,7 +134,7 @@ public class SintaxisAbstractaTiny {
 		public LParamForm lista_parametros_formales() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class LParamForm {
+	public static abstract class LParamForm implements ImpresionInterprete{
 		protected LParamForm lista_parametros_formales;
 		protected ParamForm parametro_formal;
 
@@ -145,7 +151,7 @@ public class SintaxisAbstractaTiny {
 		public ParamForm parametro_formal() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class ParamForm extends Nodo{
+	public static abstract class ParamForm extends Nodo implements ImpresionInterprete{
 		protected Tipo tipo;
 		protected String cadena;
 
@@ -161,7 +167,7 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class Tipo extends Nodo {
+	public static abstract class Tipo extends Nodo implements ImpresionInterprete{
 		protected Tipo tipo;
 		protected String cadena;
 		protected LParamReg lista_parametros_registro;
@@ -191,7 +197,7 @@ public class SintaxisAbstractaTiny {
 		public LParamReg lista_parametros_registro() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class LParamReg {
+	public static abstract class LParamReg implements ImpresionInterprete{
 		protected LParamReg lista_parametros_registro;
 		protected ParamReg parametro_registro;
 
@@ -208,7 +214,7 @@ public class SintaxisAbstractaTiny {
 		public ParamReg parametro_registro() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class ParamReg extends Nodo {
+	public static abstract class ParamReg extends Nodo implements ImpresionInterprete{
 		protected Tipo tipo;
 		protected String cadena;
 
@@ -221,7 +227,7 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class LOptInst {
+	public static abstract class LOptInst implements ImpresionInterprete{
 		protected LInst lista_instrucciones;
 
 		public LOptInst() {
@@ -235,7 +241,7 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	public static abstract class LInst {
+	public static abstract class LInst implements ImpresionInterprete{
 		protected LInst lista_instrucciones;
 		protected Inst instruccion;
 
@@ -252,7 +258,7 @@ public class SintaxisAbstractaTiny {
 		public Inst instruccion() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class Inst extends Nodo {
+	public static abstract class Inst extends Nodo implements ImpresionInterprete{
 		protected Exp expresion;
 		protected Blq bloque1;
 		protected Blq bloque2;
@@ -293,7 +299,7 @@ public class SintaxisAbstractaTiny {
 		public LOptParam parametro() {throw new UnsupportedOperationException();}
 	}
 
-	public static abstract class Exp extends Nodo {
+	public static abstract class Exp extends Nodo implements ImpresionInterprete{
 		protected Exp op1;
 		protected Exp op2;
 		protected String cadena;
@@ -324,7 +330,7 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {return cadena;}
 	}
 
-	public static abstract class LOptParam {
+	public static abstract class LOptParam implements ImpresionInterprete{
 		protected LParam lista_parametros;
 
 		public LOptParam() {
@@ -338,7 +344,7 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	public static abstract class LParam {
+	public static abstract class LParam implements ImpresionInterprete{
 		protected LParam lista_parametros;
 		protected Exp expresion;
 
