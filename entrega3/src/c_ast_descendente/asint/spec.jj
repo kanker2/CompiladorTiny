@@ -211,10 +211,10 @@ ParamForm RECpf(Tipo th) :
 	{Token t;}
 	{
 		"&" t = <Identificador> 
-			{return sem.param_form_ref(th, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (ParamForm) sem.param_form_ref(th, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		| 
 		t = <Identificador> 
-			{return sem.param_form(th, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (ParamForm) sem.param_form(th, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 	}
 
 Tipo tipo() : 
@@ -235,7 +235,7 @@ Tipo RETA(Tipo tipoh) :
 	{Token t; Tipo tipo;}
 	{
 		"[" t = <Entero> "]" tipo = RETA(sem.tipo_array(tipoh, t.image))
-			{return tipo.ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (Tipo) tipo.ponFila(t.beginLine).ponCol(t.beginColumn);}
 		| 
 			{return tipoh;}
 	}
@@ -290,7 +290,7 @@ Tipo tipo_definido() :
 	{Token t;}
 	{
 		t = <Identificador>
-			{return sem.tipo_definido(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (Tipo) sem.tipo_definido(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 	}
 
 LParamReg lista_parametros_registro() :
@@ -313,7 +313,7 @@ ParamReg parametro_registro() :
 	{Tipo tipo; Token t;}
 	{
 		tipo = tipo() t = <Identificador>
-			{return sem.param_reg(tipo, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (ParamReg) sem.param_reg(tipo, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 	}
 
 LOptInst lista_opt_instrucciones() :
@@ -398,10 +398,10 @@ Exp E0() :
 	}
 
 Exp FE0(Exp eh) : 
-	{Exp e;}
+	{Token t; Exp e;}
 	{
-		"=" e = E0()
-			{return sem.asignacion(eh, e);}
+		t = "=" e = E0()
+			{return (Exp) sem.asignacion(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		| 
 			{return eh;}
 	}
@@ -433,7 +433,7 @@ Exp RE2(Exp eh) :
 	{Token t; Exp e1, e2;}
 	{
 		t = "+" e1 = E3() e2 = RE2(sem.suma(eh, e1))
-			{return e2.ponFila(t.beingLine).ponCol(t.beginColumn);}
+			{return (Exp) e2.ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 			{return eh;}
 	}
@@ -442,7 +442,7 @@ Exp FE2(Exp eh) :
 	{Token t; Exp e;}
 	{
 		t = "-" e = E3()
-			{return sem.resta(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (Exp) sem.resta(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 			{return eh;}
 	}
@@ -656,7 +656,7 @@ Inst instruccion_call() :
 	{LOptParam l_opt_param; Token t;}
 	{
 		<CALL> t = <Identificador> l_opt_param = parametros()
-			{return sem.inst_call(t.image, l_opt_param).ponFila(t.beginLine).ponCol(t.beginColumn);}
+			{return (Inst) sem.inst_call(t.image, l_opt_param).ponFila(t.beginLine).ponCol(t.beginColumn);}
 	}
 
 
