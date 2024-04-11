@@ -412,6 +412,7 @@ public class SintaxisAbstractaTiny {
 			lista_opt_declaraciones.imprime();
 			System.out.println();
 			lista_opt_instrucciones.imprime();
+			System.out.println();
 			System.out.print("}");
 		}
 
@@ -994,7 +995,7 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			lista_instrucciones.imprime();
 			System.out.println();
-			System.out.println(",");
+			System.out.println(";");
 			instruccion.imprime();
 		}
 	}
@@ -1301,7 +1302,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.println(imprimeExpBin(this, op1, "=", op2, 1, 0));
+			System.out.print(imprimeExpBin(this, op1, "=", op2, 1, 0));
 		}
 	}
 
@@ -1324,8 +1325,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, ">", op2, 1, 2));
 		}
 	}
 
@@ -1348,8 +1348,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, ">=", op2, 1, 2));			
 		}
 	}
 
@@ -1372,8 +1371,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "<", op2, 1, 2));			
 		}
 	}
 
@@ -1396,8 +1394,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "<=", op2, 1, 2));
 		}
 	}
 
@@ -1420,8 +1417,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "==", op2, 1, 2));
 		}
 	}
 
@@ -1444,8 +1440,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "!=", op2, 1, 2));			
 		}
 	}
 
@@ -1468,8 +1463,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "+", op2, 2, 3));
 		}
 	}
 
@@ -1492,8 +1486,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "-", op2, 3, 3));
 		}
 	}
 
@@ -1516,8 +1509,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "<and>", op2, 4, 3));
 		}
 	}
 
@@ -1540,8 +1532,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "<or>", op2, 4, 4));
 		}
 	}
 
@@ -1564,8 +1555,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "*", op2, 4, 5));
 		}
 	}
 
@@ -1588,7 +1578,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
+			System.out.print(imprimeExpBin(this, op1, "/", op2, 4, 5));
 			
 		}
 	}
@@ -1612,8 +1602,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(imprimeExpBin(this, op1, "%", op2, 4, 5));
 		}
 	}
 
@@ -1633,7 +1622,8 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
+			System.out.println("<not>"+getPosDJ(leeFila(), leeCol()));
+			System.out.print(imprimeOpnd(op1, 5));
 			
 		}
 	}
@@ -1654,8 +1644,8 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.println("-"+getPosDJ(leeFila(), leeCol()));
+			System.out.print(imprimeOpnd(op1, 5));
 		}
 
 	}
@@ -1680,8 +1670,10 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.println(imprimeOpnd(op1, 6));
+			System.out.println("["+getPosDJ(leeFila(), leeCol()));
+			System.out.println(imprimeOpnd(op2, 6));
+			System.out.print("]");
 		}
 	}
 
@@ -1704,8 +1696,9 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.println(imprimeOpnd(op1, 6));
+			System.out.println(".");
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -1725,8 +1718,8 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.println(imprimeOpnd(op1, 6));
+			System.out.print("^"+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -1745,8 +1738,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -1765,8 +1757,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -1781,8 +1772,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print("<true>"+getPosDJ(leeFila(), leeCol()));			
 		}
 	}
 
@@ -1797,8 +1787,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print("<false>"+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -1813,8 +1802,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print("<null>"+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -1833,8 +1821,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 
@@ -1853,8 +1840,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			// TODO Auto-generated method stub
-			
+			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
 		}
 	}
 

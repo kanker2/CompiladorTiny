@@ -414,10 +414,10 @@ Exp E1() :
 	}
 
 Exp RE1(Exp eh) : 
-	{String op; Exp e1, e2;}
+	{StringLocalizado op; Exp e1, e2;}
 	{
-		op = OP1() e1 = E2() e2 = RE1(sem.mkop1(op, eh, e1))
-			{return e2;}
+		op = OP1() e1 = E2() e2 = RE1(sem.mkop1(op.str(), eh, e1))
+			{return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
 		| 
 			{return eh;}
 	}
@@ -456,13 +456,13 @@ Exp E3() :
 	}
 
 Exp FE3(Exp eh) :
-	{Exp e;}
+	{Token t; Exp e;}
 	{
-		<AND> e = E3() 
-			{return sem.and(eh, e);}
+		t = <AND> e = E3() 
+			{return (Exp) sem.and(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
-		<OR> e = E4()
-			{return sem.or(eh, e);}
+		t = <OR> e = E4()
+			{return (Exp) sem.or(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 			{return eh;}
 	}
@@ -475,19 +475,19 @@ Exp E4() :
 	}
 
 Exp RE4(Exp eh) :
-	{String op; Exp e1, e2;}
+	{StringLocalizado op; Exp e1, e2;}
 	{
-		op = OP4() e1 = E5() e2 = RE4(sem.mkop4(op, eh, e1))
-			{return e2;}
+		op = OP4() e1 = E5() e2 = RE4(sem.mkop4(op.str(), eh, e1))
+			{return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
 		|
 			{return eh;}
 	}
 
 Exp E5() :
-	{String op; Exp e;}
+	{StringLocalizado op; Exp e;}
 	{
 		op = OP5() e = E5()
-			{return sem.mkop5(op, e);}
+			{return (Exp) sem.mkop5(op.str(), e).ponFila(op.fila()).ponCol(op.col());}
 		|
 		e = E6()
 			{return e;}
@@ -502,16 +502,16 @@ Exp E6() :
 	}
 
 Exp RE6(Exp eh) :
-	{Exp e1, e2; Token t;}
+	{Exp e1, e2; Token t, op;}
 	{
-		"[" e1 = E0() "]" e2 = RE6(sem.indexacion(eh, e1))
-			{return e2;}
+		op = "[" e1 = E0() "]" e2 = RE6(sem.indexacion(eh, e1))
+			{return (Exp) e2.ponFila(op.beginLine).ponCol(op.beginColumn);}
 		|
-		"." t = <Identificador> e1 = RE6(sem.acc_reg(eh, t.image))
-			{return e1;}
+		op = "." t = <Identificador> e1 = RE6(sem.acc_reg(eh, t.image))
+			{return (Exp) e1.ponFila(op.beginLine).ponCol(op.beginColumn);}
 		|
-		"^" e1 = RE6(sem.indireccion(eh))
-			{return e1;}
+		op = "^" e1 = RE6(sem.indireccion(eh))
+			{return (Exp) e1.ponFila(op.beginLine).ponCol(op.beginColumn);}
 		|
 			{return eh;}
 	}
@@ -525,14 +525,14 @@ Exp E7() :
 		t = <Real> 
 			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		| 
-		<TRUE> 
-			{return sem.true_e();}
+		t = <TRUE> 
+			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
-		<FALSE> 
-			{return sem.false_e();}
+		t = <FALSE> 
+			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
-		<NULL> 
-			{return sem.null_e();}
+		t = <NULL> 
+			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
 		|
 		t = <Cadena> 
 			{return (Exp)sem.cadena(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
@@ -544,50 +544,50 @@ Exp E7() :
 			{return e;}
 	}
 
-String OP1() :
-	{}
+StringLocalizado OP1() :
+	{Token t;}
 	{
-		">"
-			{return ">";}
+		t = ">"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 		|
-		">="
-			{return ">=";}
+		t = ">="
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 		|
-		"<"
-			{return "<";}
+		t = "<"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 		|
-		"<="
-			{return "<=";}
+		t = "<="
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 		|
-		"=="
-			{return "==";}
+		t = "=="
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 		|
-		"!="
-			{return "!=";}
+		t = "!="
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 	}
 
 
-String OP4() : 
-	{}
+StringLocalizado OP4() : 
+	{Token t;}
 	{
-		"*"
-			{return "*";}
+		t = "*"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 		|
-		"/"
-			{return "/";}
+		t = "/"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 		|
-		"%"
-			{return "%";}
+		t = "%"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 	}
 
-String OP5() :
-	{}
+StringLocalizado OP5() :
+	{Token t;}
 	{
-		<NOT>
-			{return "not";}
+		t = <NOT>
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 		|
-		"-"
-			{return "-";}
+		t = "-"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 	}	
 
 Inst instruccion_if_else() : 

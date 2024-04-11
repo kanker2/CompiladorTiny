@@ -705,7 +705,7 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
   final public Exp RE1(Exp eh) throws ParseException {
     trace_call("RE1");
     try {
-         String op; Exp e1, e2;
+         StringLocalizado op; Exp e1, e2;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MENOR:
       case MENORIGUAL:
@@ -715,8 +715,8 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
       case DISTINTO:
         op = OP1();
         e1 = E2();
-        e2 = RE1(sem.mkop1(op, eh, e1));
-                         {if (true) return e2;}
+        e2 = RE1(sem.mkop1(op.str(), eh, e1));
+                         {if (true) return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
         break;
       default:
         jj_la1[15] = jj_gen;
@@ -799,17 +799,17 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
   final public Exp FE3(Exp eh) throws ParseException {
     trace_call("FE3");
     try {
-         Exp e;
+         Token t; Exp e;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case AND:
-        jj_consume_token(AND);
+        t = jj_consume_token(AND);
         e = E3();
-                         {if (true) return sem.and(eh, e);}
+                         {if (true) return (Exp) sem.and(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       case OR:
-        jj_consume_token(OR);
+        t = jj_consume_token(OR);
         e = E4();
-                         {if (true) return sem.or(eh, e);}
+                         {if (true) return (Exp) sem.or(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       default:
         jj_la1[18] = jj_gen;
@@ -837,15 +837,15 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
   final public Exp RE4(Exp eh) throws ParseException {
     trace_call("RE4");
     try {
-         String op; Exp e1, e2;
+         StringLocalizado op; Exp e1, e2;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case POR:
       case ENTRE:
       case MODULO:
         op = OP4();
         e1 = E5();
-        e2 = RE4(sem.mkop4(op, eh, e1));
-                         {if (true) return e2;}
+        e2 = RE4(sem.mkop4(op.str(), eh, e1));
+                         {if (true) return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
         break;
       default:
         jj_la1[19] = jj_gen;
@@ -860,13 +860,13 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
   final public Exp E5() throws ParseException {
     trace_call("E5");
     try {
-         String op; Exp e;
+         StringLocalizado op; Exp e;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case NOT:
       case MENOS:
         op = OP5();
         e = E5();
-                         {if (true) return sem.mkop5(op, e);}
+                         {if (true) return (Exp) sem.mkop5(op.str(), e).ponFila(op.fila()).ponCol(op.col());}
         break;
       case NULL:
       case TRUE:
@@ -906,25 +906,25 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
   final public Exp RE6(Exp eh) throws ParseException {
     trace_call("RE6");
     try {
-         Exp e1, e2; Token t;
+         Exp e1, e2; Token t, op;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INIARRAY:
-        jj_consume_token(INIARRAY);
+        op = jj_consume_token(INIARRAY);
         e1 = E0();
         jj_consume_token(FINARRAY);
         e2 = RE6(sem.indexacion(eh, e1));
-                         {if (true) return e2;}
+                         {if (true) return (Exp) e2.ponFila(op.beginLine).ponCol(op.beginColumn);}
         break;
       case PUNTO:
-        jj_consume_token(PUNTO);
+        op = jj_consume_token(PUNTO);
         t = jj_consume_token(Identificador);
         e1 = RE6(sem.acc_reg(eh, t.image));
-                         {if (true) return e1;}
+                         {if (true) return (Exp) e1.ponFila(op.beginLine).ponCol(op.beginColumn);}
         break;
       case PUNTERO:
-        jj_consume_token(PUNTERO);
+        op = jj_consume_token(PUNTERO);
         e1 = RE6(sem.indireccion(eh));
-                         {if (true) return e1;}
+                         {if (true) return (Exp) e1.ponFila(op.beginLine).ponCol(op.beginColumn);}
         break;
       default:
         jj_la1[21] = jj_gen;
@@ -950,16 +950,16 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
                          {if (true) return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       case TRUE:
-        jj_consume_token(TRUE);
-                         {if (true) return sem.true_e();}
+        t = jj_consume_token(TRUE);
+                         {if (true) return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       case FALSE:
-        jj_consume_token(FALSE);
-                         {if (true) return sem.false_e();}
+        t = jj_consume_token(FALSE);
+                         {if (true) return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       case NULL:
-        jj_consume_token(NULL);
-                         {if (true) return sem.null_e();}
+        t = jj_consume_token(NULL);
+                         {if (true) return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       case Cadena:
         t = jj_consume_token(Cadena);
@@ -986,33 +986,34 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
     }
   }
 
-  final public String OP1() throws ParseException {
+  final public StringLocalizado OP1() throws ParseException {
     trace_call("OP1");
     try {
+         Token t;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MAYOR:
-        jj_consume_token(MAYOR);
-                         {if (true) return ">";}
+        t = jj_consume_token(MAYOR);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       case MAYORIGUAL:
-        jj_consume_token(MAYORIGUAL);
-                         {if (true) return ">=";}
+        t = jj_consume_token(MAYORIGUAL);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       case MENOR:
-        jj_consume_token(MENOR);
-                         {if (true) return "<";}
+        t = jj_consume_token(MENOR);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       case MENORIGUAL:
-        jj_consume_token(MENORIGUAL);
-                         {if (true) return "<=";}
+        t = jj_consume_token(MENORIGUAL);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       case COMPARACION:
-        jj_consume_token(COMPARACION);
-                         {if (true) return "==";}
+        t = jj_consume_token(COMPARACION);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       case DISTINTO:
-        jj_consume_token(DISTINTO);
-                         {if (true) return "!=";}
+        t = jj_consume_token(DISTINTO);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       default:
         jj_la1[23] = jj_gen;
@@ -1025,21 +1026,22 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
     }
   }
 
-  final public String OP4() throws ParseException {
+  final public StringLocalizado OP4() throws ParseException {
     trace_call("OP4");
     try {
+         Token t;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case POR:
-        jj_consume_token(POR);
-                         {if (true) return "*";}
+        t = jj_consume_token(POR);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       case ENTRE:
-        jj_consume_token(ENTRE);
-                         {if (true) return "/";}
+        t = jj_consume_token(ENTRE);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       case MODULO:
-        jj_consume_token(MODULO);
-                         {if (true) return "%";}
+        t = jj_consume_token(MODULO);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       default:
         jj_la1[24] = jj_gen;
@@ -1052,17 +1054,18 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
     }
   }
 
-  final public String OP5() throws ParseException {
+  final public StringLocalizado OP5() throws ParseException {
     trace_call("OP5");
     try {
+         Token t;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case NOT:
-        jj_consume_token(NOT);
-                         {if (true) return "not";}
+        t = jj_consume_token(NOT);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       case MENOS:
-        jj_consume_token(MENOS);
-                         {if (true) return "-";}
+        t = jj_consume_token(MENOS);
+                         {if (true) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
         break;
       default:
         jj_la1[25] = jj_gen;
