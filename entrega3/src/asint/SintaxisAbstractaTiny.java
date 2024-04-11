@@ -410,7 +410,6 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			System.out.println("{");
 			lista_opt_declaraciones.imprime();
-			System.out.println();
 			lista_opt_instrucciones.imprime();
 			System.out.println();
 			System.out.print("}");
@@ -956,6 +955,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
+			System.out.println();
 			lista_instrucciones.imprime();
 		}
 	}

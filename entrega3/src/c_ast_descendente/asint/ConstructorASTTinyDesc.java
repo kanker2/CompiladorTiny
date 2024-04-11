@@ -334,8 +334,8 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
         jj_consume_token(INIARRAY);
         t = jj_consume_token(Entero);
         jj_consume_token(FINARRAY);
-        tipo = RETA(sem.tipo_array(tipoh, t.image));
-                         {if (true) return (Tipo) tipo.ponFila(t.beginLine).ponCol(t.beginColumn);}
+        tipo = RETA((Tipo) sem.tipo_array(tipoh, t.image).ponFila(t.beginLine).ponCol(t.beginColumn));
+                         {if (true) return (Tipo) tipo;}
         break;
       default:
         jj_la1[6] = jj_gen;

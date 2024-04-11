@@ -234,8 +234,8 @@ Tipo tipo_array() :
 Tipo RETA(Tipo tipoh) : 
 	{Token t; Tipo tipo;}
 	{
-		"[" t = <Entero> "]" tipo = RETA(sem.tipo_array(tipoh, t.image))
-			{return (Tipo) tipo.ponFila(t.beginLine).ponCol(t.beginColumn);}
+		"[" t = <Entero> "]" tipo = RETA((Tipo) sem.tipo_array(tipoh, t.image).ponFila(t.beginLine).ponCol(t.beginColumn))
+			{return (Tipo) tipo;}
 		| 
 			{return tipoh;}
 	}
