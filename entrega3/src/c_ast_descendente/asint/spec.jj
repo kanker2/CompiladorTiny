@@ -601,9 +601,9 @@ Blq then_else() :
 	{Blq blq;}
 	{
 		<ELSE> blq = bloque()
-			{return blq;}
+			{return sem.si_else(blq);}
 		| 
-			{return sem.else_vacio();}	
+			{return sem.no_else();}	
 	}
 
 Inst instruccion_while() :
