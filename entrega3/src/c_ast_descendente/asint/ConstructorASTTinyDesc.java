@@ -1166,12 +1166,12 @@ Blq blq;
       case ELSE:{
         jj_consume_token(ELSE);
         blq = bloque();
-{if ("" != null) return blq;}
+{if ("" != null) return sem.si_else(blq);}
         break;
         }
       default:
         jj_la1[26] = jj_gen;
-{if ("" != null) return sem.else_vacio();}
+{if ("" != null) return sem.no_else();}
       }
     throw new Error("Missing return statement in function");
     } finally {

@@ -43,10 +43,15 @@ public class SintaxisAbstractaTiny {
 	}
 
 	public static abstract class Blq {
+		protected Blq bloque;
 		protected LOptDecs lista_opt_declaraciones;
 		protected LOptInst lista_opt_instrucciones;
 
 		public Blq() {}
+		
+		public Blq(Blq bloque) {
+			this.bloque = bloque;
+		}
 			
 		public Blq(LOptDecs lista_opt_declaraciones, LOptInst lista_opt_instrucciones) {
 			this.lista_opt_declaraciones = lista_opt_declaraciones;
@@ -316,7 +321,7 @@ public class SintaxisAbstractaTiny {
 		
 		public Exp op1() {throw new UnsupportedOperationException();}
 		public Exp op2() {throw new UnsupportedOperationException();}
-		public String cadena() {throw new UnsupportedOperationException();}
+		public String cadena() {return cadena;}
 	}
 
 	public static abstract class LOptParam {
@@ -359,7 +364,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return bloque+"";
+			return bloque.toString();
 		}
 		
 		public Blq bloque() {
@@ -375,7 +380,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "{\n"+lista_opt_declaraciones+"\n"+lista_opt_instrucciones+"\n"+"}\n";
+			return "{\n"+lista_opt_declaraciones+lista_opt_instrucciones+"}\n";
 		}
 		
 		public LOptDecs lista_opt_declaraciones() {
@@ -395,7 +400,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_declaraciones+"\n"+"&&\n";
+			return lista_declaraciones+"&&\n";
 		}
 		
 		public LDecs lista_declaraciones() {
@@ -419,7 +424,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_declaraciones+"\n"+";\n"+declaracion+"\n";
+			return lista_declaraciones+";\n"+declaracion;
 		}
 		
 		public LDecs lista_declaraciones() {
@@ -451,7 +456,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return tipo+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -470,7 +475,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<type>\n"+tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return "<type>\n"+tipo+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -490,7 +495,7 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "<proc>\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n"+ 
-					cadena+"\n"+lista_opt_parametros_formales+"\n"+bloque+"\n";
+					"(\n"+lista_opt_parametros_formales+")\n"+bloque;
 		}
 		
 		public String cadena() {
@@ -513,7 +518,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros_formales+"\n";
+			return lista_parametros_formales.toString();
 		}
 		
 		public LParamForm lista_parametros_formales() {
@@ -537,7 +542,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros_formales+"\n"+",\n"+parametro_formal+"\n";
+			return lista_parametros_formales+",\n"+parametro_formal;
 		}
 		
 		public LParamForm lista_parametros_formales() {
@@ -569,7 +574,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+"\n"+"&\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return tipo+"\n"+"&\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -587,7 +592,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return tipo+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -605,7 +610,8 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return tipo+"[\n"+cadena+"]\n"+
+					String.format("$f:%d,c:%d$",leeFila(), leeCol());
 		}
 		
 		public Tipo tipo() {
@@ -623,7 +629,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+"\n";
+			return tipo.toString();
 		}
 		
 		public Tipo tipo() {
@@ -677,7 +683,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<struct>\n"+"{\n"+lista_parametros_registro+"\n"+"}\n";
+			return "<struct>\n"+"{\n"+lista_parametros_registro+"}\n";
 		}
 		
 		public LParamReg lista_parametros_registro() {
@@ -705,7 +711,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros_registro+"\n"+",\n"+parametro_registro+"\n";
+			return lista_parametros_registro+",\n"+parametro_registro;
 		}
 		
 		public LParamReg lista_parametros_registro() {
@@ -723,7 +729,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return parametro_registro+"\n";
+			return parametro_registro.toString();
 		}
 		
 		public ParamReg parametro_registro() {
@@ -737,7 +743,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return tipo+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
 		}
 		
 		public Tipo tipo() {
@@ -755,7 +761,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_instrucciones+"\n";
+			return lista_instrucciones.toString();
 		}
 		
 		public LInst lista_instrucciones() {
@@ -779,7 +785,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_instrucciones+"\n"+";\n"+instruccion+"\n";
+			return lista_instrucciones+";\n"+instruccion;
 		}
 		
 		public LInst lista_instrucciones() {
@@ -797,7 +803,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return instruccion+"\n";
+			return instruccion.toString();
 		}
 		
 		public Inst instruccion() {
@@ -811,7 +817,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "@\n"+expresion+"\n";
+			return "@\n"+expresion;
 		}
 		
 		public Exp expresion() {
@@ -820,7 +826,7 @@ public class SintaxisAbstractaTiny {
 	}
 
 	public static class Inst_if_else extends Inst {
-		Blq bloque, bloque2;
+		private Blq bloque, bloque2;
 		public Inst_if_else(Exp expresion, Blq bloque, Blq bloque2) {
 			super(expresion, bloque, bloque2);
 			this.bloque = bloque;
@@ -828,7 +834,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<if>\n"+expresion+"\n"+bloque+"\n"+"<else>\n"+bloque2+"\n";
+			return "<if>\n"+expresion+bloque; 
 		}
 		
 		public Exp expresion() {
@@ -841,13 +847,28 @@ public class SintaxisAbstractaTiny {
 		
 		public Blq bloque2() {
 			return bloque2;
-		}
-		
-		
+		}	
 	}
 	
-	public static class Else_vacio extends Blq {
-		public Else_vacio() {
+	
+	public static class Si_else extends Blq {
+		private Blq bloque;
+		public Si_else(Blq bloque) {
+			super(bloque);
+			this.bloque = bloque;
+		}
+		
+		public String toString() {
+			return "<else>\n"+bloque;
+		}
+		
+		public Blq bloque() {
+			return bloque;
+		}
+	}
+	
+	public static class No_else extends Blq {
+		public No_else() {
 			super();
 		}
 		
@@ -864,7 +885,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<while>\n"+expresion+"\n"+bloque+"\n";
+			return "<while>\n"+expresion+bloque;
 		}
 		
 		public Exp expresion() {
@@ -882,7 +903,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<read>\n"+expresion+"\n";
+			return "<read>\n"+expresion;
 		}
 		
 		public Exp expresion() {
@@ -896,7 +917,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<write>\n"+expresion+"\n";
+			return "<write>\n"+expresion;
 		}
 		
 		public Exp expresion() {
@@ -910,7 +931,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<nl>";
+			return "<nl>\n";
 		}
 	}
 
@@ -920,7 +941,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<new>\n"+expresion+"\n";
+			return "<new>\n"+expresion;
 		}
 		
 		public Exp expresion() {
@@ -934,7 +955,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<delete>\n"+expresion+"\n";
+			return "<delete>\n"+expresion;
 		}
 		
 		public Exp expresion() {
@@ -951,7 +972,7 @@ public class SintaxisAbstractaTiny {
 		
 		public String toString() {
 			return "<call>\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())
-			+"\n"+ "(\n"+lista_opt_parametros+"\n"+")\n";
+			+"\n"+ "(\n"+lista_opt_parametros+")\n";
 		}
 		
 		public String cadena() {
@@ -971,7 +992,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return bloque+"\n";
+			return bloque.toString();
 		}
 		
 		public Blq bloque() {
@@ -985,8 +1006,11 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"=\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"=\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
+
 		
 		public Exp op1() {
 			return op1;
@@ -1003,7 +1027,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+">\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+">\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1021,7 +1047,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+">=\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+">=\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1039,7 +1067,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"<\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"<\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1057,7 +1087,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"<=\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"<=\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1075,7 +1107,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"==\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"==\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1093,7 +1127,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"!=\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"!=\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1111,7 +1147,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"+\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"+\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1129,7 +1167,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"-\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"-\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1147,7 +1187,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"<and>\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"<and>\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1165,7 +1207,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"<or>\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"<or>\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1183,7 +1227,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"*\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"*\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1201,7 +1247,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"/\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"/\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1219,7 +1267,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"%\n"+op2+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"%\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1237,7 +1287,8 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<not>\n"+op1+"\n";
+			return "<not>\n"+String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n";
 		}
 		
 		public Exp op1() {
@@ -1251,7 +1302,8 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "-\n"+op1+"\n";
+			return "-\n"+String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+			+"\n";
 		}
 		
 		public Exp op1() {
@@ -1266,7 +1318,9 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1 +"\n" + "[\n" + op2+"\n"+"]\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n"+"[\n"+String.format("%s$f:%d,c:%d$", op2.cadena(), op2.leeFila(), op2.leeCol())
+					+"\n]\n";
 		}
 		
 		public Exp op1() {
@@ -1284,7 +1338,8 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol())
+					+"\n.\n"+ String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol()) +"\n";
 		}
 		
 		public Exp op1() {
@@ -1302,7 +1357,8 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return op1+"\n"+"^\n";
+			return String.format("%s$f:%d,c:%d$", op1.cadena(), op1.leeFila(), op1.leeCol()) 
+					+"\n^\n";
 		}
 		
 		public Exp op1() {
@@ -1316,7 +1372,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
 		}
 		
 		public String cadena() {
@@ -1330,7 +1386,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
 		}
 		
 		public String cadena() {
@@ -1344,7 +1400,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<true>";
+			return "<true>\n";
 		}
 	}
 
@@ -1354,7 +1410,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<false>";
+			return "<false>\n";
 		}
 	}
 
@@ -1364,7 +1420,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return "<null>";
+			return "<null>\n";
 		}
 	}
 
@@ -1388,7 +1444,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n";
 		}
 		
 		public String cadena() {
@@ -1402,7 +1458,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros+"\n";
+			return lista_parametros.toString();
 		}
 		
 		public LParam lista_parametros() {
@@ -1426,7 +1482,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return lista_parametros+"\n"+",\n"+expresion+"\n";
+			return lista_parametros+",\n"+expresion;
 		}
 		
 		public LParam lista_parametros() {
@@ -1444,7 +1500,7 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public String toString() {
-			return expresion+"\n";
+			return expresion.toString();
 		}
 		
 		public Exp expresion() {
@@ -1582,8 +1638,12 @@ public class SintaxisAbstractaTiny {
 		return new Inst_if_else(expresion, bloque1, bloque2);
 	}
 
-	public Blq else_vacio() {
-		return new Else_vacio();
+	public Blq si_else(Blq bloque) {
+		return new Si_else(bloque);
+	}
+	
+	public Blq no_else() {
+		return new No_else();
 	}
 
 	public Inst inst_while(Exp expresion, Blq bloque) {
