@@ -46,7 +46,7 @@ terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINP
 terminal StringLocalizado Identificador, Entero, Real, Cadena;
 
 non terminal  ProgT programa_tiny;
-non terminal  Blq bloque, then_else;
+non terminal  Blq bloque, si_else, no_else;
 non terminal  LOptDecs lista_opt_declaraciones;
 non terminal  LDecs lista_declaraciones;
 non terminal  Dec declaracion, declaracion_variable, declaracion_tipo, declaracion_proc;
@@ -276,9 +276,9 @@ OP5 ::= MENOS
 instruccion_if_else ::= IF expresion: exp bloque: blq then_else: blq2 
 	{: RESULT = sem.inst_if_else(exp, blq, blq2); :};
 then_else ::= ELSE bloque: blq
-	{: RESULT = blq; :};
+	{: RESULT = sem.si_else(blq); :};
 then_else ::= 
-	{: RESULT = sem.else_vacio(); :};
+	{: RESULT = sem.no_else(); :};
 instruccion_while ::= WHILE expresion: exp bloque: blq
 	{: RESULT = sem.inst_while(exp, blq); :}; 
 instruccion_read ::= READ expresion: exp
