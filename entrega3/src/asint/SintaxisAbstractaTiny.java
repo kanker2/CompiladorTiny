@@ -1314,7 +1314,7 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void imprime() {
-			System.out.print("<new>");
+			System.out.println("<new>");
 			expresion.imprime();
 		}
 	}
