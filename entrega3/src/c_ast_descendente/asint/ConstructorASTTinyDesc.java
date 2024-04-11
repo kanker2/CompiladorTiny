@@ -951,15 +951,15 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
         break;
       case TRUE:
         t = jj_consume_token(TRUE);
-                         {if (true) return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+                         {if (true) return (Exp)sem.true_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       case FALSE:
         t = jj_consume_token(FALSE);
-                         {if (true) return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+                         {if (true) return (Exp)sem.false_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       case NULL:
         t = jj_consume_token(NULL);
-                         {if (true) return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+                         {if (true) return (Exp)sem.null_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
         break;
       case Cadena:
         t = jj_consume_token(Cadena);
