@@ -46,7 +46,7 @@ terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINP
 terminal StringLocalizado Identificador, Entero, Real, Cadena;
 
 non terminal  ProgT programa_tiny;
-non terminal  Blq bloque, si_else, no_else;
+non terminal  Blq bloque, then_else;
 non terminal  LOptDecs lista_opt_declaraciones;
 non terminal  LDecs lista_declaraciones;
 non terminal  Dec declaracion, declaracion_variable, declaracion_tipo, declaracion_proc;
