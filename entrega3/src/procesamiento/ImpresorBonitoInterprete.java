@@ -6,6 +6,7 @@ public class ImpresorBonitoInterprete implements ImpresorBonito {
 	@Override
 	public void procesa(ProgT p) {
 		p.imprime();
+		System.out.println();
 	}
 
 }
