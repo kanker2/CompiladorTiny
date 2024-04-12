@@ -1,0 +1,701 @@
+options  {
+  STATIC=false;
+  DEBUG_PARSER=true;
+}  
+PARSER_BEGIN(ConstructorASTTinyDesc)
+
+package c_ast_descendente.asint;
+import asint.ClaseSemanticaTiny;
+import asint.SintaxisAbstractaTiny.ProgT;
+import asint.SintaxisAbstractaTiny.Blq;
+import asint.SintaxisAbstractaTiny.LOptDecs;
+import asint.SintaxisAbstractaTiny.LDecs;
+import asint.SintaxisAbstractaTiny.Dec;
+import asint.SintaxisAbstractaTiny.LOptParamForm;
+import asint.SintaxisAbstractaTiny.LParamForm;
+import asint.SintaxisAbstractaTiny.ParamForm;
+import asint.SintaxisAbstractaTiny.Tipo;
+import asint.SintaxisAbstractaTiny.LParamReg;
+import asint.SintaxisAbstractaTiny.ParamReg;
+import asint.SintaxisAbstractaTiny.LOptInst;
+import asint.SintaxisAbstractaTiny.LInst;
+import asint.SintaxisAbstractaTiny.Inst;
+import asint.SintaxisAbstractaTiny.Exp;
+import asint.SintaxisAbstractaTiny.LOptParam;
+import asint.SintaxisAbstractaTiny.LParam;
+import c_ast_ascendente.alex.UnidadLexica.StringLocalizado;
+
+public class ConstructorASTTinyDesc {
+    private ClaseSemanticaTiny sem = new ClaseSemanticaTiny();
+}
+PARSER_END(ConstructorASTTinyDesc)
+
+  TOKEN:{<#letra:["a"-"z","A"-"Z"]>}
+  TOKEN:{<#digitoPositivo:["1"-"9"]>}
+  TOKEN:{<#digito:<digitoPositivo>|"0">} 
+  TOKEN:{<#parteEntera:<digitoPositivo>(<digito>)*|"0">} 
+  TOKEN:{<#parteDecimal:(<digito>)* <digitoPositivo>|"0">}
+  TOKEN:{<#parteExponencial:("e"|"E")(["+","-"])?<parteEntera>>}
+  SKIP:{<["\t"," ","\r","\b","\n"]>}  
+  SKIP:{<"##"(~["\n"])*>} 
+
+  TOKEN:{<INT:("i"|"I")("n"|"N")("t"|"T")>}
+  TOKEN:{<REAL:("r"|"R")("e"|"E")("a"|"A")("l"|"L")>}
+  TOKEN:{<BOOL:("b"|"B")("o"|"O")("o"|"O")("l"|"L")>}
+  TOKEN:{<STRING:("s"|"S")("t"|"T")("r"|"R")("i"|"I")("n"|"N")("g"|"G")>}
+  TOKEN:{<AND:("a"|"A")("n"|"N")("d"|"D")>}
+  TOKEN:{<OR:("o"|"O")("r"|"R")>}
+  TOKEN:{<NOT:("n"|"N")("o"|"O")("t"|"T")>}
+  TOKEN:{<NULL:("n"|"N")("u"|"U")("l"|"L")("l"|"L")>}
+  TOKEN:{<TRUE:("t"|"T")("r"|"R")("u"|"U")("e"|"E")>}
+  TOKEN:{<FALSE:("f"|"F")("a"|"A")("l"|"L")("s"|"S")("e"|"E")+>}
+  TOKEN:{<PROC:("p"|"P")("r"|"R")("o"|"O")("c"|"C")>}
+  TOKEN:{<IF:("i"|"I")("f"|"F")>}
+  TOKEN:{<ELSE:("e"|"E")("l"|"L")("s"|"S")("e"|"E")>}
+  TOKEN:{<WHILE:("w"|"W")("h"|"H")("i"|"I")("l"|"L")("e"|"E")>}
+  TOKEN:{<STRUCT:("s"|"S")("t"|"T")("r"|"R")("u"|"U")("c"|"C")("t"|"T")>}
+  TOKEN:{<NEW:("n"|"N")("e"|"E")("w"|"W")>}
+  TOKEN:{<DELETE:("d"|"D")("e"|"E")("l"|"L")("e"|"E")("t"|"T")("e"|"E")>}
+  TOKEN:{<READ:("r"|"R")("e"|"E")("a"|"A")("d"|"D")>}
+  TOKEN:{<WRITE:("w"|"W")("r"|"R")("i"|"I")("t"|"T")("e"|"E")>}
+  TOKEN:{<NL:("n"|"N")("l"|"L")>}
+  TOKEN:{<TYPE:("t"|"T")("y"|"Y")("p"|"P")("e"|"E")>}
+  TOKEN:{<CALL:("c"|"C")("a"|"A")("l"|"L")("l"|"L")>}
+	TOKEN:{<POR:"*">}
+	TOKEN:{<ENTRE:"/">}
+	TOKEN:{<MAS:"+">}
+	TOKEN:{<MENOS:"-">}
+	TOKEN:{<MENOR:"<">}
+	TOKEN:{<MENORIGUAL:"<=">}
+	TOKEN:{<MAYOR:">">}
+	TOKEN:{<MAYORIGUAL:">=">}
+	TOKEN:{<COMPARACION:"==">}
+	TOKEN:{<DISTINTO:"!=">}
+	TOKEN:{<ASIGNACION:"=">}
+	TOKEN:{<INIPAR:"(">}
+	TOKEN:{<FINPAR:")">}
+	TOKEN:{<INIBLOQUE:"{">}
+	TOKEN:{<FINBLOQUE:"}">}
+	TOKEN:{<ARROBA:"@">}
+	TOKEN:{<FINDECLARACIONES:"&&">}
+	TOKEN:{<PUNTOYCOMA:";">}
+	TOKEN:{<INIARRAY:"[">}
+	TOKEN:{<FINARRAY:"]">}
+	TOKEN:{<PUNTERO:"^">}
+	TOKEN:{<MODULO:"%">}
+	TOKEN:{<COMA:",">}
+	TOKEN:{<REFERENCIA:"&">}
+	TOKEN:{<PUNTO:".">}
+  TOKEN:{<Identificador:(<letra>|"_")(<letra>|<digito>|"_")*>} 
+  TOKEN:{<Entero:(["+","-"])?<parteEntera>>}
+  TOKEN:{<Real:<Entero>("."<parteDecimal>(<parteExponencial>)?|<parteExponencial>)>}
+  TOKEN:{<Cadena:"\""(~["\""])*"\"">}
+
+
+
+
+ProgT analiza() :
+	{ProgT prog;}
+	{
+		prog = programa_tiny() <EOF>
+			{return prog;}
+	}
+
+ProgT programa_tiny() :
+	{Blq blq;}
+	{
+		blq = bloque()
+			{return sem.prog_tiny(blq);}
+	}
+
+Blq bloque() :
+	{LOptDecs l_opt_decs; LOptInst l_opt_inst;}
+	{
+		"{" l_opt_decs = lista_opt_declaraciones() l_opt_inst = lista_opt_instrucciones() "}"
+			{return sem.bloque(l_opt_decs, l_opt_inst);}
+	}
+
+LOptDecs lista_opt_declaraciones() :
+	{LDecs l_decs;}
+	{
+		l_decs = lista_declaraciones() "&&"
+			{return sem.si_lista_opt_decs(l_decs);}
+		| 
+			{return sem.no_lista_opt_decs();}
+	}
+
+LDecs lista_declaraciones() : 
+	{LDecs l_decs; Dec dec;}
+	{ 
+		dec = declaracion() l_decs = lista_decs(sem.una_lista_dec(dec)) 
+			{return l_decs;}	
+	}
+
+LDecs lista_decs(LDecs l_decsh) : 
+	{Dec dec; LDecs l_decs;}
+	{
+		";" dec = declaracion() l_decs = lista_decs(sem.muchas_lista_decs(l_decsh, dec))
+			{return l_decs;}
+		| 
+			{return l_decsh;}
+	}
+
+Dec declaracion() : 
+	{Dec dec;}
+	{
+		dec = declaracion_variable()
+			{return dec;}
+		| 
+		dec = declaracion_tipo()
+			{return dec;}
+		| 
+		dec = declaracion_proc()
+			{return dec;}
+	}
+
+Dec declaracion_variable() : 
+	{Tipo tipo; Token t;}
+	{
+		tipo = tipo() t = <Identificador>
+			{return (Dec)sem.dec_var(tipo, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+	}
+
+Dec declaracion_tipo() : 
+	{Tipo tipo; Token t;}
+	{
+		<TYPE> tipo = tipo() t = <Identificador>
+			{return (Dec)sem.dec_tipo(tipo, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+	}
+
+Dec declaracion_proc() :
+	{Token t; LOptParamForm l_opt_param_form; Blq bloque;}
+	{
+		<PROC> t = <Identificador> "(" l_opt_param_form = lista_opt_parametros_formales() ")" bloque = bloque()
+			{return (Dec)sem.dec_proc(t.image, l_opt_param_form, bloque).ponFila(t.beginLine).ponCol(t.beginColumn); }
+	}
+
+
+LOptParamForm lista_opt_parametros_formales() :
+	{LParamForm l_param_form;}
+	{
+		l_param_form = lista_parametros_formales()
+			{return sem.si_lista_opt_param_form(l_param_form);}
+		|
+			{return sem.no_lista_opt_param_form();}
+	}
+
+LParamForm lista_parametros_formales() :
+	{ParamForm pf; LParamForm l_param_form;}
+	{
+		pf = parametro_formal() l_param_form = RECP(sem.una_lista_param_form(pf))
+			{return l_param_form;}
+	}
+
+LParamForm RECP(LParamForm l_param_formh) :
+	{ParamForm pf; LParamForm l_param_form;}
+	{
+		"," pf = parametro_formal() l_param_form = RECP(sem.muchas_lista_param_form(l_param_formh, pf))
+			{return l_param_form;}
+		| 
+			{return l_param_formh;}
+	}
+
+ParamForm parametro_formal() : 
+	{Tipo tipo; ParamForm pf;}
+	{
+		tipo = tipo() pf = RECpf(tipo)
+			{return pf;}
+	}
+
+ParamForm RECpf(Tipo th) :
+	{Token t;}
+	{
+		"&" t = <Identificador> 
+			{return (ParamForm) sem.param_form_ref(th, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		| 
+		t = <Identificador> 
+			{return (ParamForm) sem.param_form(th, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+	}
+
+Tipo tipo() : 
+	{Tipo tipo;}
+	{
+		tipo = tipo_array()
+			{return tipo;}
+	}
+
+Tipo tipo_array() :
+	{Tipo tipo1, tipo2;}
+	{
+		tipo1 = tipo_puntero() tipo2 = RETA(tipo1)
+			{return tipo2;}
+	}
+
+Tipo RETA(Tipo tipoh) : 
+	{Token t; Tipo tipo;}
+	{
+		"[" t = <Entero> "]" tipo = RETA((Tipo) sem.tipo_array(tipoh, t.image).ponFila(t.beginLine).ponCol(t.beginColumn))
+			{return (Tipo) tipo;}
+		| 
+			{return tipoh;}
+	}
+
+Tipo tipo_puntero() :
+	{Tipo tipo;}
+	{
+		"^" tipo = tipo_puntero() 
+			{return sem.tipo_puntero(tipo);}
+		|
+		tipo = T2()
+			{return tipo;}
+	}
+
+Tipo T2() :
+	{Tipo tipo;}
+	{
+		tipo = tipo_basico()
+			{return tipo;}
+		| 
+		tipo = tipo_registro()
+			{return tipo;}
+		|
+		tipo = tipo_definido()
+			{return tipo;}
+	}
+
+Tipo tipo_basico() :
+	{}
+	{
+		<INT> 
+			{return sem.int_t();}
+		|
+		<REAL>
+			{return sem.real_t();}
+		| 
+		<BOOL> 
+			{return sem.bool_t();}
+		|
+		<STRING>
+			{return sem.string_t();}
+	}
+
+Tipo tipo_registro() : 
+	{LParamReg l_param_reg;}
+	{
+		<STRUCT> "{" l_param_reg = lista_parametros_registro() "}"
+			{return sem.tipo_registro(l_param_reg);}
+	}
+
+Tipo tipo_definido() :
+	{Token t;}
+	{
+		t = <Identificador>
+			{return (Tipo) sem.tipo_definido(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+	}
+
+LParamReg lista_parametros_registro() :
+	{ParamReg param_reg; LParamReg l_param_reg;}
+	{
+		param_reg = parametro_registro() l_param_reg = REClpr(sem.una_lista_param_reg(param_reg))
+			{return l_param_reg;}
+	}
+
+LParamReg REClpr(LParamReg l_param_regh) : 
+	{ParamReg param_reg; LParamReg l_param_reg;}
+	{
+		"," param_reg = parametro_registro() l_param_reg = REClpr(sem.muchas_lista_param_reg(l_param_regh, param_reg))
+			{return l_param_reg;}
+		| 
+			{return l_param_regh;}
+	}
+
+ParamReg parametro_registro() :
+	{Tipo tipo; Token t;}
+	{
+		tipo = tipo() t = <Identificador>
+			{return (ParamReg) sem.param_reg(tipo, t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+	}
+
+LOptInst lista_opt_instrucciones() :
+	{LInst l_inst;}
+	{
+		l_inst = lista_instrucciones()
+			{return sem.si_lista_opt_inst(l_inst);}
+		| 
+			{return sem.no_lista_opt_inst();}
+	}
+
+LInst lista_instrucciones() :
+	{Inst inst; LInst l_inst;}
+	{
+		inst = instruccion() l_inst = RECI(sem.una_lista_inst(inst))
+			{return l_inst;}
+	}
+
+LInst RECI(LInst l_insth)	:
+	{Inst inst; LInst l_inst;}
+	{
+		";" inst = instruccion() l_inst = RECI(sem.muchas_lista_inst(l_insth, inst))
+			{return l_inst;}
+		|
+			{return l_insth;}
+	}
+
+
+Inst instruccion() : 
+	{Inst inst;}
+	{
+		inst = instruccion_eval()
+			{return inst;}
+		|
+		inst = instruccion_if_else()
+			{return inst;}
+		| 
+		inst = instruccion_while()
+			{return inst;}
+		| 
+		inst = instruccion_read()
+			{return inst;}
+		| 
+		inst = instruccion_write()
+			{return inst;}
+		| 
+		inst = instruccion_nl()
+			{return inst;}
+		| 
+		inst = instruccion_new()
+			{return inst;}
+		| 
+		inst = instruccion_delete()
+			{return inst;}
+		| 
+		inst = instruccion_call()
+			{return inst;}
+		| 
+		inst = instruccion_compuesta()
+			{return inst;}
+	}
+
+Inst instruccion_eval() : 
+	{Exp exp;}
+	{
+		"@" exp = expresion()
+			{return sem.inst_eval(exp);}
+	}
+
+Exp expresion() :
+	{Exp e;}
+	{
+		e = E0()
+			{return e;}
+	}
+
+Exp E0() :
+	{Exp e1, e2;}
+	{
+		e1 = E1() e2 = FE0(e1)
+			{return e2;}
+	}
+
+Exp FE0(Exp eh) : 
+	{Token t; Exp e;}
+	{
+		t = "=" e = E0()
+			{return (Exp) sem.asignacion(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		| 
+			{return eh;}
+	}
+
+Exp E1() : 
+	{Exp e1, e2;}
+	{
+		e1 = E2() e2 = RE1(e1)
+			{return e2;}
+	}
+
+Exp RE1(Exp eh) : 
+	{StringLocalizado op; Exp e1, e2;}
+	{
+		op = OP1() e1 = E2() e2 = RE1(sem.mkop1(op.str(), eh, e1))
+			{return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
+		| 
+			{return eh;}
+	}
+
+Exp E2() :
+	{Exp e1, e2, e3;}
+	{
+		e1 = E3() e2 = FE2(e1) e3 = RE2(e2)
+			{return e3;}
+	}
+
+Exp RE2(Exp eh) : 
+	{Token t; Exp e1, e2;}
+	{
+		t = "+" e1 = E3() e2 = RE2(sem.suma(eh, e1))
+			{return (Exp) e2.ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+			{return eh;}
+	}
+
+Exp FE2(Exp eh) :
+	{Token t; Exp e;}
+	{
+		t = "-" e = E3()
+			{return (Exp) sem.resta(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+			{return eh;}
+	}
+
+Exp E3() :
+	{Exp e1, e2;}
+	{
+		e1 = E4() e2 = FE3(e1)
+			{return e2;}
+
+	}
+
+Exp FE3(Exp eh) :
+	{Token t; Exp e;}
+	{
+		t = <AND> e = E3() 
+			{return (Exp) sem.and(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+		t = <OR> e = E4()
+			{return (Exp) sem.or(eh, e).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+			{return eh;}
+	}
+
+Exp E4() :
+	{Exp e1, e2;}
+	{
+		e1 = E5() e2 = RE4(e1)
+			{return e2;}
+	}
+
+Exp RE4(Exp eh) :
+	{StringLocalizado op; Exp e1, e2;}
+	{
+		op = OP4() e1 = E5() e2 = RE4(sem.mkop4(op.str(), eh, e1))
+			{return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
+		|
+			{return eh;}
+	}
+
+Exp E5() :
+	{StringLocalizado op; Exp e;}
+	{
+		op = OP5() e = E5()
+			{return (Exp) sem.mkop5(op.str(), e).ponFila(op.fila()).ponCol(op.col());}
+		|
+		e = E6()
+			{return e;}
+	}
+
+Exp E6() :
+	{Exp e1, e2;}
+	{
+		e1 = E7() e2 = RE6(e1)
+			{return e2;}
+
+	}
+
+Exp RE6(Exp eh) :
+	{Exp e1, e2; Token t, op;}
+	{
+		op = "[" e1 = E0() "]" e2 = RE6((Exp) sem.indexacion(eh, e1).ponFila(op.beginLine).ponCol(op.beginColumn))
+			{return (Exp) e2;}
+		|
+		"." t = <Identificador> e1 = RE6((Exp) sem.acc_reg(eh, t.image).ponFila(t.beginLine).ponCol(t.beginColumn))
+			{return (Exp) e1;}
+		|
+		op = "^" e1 = RE6((Exp) sem.indireccion(eh).ponFila(op.beginLine).ponCol(op.beginColumn))
+			{return (Exp) e1;}
+		|
+			{return eh;}
+	}
+
+Exp E7() :
+	{Exp e; Token t;}
+	{
+		t = <Entero> 
+			{return (Exp)sem.lit_ent(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+		t = <Real> 
+			{return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		| 
+		t = <TRUE> 
+			{return (Exp)sem.true_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+		t = <FALSE> 
+			{return (Exp)sem.false_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+		t = <NULL> 
+			{return (Exp)sem.null_e().ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+		t = <Cadena> 
+			{return (Exp)sem.cadena(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+		t = <Identificador> 
+			{return (Exp)sem.iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+		|
+		"(" e = E0() ")"
+			{return e;}
+	}
+
+StringLocalizado OP1() :
+	{Token t;}
+	{
+		t = ">"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+		|
+		t = ">="
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+		|
+		t = "<"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+		|
+		t = "<="
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+		|
+		t = "=="
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+		|
+		t = "!="
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+	}
+
+
+StringLocalizado OP4() : 
+	{Token t;}
+	{
+		t = "*"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+		|
+		t = "/"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+		|
+		t = "%"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+	}
+
+StringLocalizado OP5() :
+	{Token t;}
+	{
+		t = <NOT>
+			{return new StringLocalizado("not", t.beginLine, t.beginColumn);}
+		|
+		t = "-"
+			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+	}	
+
+Inst instruccion_if_else() : 
+	{Blq b1, b2; Exp e;}
+	{
+		<IF> e = expresion() b1 = bloque() b2 = then_else()
+			{return sem.inst_if_else(e, b1, b2);}
+	}
+
+Blq then_else() :
+	{Blq blq;}
+	{
+		<ELSE> blq = bloque()
+			{return sem.si_else(blq);}
+		| 
+			{return sem.no_else();}	
+	}
+
+Inst instruccion_while() :
+	{Exp e; Blq bloque;}
+	{
+		<WHILE> e = expresion() bloque = bloque()
+			{return sem.inst_while(e, bloque);}
+	}
+
+Inst instruccion_read() :
+	{Exp e;}
+	{
+		<READ> e = expresion()
+			{return sem.inst_read(e);}
+	}
+
+
+Inst instruccion_write() : 
+	{Exp e;}
+	{
+		<WRITE> e = expresion()
+			{return sem.inst_write(e);}
+	}
+
+
+Inst instruccion_nl() :
+	{}
+	{
+		<NL>
+			{return sem.inst_nl();}
+	}
+
+
+Inst instruccion_new() :
+	{Exp e;}
+	{
+		<NEW> e = expresion()
+			{return sem.inst_new(e);}
+	}
+
+
+Inst instruccion_delete() :
+	{Exp e;}
+	{
+		<DELETE> e = expresion()
+			{return sem.inst_delete(e);}
+	}
+
+Inst instruccion_call() :
+	{LOptParam l_opt_param; Token t;}
+	{
+		<CALL> t = <Identificador> l_opt_param = parametros()
+			{return (Inst) sem.inst_call(t.image, l_opt_param).ponFila(t.beginLine).ponCol(t.beginColumn);}
+	}
+
+
+LOptParam parametros() :
+	{LOptParam l_opt_param;}
+	{
+		"(" l_opt_param = lista_opt_parametros() ")"
+			{return l_opt_param;}
+	}
+
+LOptParam lista_opt_parametros() :
+	{LParam l_param;}
+	{
+		l_param = lista_parametros()
+			{return sem.si_lista_opt_param(l_param);}
+		|
+			{return sem.no_lista_opt_param();}
+	}
+ 
+LParam lista_parametros() :
+	{Exp e; LParam l_param;}
+	{
+		e = expresion() l_param = REClp(sem.una_lista_param(e))
+			{return l_param;}
+	}
+
+LParam REClp(LParam l_paramh) :
+	{Exp e; LParam l_param;}
+	{
+		"," e = expresion() l_param = REClp(sem.muchas_lista_param(l_paramh, e))
+			{return l_param;}
+		|
+			{return l_paramh;}
+	}
+
+
+Inst instruccion_compuesta() :
+	{Blq bloque;}
+	{
+		bloque = bloque()
+			{return sem.inst_comp(bloque);}
+	}
