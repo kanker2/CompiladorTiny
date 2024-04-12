@@ -21,20 +21,13 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		Reader input = new InputStreamReader(new FileInputStream(args[0]));
-		
-
-		char primerCaracter = ' ';
-		try {
-			primerCaracter = (char) input.read();
-		} catch (IOException e1) {
-			System.out.println("Error al leer el primer caracter");
-		}
+		String op = args[1], opp = args[2];
 			
 		ProgT prog;
 		
 		// Impresion de las trazas
 		try {
-			if (primerCaracter == 'a') {
+			if (op == "asc") {
 				AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
 				ConstructorASTTinyDJ asint = new ConstructorASTTinyDJ(alex);
 				System.out.println("CONSTRUCCION AST ASCENDENTE");
@@ -44,7 +37,7 @@ public class Main {
 				System.out.println("CONSTRUCCION AST DESCENDENTE");
 				prog = asint.analiza();
 			}
-			procesar(prog);
+			procesar(prog, opp);
 
 		} catch (ParseException | ErrorSintactico e) {
 			System.out.println("ERROR_SINTACTICO");
@@ -53,12 +46,22 @@ public class Main {
 		}
 	}
 	
-	public static void procesar(ProgT prog) {
-		ImpresorBonito e = new ImpresorBonitoRecursivo();
-		e.procesa(prog);
-		e = new ImpresorBonitoInterprete();
-		e.procesa(prog);
-		e = new ImpresorBonitoVisitante();
-		e.procesa(prog);
+	public static void procesar(ProgT prog, String opp) {
+		
+		ImpresorBonito e;
+		switch (opp) {
+		case "rec":
+			e = new ImpresorBonitoRecursivo();
+			e.procesa(prog);
+			break;
+		case "int":
+			e = new ImpresorBonitoInterprete();
+			e.procesa(prog);
+			break;
+		case "vis":
+			e = new ImpresorBonitoVisitante();
+			e.procesa(prog);
+			break;
+		}
 	}
 }
