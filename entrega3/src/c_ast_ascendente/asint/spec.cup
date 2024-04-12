@@ -188,45 +188,45 @@ expresion ::= E0: exp
 	{: RESULT = exp; :};
 
 E0 ::= E1: opnd1 ASIGNACION: op E0: opnd2
-	{: RESULT = sem.asignacion(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+	{: RESULT = (Exp) sem.asignacion(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E0 ::= E1: exp
 	{: RESULT = exp; :};
 
 E1 ::= E1: opnd1 OP1: op E2: opnd2
-	{: RESULT = sem.mkop1(op.str(), opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+	{: RESULT = (Exp) sem.mkop1(op.str(), opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E1 ::= E2: exp
 	{: RESULT = exp; :};
 
 E2 ::= E2: opnd1 MAS: op E3: opnd2
-	{: RESULT = sem.suma(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+	{: RESULT = (Exp)sem.suma(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E2 ::= E3: opnd1 MENOS: op E3:opnd2
-	{: RESULT = sem.resta(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+	{: RESULT = (Exp)sem.resta(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E2 ::= E3: exp
 	{: RESULT = exp; :};
 
 E3 ::= E4: opnd1 AND: op E3: opnd2
-	{: RESULT = sem.and(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+	{: RESULT = (Exp)sem.and(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E3 ::= E4: opnd1 OR: op E4: opnd2
-	{: RESULT = sem.or(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+	{: RESULT = (Exp)sem.or(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E3 ::= E4: exp
 	{: RESULT = exp; :};
 
 E4 ::= E4: opnd1 OP4: op E5: opnd2
-	{: RESULT = sem.mkop4(op.str(), opnd1, opnd2).ponFila(((StringLocalizado) o).fila()).ponCol(((StringLocalizado o).col()); :};
+	{: RESULT = (Exp)sem.mkop4(op.str(), opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E4 ::= E5: exp
 	{: RESULT = exp; :};
 
 E5 ::= OP5: op E5: opnd1
-	{: RESULT = sem.mkop5(op, opnd1).ponFila(((StringLocalizado) o).fila()).ponCol(((StringLocalizado o).col()); :};
+	{: RESULT = (Exp)sem.mkop5(op.str(), opnd1).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E5 ::= E6: exp
 	{: RESULT = exp; :};
 
 E6 ::= E6: opnd1 INIARRAY: op E0: opnd2 FINARRAY
-	{: RESULT = sem.indexacion(opnd1, opnd2).ponFila(((StringLocalzado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
+	{: RESULT = (Exp)sem.indexacion(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E6 ::= E6: opnd1 PUNTO Identificador: id
-	{: RESULT = sem.acc_reg(opnd1, id.str()).ponFila(id.leeFila()).ponCol(id.leeCol()); :};
+	{: RESULT = (Exp)sem.acc_reg(opnd1, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
 E6 ::= E6: opnd1 PUNTERO: op
-	{: RESULT = sem.indireccion(opnd1).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLozalizado) op).col()); :};
+	{: RESULT = (Exp)sem.indireccion(opnd1).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E6 ::= E7: exp
 	{: RESULT = exp; :};
 

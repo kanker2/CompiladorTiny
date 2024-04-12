@@ -490,6 +490,7 @@ public class SintaxisAbstractaTiny {
 			s.append("\n");
 			s.append(op);
 			s.append("$f:" + padre.leeFila() + ",c:" + padre.leeCol() + "$");
+			s.append("\n");
 			s.append(imprimeOpnd(opnd1, np1));
 			return s.toString();
 		}
@@ -497,7 +498,7 @@ public class SintaxisAbstractaTiny {
 		protected static String imprimeOpnd(Exp opnd, int p) {
 			StringBuilder s = new StringBuilder();
 			if (prioridad(opnd) < p) {
-				s.append("(");
+				s.append("(\n");
 			}
 			s.append(opnd.toString());
 
