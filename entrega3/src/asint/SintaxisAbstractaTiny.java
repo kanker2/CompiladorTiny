@@ -484,12 +484,12 @@ public class SintaxisAbstractaTiny {
 			}
 		}
 
-		protected static String imprimeExpBin(Exp opnd0, String op, Exp opnd1, int np0, int np1) {
+		protected static String imprimeExpBin(Exp padre,Exp opnd0, String op, Exp opnd1, int np0, int np1) {
 			StringBuilder s = new StringBuilder();
 			s.append(imprimeOpnd(opnd0, np0));
 			s.append("\n");
 			s.append(op);
-			s.append("\n");
+			s.append("$f:" + padre.leeFila() + ",c:" + padre.leeCol() + "$");
 			s.append(imprimeOpnd(opnd1, np1));
 			return s.toString();
 		}
@@ -502,7 +502,7 @@ public class SintaxisAbstractaTiny {
 			s.append(opnd.toString());
 
 			if (prioridad(opnd) < p) {
-				s.append(")");
+				s.append("\n)");
 			}
 			return s.toString();
 		}
@@ -619,7 +619,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return "{\n" + lista_opt_declaraciones + lista_opt_instrucciones + "}";
+			return "{" + lista_opt_declaraciones + lista_opt_instrucciones + "\n}";
 		}
 
 		public LOptDecs lista_opt_declaraciones() {
@@ -652,7 +652,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return lista_declaraciones + "\n&&\n";
+			return "\n"+lista_declaraciones + "\n&&";
 		}
 
 		public LDecs lista_declaraciones() {
@@ -1270,7 +1270,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return lista_instrucciones.toString();
+			return "\n"+lista_instrucciones.toString();
 		}
 
 		public LInst lista_instrucciones() {
@@ -1342,7 +1342,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return instruccion.toString() + "\n";
+			return instruccion.toString();
 		}
 
 		public Inst instruccion() {
@@ -1681,7 +1681,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "=", op2, 1, 0);
+			return imprimeExpBin(this, op1, "=", op2, 1, 0);
 		}
 
 		public Exp op1() {
@@ -1713,7 +1713,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, ">", op2, 1, 2);
+			return imprimeExpBin(this, op1, ">", op2, 1, 2);
 		}
 
 		public Exp op1() {
@@ -1745,7 +1745,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, ">=", op2, 1, 2);
+			return imprimeExpBin(this, op1, ">=", op2, 1, 2);
 		}
 
 		public Exp op1() {
@@ -1777,7 +1777,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "<", op2, 1, 2);
+			return imprimeExpBin(this, op1, "<", op2, 1, 2);
 		}
 
 		public Exp op1() {
@@ -1809,7 +1809,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "<=", op2, 1, 2);
+			return imprimeExpBin(this, op1, "<=", op2, 1, 2);
 		}
 
 		public Exp op1() {
@@ -1841,7 +1841,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "==", op2, 1, 2);
+			return imprimeExpBin(this, op1, "==", op2, 1, 2);
 		}
 
 		public Exp op1() {
@@ -1873,7 +1873,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "!=", op2, 1, 2);
+			return imprimeExpBin(this, op1, "!=", op2, 1, 2);
 		}
 
 		public Exp op1() {
@@ -1905,7 +1905,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "+", op2, 2, 3);
+			return imprimeExpBin(this, op1, "+", op2, 2, 3);
 		}
 
 		public Exp op1() {
@@ -1937,7 +1937,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "-", op2, 3, 3);
+			return imprimeExpBin(this, op1, "-", op2, 3, 3);
 		}
 
 		public Exp op1() {
@@ -1969,7 +1969,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "<and>", op2, 4, 3);
+			return imprimeExpBin(this, op1, "<and>", op2, 4, 3);
 		}
 
 		public Exp op1() {
@@ -2001,7 +2001,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "<or>", op2, 4, 4);
+			return imprimeExpBin(this, op1, "<or>", op2, 4, 4);
 		}
 
 		public Exp op1() {
@@ -2033,7 +2033,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "*", op2, 4, 5);
+			return imprimeExpBin(this, op1, "*", op2, 4, 5);
 		}
 
 		public Exp op1() {
@@ -2065,7 +2065,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "/", op2, 4, 5);
+			return imprimeExpBin(this, op1, "/", op2, 4, 5);
 		}
 
 		public Exp op1() {
@@ -2098,7 +2098,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return imprimeExpBin(op1, "%", op2, 4, 5);
+			return imprimeExpBin(this, op1, "%", op2, 4, 5);
 		}
 
 		public Exp op1() {
@@ -2191,7 +2191,7 @@ public class SintaxisAbstractaTiny {
 
 		public String toString() {
 			return imprimeOpnd(op1, 6) + "\n" + String.format("%s$f:%d,c:%d$", "[", leeFila(), leeCol()) + "\n"
-					+ imprimeOpnd(op2, 0) + "\n]";
+					+ imprimeOpnd(op2, 6) + "\n]";
 		}
 
 		public Exp op1() {
@@ -2228,7 +2228,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return op1.toString() + "\n.\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return imprimeOpnd(op1, 6) + "\n.\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
 
 		public Exp op1() {
@@ -2263,7 +2263,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return op1.toString() + "\n" + String.format("^$f:%d,c:%d$", leeFila(), leeCol());
+			return imprimeOpnd(op1, 6) + "\n" + String.format("^$f:%d,c:%d$", leeFila(), leeCol());
 		}
 
 		public Exp op1() {
