@@ -17,7 +17,7 @@ import c_ast_descendente.asint.TokenMgrError;
 
 import procesamiento.*;
 
-public class MainDom {
+public class DomJudge {
 
 	public static void main(String[] args) throws Exception {
 		Reader input = new InputStreamReader(System.in);
