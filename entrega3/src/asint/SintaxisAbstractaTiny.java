@@ -1,5 +1,7 @@
 package asint;
 
+import visitante.Procesamiento;
+
 public class SintaxisAbstractaTiny {
 	public SintaxisAbstractaTiny() {
 	};
@@ -7,13 +9,13 @@ public class SintaxisAbstractaTiny {
 	public interface ImpresionInterprete {
 		public abstract void imprime();
 	}
-	
+
 	public static String getPosDJ(Integer f, Integer c) {
-		return "$f:"+f.toString()+",c:"+c.toString()+"$";
+		return "$f:" + f.toString() + ",c:" + c.toString() + "$";
 	}
-	
+
 	public static abstract class Nodo {
-		
+
 		public Nodo() {
 			fila = col = -1;
 		}
@@ -38,42 +40,57 @@ public class SintaxisAbstractaTiny {
 		public int leeCol() {
 			return col;
 		}
-		
+
 		public abstract void imprime();
+
+		public abstract void procesa(Procesamiento p);
 	}
 
 	// Clases abstractas (Generos)
-	public static abstract class ProgT implements ImpresionInterprete{
+	public static abstract class ProgT implements ImpresionInterprete {
 		protected Blq bloque;
 
 		public ProgT(Blq bloque) {
 			this.bloque = bloque;
 		}
-		
-		public Blq bloque() {throw new UnsupportedOperationException();}
+
+		public Blq bloque() {
+			throw new UnsupportedOperationException();
+		}
+
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class Blq implements ImpresionInterprete{
+	public static abstract class Blq implements ImpresionInterprete {
 		protected Blq bloque;
 		protected LOptDecs lista_opt_declaraciones;
 		protected LOptInst lista_opt_instrucciones;
 
-		public Blq() {}
-		
+		public Blq() {
+		}
+
 		public Blq(Blq bloque) {
 			this.bloque = bloque;
 		}
-			
+
 		public Blq(LOptDecs lista_opt_declaraciones, LOptInst lista_opt_instrucciones) {
 			this.lista_opt_declaraciones = lista_opt_declaraciones;
 			this.lista_opt_instrucciones = lista_opt_instrucciones;
 		}
-		public LOptDecs lista_opt_declaraciones() {throw new UnsupportedOperationException();}
-		public LOptInst lista_opt_instrucciones() {throw new UnsupportedOperationException();}
-	
+
+		public LOptDecs lista_opt_declaraciones() {
+			throw new UnsupportedOperationException();
+		}
+
+		public LOptInst lista_opt_instrucciones() {
+			throw new UnsupportedOperationException();
+		}
+
+		public abstract void procesa(Procesamiento p);
+
 	}
 
-	public static abstract class LOptDecs implements ImpresionInterprete{
+	public static abstract class LOptDecs implements ImpresionInterprete {
 		protected LDecs lista_declaraciones;
 
 		public LOptDecs(LDecs lista_declaraciones) {
@@ -82,11 +99,15 @@ public class SintaxisAbstractaTiny {
 
 		public LOptDecs() {
 		};
-		
-		public LDecs lista_declaraciones() {throw new UnsupportedOperationException();}
+
+		public LDecs lista_declaraciones() {
+			throw new UnsupportedOperationException();
+		}
+
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LDecs implements ImpresionInterprete{
+	public static abstract class LDecs implements ImpresionInterprete {
 		protected LDecs lista_declaraciones;
 		protected Dec declaracion;
 
@@ -98,12 +119,19 @@ public class SintaxisAbstractaTiny {
 		public LDecs(Dec declaracion) {
 			this.declaracion = declaracion;
 		}
+
+		public LDecs lista_declaraciones() {
+			throw new UnsupportedOperationException();
+		}
+
+		public Dec declaracion() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public LDecs lista_declaraciones() {throw new UnsupportedOperationException();}
-		public Dec declaracion() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class Dec extends Nodo implements ImpresionInterprete{
+	public static abstract class Dec extends Nodo implements ImpresionInterprete {
 		protected Tipo tipo;
 		protected String cadena;
 		protected Blq bloque;
@@ -119,14 +147,27 @@ public class SintaxisAbstractaTiny {
 			this.lista_opt_parametros_formales = lista_opt_parametros_formales;
 			this.bloque = bloque;
 		}
+
+		public Tipo tipo() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String cadena() {
+			throw new UnsupportedOperationException();
+		}
+
+		public Blq bloque() {
+			throw new UnsupportedOperationException();
+		}
+
+		public LOptParamForm lista_opt_parametros_formales() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public Tipo tipo() {throw new UnsupportedOperationException();}
-		public String cadena() {throw new UnsupportedOperationException();}
-		public Blq bloque() {throw new UnsupportedOperationException();}
-		public LOptParamForm lista_opt_parametros_formales() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LOptParamForm implements ImpresionInterprete{
+	public static abstract class LOptParamForm implements ImpresionInterprete {
 		protected LParamForm lista_parametros_formales;
 
 		public LOptParamForm(LParamForm lista_parametros_formales) {
@@ -135,11 +176,15 @@ public class SintaxisAbstractaTiny {
 
 		public LOptParamForm() {
 		};
+
+		public LParamForm lista_parametros_formales() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public LParamForm lista_parametros_formales() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LParamForm implements ImpresionInterprete{
+	public static abstract class LParamForm implements ImpresionInterprete {
 		protected LParamForm lista_parametros_formales;
 		protected ParamForm parametro_formal;
 
@@ -151,12 +196,19 @@ public class SintaxisAbstractaTiny {
 		public LParamForm(ParamForm parametro_formal) {
 			this.parametro_formal = parametro_formal;
 		}
+
+		public LParamForm lista_parametros_formales() {
+			throw new UnsupportedOperationException();
+		}
+
+		public ParamForm parametro_formal() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public LParamForm lista_parametros_formales() {throw new UnsupportedOperationException();}
-		public ParamForm parametro_formal() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class ParamForm extends Nodo implements ImpresionInterprete{
+	public static abstract class ParamForm extends Nodo implements ImpresionInterprete {
 		protected Tipo tipo;
 		protected String cadena;
 
@@ -167,12 +219,19 @@ public class SintaxisAbstractaTiny {
 			this.tipo = tipo;
 			this.cadena = cadena;
 		}
+
+		public Tipo tipo() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String cadena() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public Tipo tipo() {throw new UnsupportedOperationException();}
-		public String cadena() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class Tipo extends Nodo implements ImpresionInterprete{
+	public static abstract class Tipo extends Nodo implements ImpresionInterprete {
 		protected Tipo tipo;
 		protected String cadena;
 		protected LParamReg lista_parametros_registro;
@@ -196,13 +255,23 @@ public class SintaxisAbstractaTiny {
 		public Tipo(LParamReg lista_parametros_registro) {
 			this.lista_parametros_registro = lista_parametros_registro;
 		}
+
+		public Tipo tipo() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String cadena() {
+			throw new UnsupportedOperationException();
+		}
+
+		public LParamReg lista_parametros_registro() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public Tipo tipo () {throw new UnsupportedOperationException();}
-		public String cadena() {throw new UnsupportedOperationException();}
-		public LParamReg lista_parametros_registro() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LParamReg implements ImpresionInterprete{
+	public static abstract class LParamReg implements ImpresionInterprete {
 		protected LParamReg lista_parametros_registro;
 		protected ParamReg parametro_registro;
 
@@ -214,12 +283,19 @@ public class SintaxisAbstractaTiny {
 		public LParamReg(ParamReg parametro_registro) {
 			this.parametro_registro = parametro_registro;
 		}
+
+		public LParamReg lista_parametros_registro() {
+			throw new UnsupportedOperationException();
+		}
+
+		public ParamReg parametro_registro() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public LParamReg lista_parametros_registro() {throw new UnsupportedOperationException();}
-		public ParamReg parametro_registro() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class ParamReg extends Nodo implements ImpresionInterprete{
+	public static abstract class ParamReg extends Nodo implements ImpresionInterprete {
 		protected Tipo tipo;
 		protected String cadena;
 
@@ -227,12 +303,19 @@ public class SintaxisAbstractaTiny {
 			this.tipo = tipo;
 			this.cadena = cadena;
 		}
+
+		public Tipo tipo() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String cadena() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public Tipo tipo() {throw new UnsupportedOperationException();}
-		public String cadena() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LOptInst implements ImpresionInterprete{
+	public static abstract class LOptInst implements ImpresionInterprete {
 		protected LInst lista_instrucciones;
 
 		public LOptInst() {
@@ -241,12 +324,16 @@ public class SintaxisAbstractaTiny {
 		public LOptInst(LInst lista_instrucciones) {
 			this.lista_instrucciones = lista_instrucciones;
 		}
+
+		public LInst lista_instrucciones() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public LInst lista_instrucciones() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 
 	}
 
-	public static abstract class LInst implements ImpresionInterprete{
+	public static abstract class LInst implements ImpresionInterprete {
 		protected LInst lista_instrucciones;
 		protected Inst instruccion;
 
@@ -258,12 +345,19 @@ public class SintaxisAbstractaTiny {
 		public LInst(Inst instruccion) {
 			this.instruccion = instruccion;
 		}
+
+		public LInst lista_instrucciones() {
+			throw new UnsupportedOperationException();
+		}
+
+		public Inst instruccion() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public LInst lista_instrucciones() {throw new UnsupportedOperationException();}
-		public Inst instruccion() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class Inst extends Nodo implements ImpresionInterprete{
+	public static abstract class Inst extends Nodo implements ImpresionInterprete {
 		protected Exp expresion;
 		protected Blq bloque1;
 		protected Blq bloque2;
@@ -296,100 +390,100 @@ public class SintaxisAbstractaTiny {
 		public Inst(Blq bloque) {
 			this.bloque1 = bloque;
 		}
+
+		public Exp expresion() {
+			throw new UnsupportedOperationException();
+		}
+
+		public Blq bloque1() {
+			throw new UnsupportedOperationException();
+		}
+
+		public Blq bloque2() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String cadena() {
+			throw new UnsupportedOperationException();
+		}
+
+		public LOptParam parametro() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public Exp expresion() {throw new UnsupportedOperationException();}
-		public Blq bloque1() {throw new UnsupportedOperationException();}
-		public Blq bloque2() {throw new UnsupportedOperationException();}
-		public String cadena() {throw new UnsupportedOperationException();}
-		public LOptParam parametro() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class Exp extends Nodo implements ImpresionInterprete{
+	public static abstract class Exp extends Nodo implements ImpresionInterprete {
 		protected Exp op1;
 		protected Exp op2;
 		protected String cadena;
 
 		private static int prioridad(Exp e) {
-			if(claseDe(e, Asignacion.class)) {
+			if (claseDe(e, Asignacion.class)) {
 				return 0;
-			}
-			else if(claseDe(e, Mayor.class)) {
+			} else if (claseDe(e, Mayor.class)) {
 				return 1;
-			}
-			else if(claseDe(e, Mayor_igual.class)) {
+			} else if (claseDe(e, Mayor_igual.class)) {
 				return 1;
-			}
-			else if(claseDe(e, Menor.class)) {
+			} else if (claseDe(e, Menor.class)) {
 				return 1;
-			}
-			else if(claseDe(e, Menor_igual.class)) {
+			} else if (claseDe(e, Menor_igual.class)) {
 				return 1;
-			}
-			else if(claseDe(e, Comparacion.class)) {
+			} else if (claseDe(e, Comparacion.class)) {
 				return 1;
-			}
-			else if(claseDe(e, Distinto.class)) {
+			} else if (claseDe(e, Distinto.class)) {
 				return 1;
-			}
-			else if(claseDe(e, Suma.class)) {
+			} else if (claseDe(e, Suma.class)) {
 				return 2;
-			}
-			else if(claseDe(e, Resta.class)) {
+			} else if (claseDe(e, Resta.class)) {
 				return 2;
-			}
-			else if(claseDe(e, And.class)) {
+			} else if (claseDe(e, And.class)) {
 				return 3;
-			}
-			else if(claseDe(e, Or.class)) {
+			} else if (claseDe(e, Or.class)) {
 				return 3;
-			}
-			else if(claseDe(e, Mult.class)) {
+			} else if (claseDe(e, Mult.class)) {
 				return 4;
-			}
-			else if(claseDe(e, Div.class)) {
+			} else if (claseDe(e, Div.class)) {
 				return 4;
-			}
-			else if(claseDe(e, Mod.class)) {
+			} else if (claseDe(e, Mod.class)) {
 				return 4;
-			}
-			else if(claseDe(e, Not_unario.class)) {
+			} else if (claseDe(e, Not_unario.class)) {
 				return 5;
-			}
-			else if(claseDe(e, Resta_unario.class)) {
+			} else if (claseDe(e, Resta_unario.class)) {
 				return 5;
-			}
-			else if(claseDe(e, Indexacion.class)) {
+			} else if (claseDe(e, Indexacion.class)) {
 				return 6;
-			}
-			else if(claseDe(e, Acc_reg.class)) {
+			} else if (claseDe(e, Acc_reg.class)) {
 				return 6;
-			}
-			else if(claseDe(e, Indireccion.class)) {
+			} else if (claseDe(e, Indireccion.class)) {
 				return 6;
 			}
 			return 7;
 		}
+		
+		public abstract int prioridad();;
 
 		protected static String imprimeExpBinInterprete(Exp padre, Exp opnd0, String op, Exp opnd1, int np0, int np1) {
 			imprimeOpndInterprete(opnd0, np0);
 			System.out.println();
-			System.out.println(op+getPosDJ(padre.leeFila(), padre.leeCol()));
+			System.out.println(op + getPosDJ(padre.leeFila(), padre.leeCol()));
 			imprimeOpndInterprete(opnd1, np1);
 			return "";
 		}
-		
+
 		protected static void imprimeOpndInterprete(Exp opnd, int p) {
-			if(prioridad(opnd) < p) {
+			if (prioridad(opnd) < p) {
 				System.out.println("(");
 			}
 			opnd.imprime();
-			
-			if(prioridad(opnd) < p) {
+
+			if (prioridad(opnd) < p) {
 				System.out.println();
 				System.out.print(")");
-			}	
+			}
 		}
-		
+
 		protected static String imprimeExpBin(Exp opnd0, String op, Exp opnd1, int np0, int np1) {
 			StringBuilder s = new StringBuilder();
 			s.append(imprimeOpnd(opnd0, np0));
@@ -402,17 +496,17 @@ public class SintaxisAbstractaTiny {
 
 		protected static String imprimeOpnd(Exp opnd, int p) {
 			StringBuilder s = new StringBuilder();
-			if(prioridad(opnd) < p) {
+			if (prioridad(opnd) < p) {
 				s.append("(");
 			}
 			s.append(opnd.toString());
-			
-			if(prioridad(opnd) < p) {
+
+			if (prioridad(opnd) < p) {
 				s.append(")");
-			}	
+			}
 			return s.toString();
 		}
-		
+
 		public Exp() {
 		};
 
@@ -433,13 +527,23 @@ public class SintaxisAbstractaTiny {
 		public Exp(String cadena) {
 			this.cadena = cadena;
 		}
+
+		public Exp op1() {
+			throw new UnsupportedOperationException();
+		}
+
+		public Exp op2() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String cadena() {
+			return cadena;
+		}
 		
-		public Exp op1() {throw new UnsupportedOperationException();}
-		public Exp op2() {throw new UnsupportedOperationException();}
-		public String cadena() {return cadena;}
+		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LOptParam implements ImpresionInterprete{
+	public static abstract class LOptParam implements ImpresionInterprete {
 		protected LParam lista_parametros;
 
 		public LOptParam() {
@@ -448,12 +552,16 @@ public class SintaxisAbstractaTiny {
 		public LOptParam(LParam lista_parametros) {
 			this.lista_parametros = lista_parametros;
 		}
+
+		public LParam lista_parametros() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public LParam lista_parametros() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 
 	}
 
-	public static abstract class LParam implements ImpresionInterprete{
+	public static abstract class LParam implements ImpresionInterprete {
 		protected LParam lista_parametros;
 		protected Exp expresion;
 
@@ -465,9 +573,16 @@ public class SintaxisAbstractaTiny {
 		public LParam(Exp expresion) {
 			this.expresion = expresion;
 		}
+
+		public LParam lista_parametros() {
+			throw new UnsupportedOperationException();
+		}
+
+		public Exp expresion() {
+			throw new UnsupportedOperationException();
+		}
 		
-		public LParam lista_parametros() {throw new UnsupportedOperationException();}
-		public Exp expresion() {throw new UnsupportedOperationException();}
+		public abstract void procesa(Procesamiento p);
 	}
 
 	// Clases concretas (Constructoras de AST's)
@@ -477,14 +592,18 @@ public class SintaxisAbstractaTiny {
 			super(bloque);
 			this.bloque = bloque;
 		}
-		
+
 		public String toString() {
 			return bloque.toString();
 		}
-		
+
 		public Blq bloque() {
 			return bloque;
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        } 
 
 		@Override
 		public void imprime() {
@@ -498,18 +617,22 @@ public class SintaxisAbstractaTiny {
 		public Bloque(LOptDecs lista_opt_declaraciones, LOptInst lista_opt_instrucciones) {
 			super(lista_opt_declaraciones, lista_opt_instrucciones);
 		}
-		
+
 		public String toString() {
-			return "{\n"+lista_opt_declaraciones+lista_opt_instrucciones+"}";
+			return "{\n" + lista_opt_declaraciones + lista_opt_instrucciones + "}";
 		}
-		
+
 		public LOptDecs lista_opt_declaraciones() {
 			return lista_opt_declaraciones;
 		}
-		
+
 		public LOptInst lista_opt_instrucciones() {
 			return lista_opt_instrucciones;
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 
 		@Override
 		public void imprime() {
@@ -518,7 +641,7 @@ public class SintaxisAbstractaTiny {
 			lista_opt_instrucciones.imprime();
 			System.out.println();
 			System.out.print("}");
-		}
+		}	
 
 	}
 
@@ -527,14 +650,18 @@ public class SintaxisAbstractaTiny {
 		public Si_lista_opt_decs(LDecs lista_declaraciones) {
 			super(lista_declaraciones);
 		}
-		
+
 		public String toString() {
-			return lista_declaraciones+"\n&&\n";
+			return lista_declaraciones + "\n&&\n";
 		}
-		
+
 		public LDecs lista_declaraciones() {
 			return lista_declaraciones;
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 
 		@Override
 		public void imprime() {
@@ -549,14 +676,18 @@ public class SintaxisAbstractaTiny {
 		public No_lista_opt_decs() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "";
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 
 		@Override
 		public void imprime() {
-			
+
 		}
 	}
 
@@ -564,18 +695,22 @@ public class SintaxisAbstractaTiny {
 		public Muchas_lista_decs(LDecs lista_declaraciones, Dec declaracion) {
 			super(lista_declaraciones, declaracion);
 		}
-		
+
 		public String toString() {
-			return lista_declaraciones+"\n;\n"+declaracion;
+			return lista_declaraciones + "\n;\n" + declaracion;
 		}
-		
+
 		public LDecs lista_declaraciones() {
 			return lista_declaraciones;
 		}
-		
+
 		public Dec declaracion() {
 			return declaracion;
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 
 		@Override
 		public void imprime() {
@@ -591,14 +726,18 @@ public class SintaxisAbstractaTiny {
 		public Una_lista_dec(Dec declaracion) {
 			super(declaracion);
 		}
-		
+
 		public String toString() {
 			return declaracion.toString();
 		}
-		
+
 		public Dec declaracion() {
 			return declaracion;
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 
 		@Override
 		public void imprime() {
@@ -610,15 +749,15 @@ public class SintaxisAbstractaTiny {
 		public Dec_var(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
-		
+
 		public String toString() {
-			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return tipo + "\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public Tipo tipo() {
 			return tipo;
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
@@ -627,24 +766,28 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			tipo.imprime();
 			System.out.println();
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
 		}
-		
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+
 	}
 
 	public static class Dec_tipo extends Dec {
 		public Dec_tipo(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
-		
+
 		public String toString() {
-			return "<type>\n"+tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return "<type>\n" + tipo + "\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public Tipo tipo() {
 			return tipo;
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
@@ -654,29 +797,33 @@ public class SintaxisAbstractaTiny {
 			System.out.println("<type>");
 			tipo.imprime();
 			System.out.println();
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
 		}
-		
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+
 	}
 
 	public static class Dec_proc extends Dec {
 		public Dec_proc(String cadena, LOptParamForm lista_opt_parametros_formales, Blq bloque) {
 			super(cadena, lista_opt_parametros_formales, bloque);
 		}
-		
+
 		public String toString() {
-			return "<proc>\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())+"\n"+ 
-					lista_opt_parametros_formales+"\n"+bloque;
+			return "<proc>\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol()) + "\n"
+					+ lista_opt_parametros_formales + "\n" + bloque;
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
-		
+
 		public LOptParamForm lista_opt_parametros_formales() {
 			return lista_opt_parametros_formales;
 		}
-		
+
 		public Blq bloque() {
 			return bloque;
 		}
@@ -684,23 +831,27 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void imprime() {
 			System.out.println("<proc>");
-			System.out.println(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.println(cadena + getPosDJ(leeFila(), leeCol()));
 			lista_opt_parametros_formales.imprime();
 			System.out.println();
 			bloque.imprime();
 		}
 		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+
 	}
 
 	public static class Si_lista_opt_param_form extends LOptParamForm {
 		public Si_lista_opt_param_form(LParamForm lista_parametros_formales) {
 			super(lista_parametros_formales);
 		}
-		
+
 		public String toString() {
-			return "(\n"+lista_parametros_formales.toString()+"\n)";
+			return "(\n" + lista_parametros_formales.toString() + "\n)";
 		}
-		
+
 		public LParamForm lista_parametros_formales() {
 			return lista_parametros_formales;
 		}
@@ -712,13 +863,17 @@ public class SintaxisAbstractaTiny {
 			System.out.println();
 			System.out.print(")");
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class No_lista_opt_param_form extends LOptParamForm {
 		public No_lista_opt_param_form() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "(\n)";
 		}
@@ -728,21 +883,25 @@ public class SintaxisAbstractaTiny {
 			System.out.println("(");
 			System.out.print(")");
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Muchas_lista_param_form extends LParamForm {
 		public Muchas_lista_param_form(LParamForm lista_parametros_formales, ParamForm parametro_formal) {
 			super(lista_parametros_formales, parametro_formal);
 		}
-		
+
 		public String toString() {
-			return lista_parametros_formales+"\n,\n"+parametro_formal;
+			return lista_parametros_formales + "\n,\n" + parametro_formal;
 		}
-		
+
 		public LParamForm lista_parametros_formales() {
 			return lista_parametros_formales;
 		}
-		
+
 		public ParamForm parametro_formal() {
 			return parametro_formal;
 		}
@@ -754,6 +913,10 @@ public class SintaxisAbstractaTiny {
 			System.out.println(",");
 			parametro_formal.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Una_lista_param_form extends LParamForm {
@@ -764,7 +927,7 @@ public class SintaxisAbstractaTiny {
 		public String toString() {
 			return parametro_formal.toString();
 		}
-		
+
 		public ParamForm parametro_formal() {
 			return parametro_formal;
 		}
@@ -773,21 +936,25 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			parametro_formal.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Param_form_ref extends ParamForm {
 		public Param_form_ref(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
-		
+
 		public String toString() {
-			return tipo+"\n&\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return tipo + "\n&\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public Tipo tipo() {
 			return tipo;
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
@@ -797,23 +964,27 @@ public class SintaxisAbstractaTiny {
 			tipo.imprime();
 			System.out.println();
 			System.out.println("&");
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Param_form extends ParamForm {
 		public Param_form(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
-		
+
 		public String toString() {
-			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return tipo + "\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public Tipo tipo() {
 			return tipo;
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
@@ -822,24 +993,27 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			tipo.imprime();
 			System.out.println();
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Tipo_array extends Tipo {
 		public Tipo_array(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
-		
+
 		public String toString() {
-			return tipo+"\n[\n"+cadena+"\n]"+
-					String.format("$f:%d,c:%d$",leeFila(), leeCol());
+			return tipo + "\n[\n" + cadena + "\n]" + String.format("$f:%d,c:%d$", leeFila(), leeCol());
 		}
-		
+
 		public Tipo tipo() {
 			return tipo;
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
@@ -850,19 +1024,23 @@ public class SintaxisAbstractaTiny {
 			System.out.println();
 			System.out.println("[");
 			System.out.println(cadena);
-			System.out.print("]"+getPosDJ(leeFila(), leeCol()));
+			System.out.print("]" + getPosDJ(leeFila(), leeCol()));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Tipo_puntero extends Tipo {
 		public Tipo_puntero(Tipo tipo) {
 			super(tipo);
 		}
-		
+
 		public String toString() {
-			return "^\n"+tipo.toString();
+			return "^\n" + tipo.toString();
 		}
-		
+
 		public Tipo tipo() {
 			return tipo;
 		}
@@ -872,13 +1050,17 @@ public class SintaxisAbstractaTiny {
 			System.out.println("^");
 			tipo.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Int_t extends Tipo {
 		public Int_t() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "<int>";
 		}
@@ -887,13 +1069,17 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			System.out.print("<int>");
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Real_t extends Tipo {
 		public Real_t() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "<real>";
 		}
@@ -902,13 +1088,17 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			System.out.print("<real>");
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Bool_t extends Tipo {
 		public Bool_t() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "<bool>";
 		}
@@ -917,13 +1107,17 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			System.out.print("<bool>");
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class String_t extends Tipo {
 		public String_t() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "<string>";
 		}
@@ -932,17 +1126,21 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			System.out.print("<string>");
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Tipo_registro extends Tipo {
 		public Tipo_registro(LParamReg lista_parametros_registro) {
 			super(lista_parametros_registro);
 		}
-		
+
 		public String toString() {
-			return "<struct>\n"+"{\n"+lista_parametros_registro+"\n}";
+			return "<struct>\n" + "{\n" + lista_parametros_registro + "\n}";
 		}
-		
+
 		public LParamReg lista_parametros_registro() {
 			return lista_parametros_registro;
 		}
@@ -955,40 +1153,48 @@ public class SintaxisAbstractaTiny {
 			System.out.println();
 			System.out.print("}");
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Tipo_definido extends Tipo {
 		public Tipo_definido(String cadena) {
 			super(cadena);
 		}
-		
+
 		public String toString() {
 			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
 
 		@Override
 		public void imprime() {
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Muchas_lista_param_reg extends LParamReg {
 		public Muchas_lista_param_reg(LParamReg lista_parametros_registro, ParamReg parametro_registro) {
 			super(lista_parametros_registro, parametro_registro);
 		}
-		
+
 		public String toString() {
-			return lista_parametros_registro+"\n,\n"+parametro_registro;
+			return lista_parametros_registro + "\n,\n" + parametro_registro;
 		}
-		
+
 		public LParamReg lista_parametros_registro() {
 			return lista_parametros_registro;
 		}
-		
+
 		public ParamReg parametro_registro() {
 			return parametro_registro;
 		}
@@ -1000,17 +1206,21 @@ public class SintaxisAbstractaTiny {
 			System.out.println(",");
 			parametro_registro.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Una_lista_param_reg extends LParamReg {
 		public Una_lista_param_reg(ParamReg parametro_registro) {
 			super(parametro_registro);
 		}
-		
+
 		public String toString() {
 			return parametro_registro.toString();
 		}
-		
+
 		public ParamReg parametro_registro() {
 			return parametro_registro;
 		}
@@ -1019,21 +1229,25 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			parametro_registro.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Param_reg extends ParamReg {
 		public Param_reg(Tipo tipo, String cadena) {
 			super(tipo, cadena);
 		}
-		
+
 		public String toString() {
-			return tipo+"\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return tipo + "\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public Tipo tipo() {
 			return tipo;
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
@@ -1042,19 +1256,23 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			tipo.imprime();
 			System.out.println();
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Si_lista_opt_inst extends LOptInst {
 		public Si_lista_opt_inst(LInst lista_instrucciones) {
 			super(lista_instrucciones);
 		}
-		
+
 		public String toString() {
 			return lista_instrucciones.toString();
 		}
-		
+
 		public LInst lista_instrucciones() {
 			return lista_instrucciones;
 		}
@@ -1064,13 +1282,17 @@ public class SintaxisAbstractaTiny {
 			System.out.println();
 			lista_instrucciones.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class No_lista_opt_inst extends LOptInst {
 		public No_lista_opt_inst() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "";
 		}
@@ -1078,21 +1300,25 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void imprime() {
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Muchas_lista_inst extends LInst {
 		public Muchas_lista_inst(LInst lista_instrucciones, Inst instruccion) {
 			super(lista_instrucciones, instruccion);
 		}
-		
+
 		public String toString() {
-			return lista_instrucciones+"\n;\n"+instruccion;
+			return lista_instrucciones + "\n;\n" + instruccion;
 		}
-		
+
 		public LInst lista_instrucciones() {
 			return lista_instrucciones;
 		}
-		
+
 		public Inst instruccion() {
 			return instruccion;
 		}
@@ -1104,17 +1330,21 @@ public class SintaxisAbstractaTiny {
 			System.out.println(";");
 			instruccion.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Una_lista_inst extends LInst {
 		public Una_lista_inst(Inst instruccion) {
 			super(instruccion);
 		}
-		
+
 		public String toString() {
-			return instruccion.toString()+"\n";
+			return instruccion.toString() + "\n";
 		}
-		
+
 		public Inst instruccion() {
 			return instruccion;
 		}
@@ -1123,17 +1353,21 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			instruccion.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_eval extends Inst {
 		public Inst_eval(Exp expresion) {
 			super(expresion);
 		}
-		
+
 		public String toString() {
-			return "@\n"+expresion;
+			return "@\n" + expresion;
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
@@ -1143,28 +1377,33 @@ public class SintaxisAbstractaTiny {
 			System.out.println("@");
 			expresion.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_if_else extends Inst {
 		private Blq bloque, bloque2;
+
 		public Inst_if_else(Exp expresion, Blq bloque, Blq bloque2) {
 			super(expresion, bloque, bloque2);
 			this.bloque = bloque;
 			this.bloque2 = bloque2;
 		}
-		
+
 		public String toString() {
-			return "<if>\n"+expresion+"\n"+bloque+bloque2; 
+			return "<if>\n" + expresion + "\n" + bloque + bloque2;
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
-		
-		public Blq bloque1() {
-			return bloque1;
+
+		public Blq bloque() {
+			return bloque;
 		}
-		
+
 		public Blq bloque2() {
 			return bloque2;
 		}
@@ -1176,20 +1415,25 @@ public class SintaxisAbstractaTiny {
 			System.out.println();
 			bloque.imprime();
 			bloque2.imprime();
-		}	
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
-	
+
 	public static class Si_else extends Blq {
 		private Blq bloque;
+
 		public Si_else(Blq bloque) {
 			super(bloque);
 			this.bloque = bloque;
 		}
-		
+
 		public String toString() {
-			return "\n<else>\n"+bloque;
+			return "\n<else>\n" + bloque;
 		}
-		
+
 		public Blq bloque() {
 			return bloque;
 		}
@@ -1200,13 +1444,17 @@ public class SintaxisAbstractaTiny {
 			System.out.println("<else>");
 			bloque.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
-	
+
 	public static class No_else extends Blq {
 		public No_else() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "";
 		}
@@ -1214,23 +1462,28 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void imprime() {
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_while extends Inst {
 		Blq bloque;
+
 		public Inst_while(Exp expresion, Blq bloque) {
 			super(expresion, bloque);
 			this.bloque = bloque;
 		}
-		
+
 		public String toString() {
-			return "<while>\n"+expresion+"\n"+bloque;
+			return "<while>\n" + expresion + "\n" + bloque;
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
-		
+
 		public Blq bloque() {
 			return bloque;
 		}
@@ -1242,17 +1495,21 @@ public class SintaxisAbstractaTiny {
 			System.out.println();
 			bloque.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_read extends Inst {
 		public Inst_read(Exp expresion) {
 			super(expresion);
 		}
-		
+
 		public String toString() {
-			return "<read>\n"+expresion;
+			return "<read>\n" + expresion;
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
@@ -1262,17 +1519,21 @@ public class SintaxisAbstractaTiny {
 			System.out.println("<read>");
 			expresion.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_write extends Inst {
 		public Inst_write(Exp expresion) {
 			super(expresion);
 		}
-		
+
 		public String toString() {
-			return "<write>\n"+expresion;
+			return "<write>\n" + expresion;
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
@@ -1282,13 +1543,17 @@ public class SintaxisAbstractaTiny {
 			System.out.println("<write>");
 			expresion.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_nl extends Inst {
 		public Inst_nl() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "<nl>";
 		}
@@ -1297,17 +1562,21 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			System.out.print("<nl>");
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_new extends Inst {
 		public Inst_new(Exp expresion) {
 			super(expresion);
 		}
-		
+
 		public String toString() {
-			return "<new>\n"+expresion;
+			return "<new>\n" + expresion;
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
@@ -1317,17 +1586,21 @@ public class SintaxisAbstractaTiny {
 			System.out.println("<new>");
 			expresion.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_delete extends Inst {
 		public Inst_delete(Exp expresion) {
 			super(expresion);
 		}
-		
+
 		public String toString() {
-			return "<delete>\n"+expresion;
+			return "<delete>\n" + expresion;
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
@@ -1337,24 +1610,29 @@ public class SintaxisAbstractaTiny {
 			System.out.println("<delete>");
 			expresion.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_call extends Inst {
 		LOptParam lista_opt_parametros;
+
 		public Inst_call(String cadena, LOptParam lista_opt_parametros) {
 			super(cadena, lista_opt_parametros);
 			this.lista_opt_parametros = lista_opt_parametros;
 		}
-		
+
 		public String toString() {
-			return "<call>\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol())
-			+"\n"+lista_opt_parametros;
+			return "<call>\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol()) + "\n"
+					+ lista_opt_parametros;
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
-		
+
 		public LOptParam lista_opt_parametros() {
 			return lista_opt_parametros;
 		}
@@ -1362,22 +1640,27 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void imprime() {
 			System.out.println("<call>");
-			System.out.println(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.println(cadena + getPosDJ(leeFila(), leeCol()));
 			lista_opt_parametros.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Inst_comp extends Inst {
 		Blq bloque;
+
 		public Inst_comp(Blq bloque) {
 			super(bloque);
 			this.bloque = bloque;
 		}
-		
+
 		public String toString() {
 			return bloque.toString();
 		}
-		
+
 		public Blq bloque() {
 			return bloque;
 		}
@@ -1386,373 +1669,518 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			bloque.imprime();
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Asignacion extends Exp {
 		public Asignacion(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"=",op2, 1,0);
+			return imprimeExpBin(op1, "=", op2, 1, 0);
 		}
 
-		
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 0;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "=", op2, 1, 0));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Mayor extends Exp {
 		public Mayor(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,">",op2, 1,2);
+			return imprimeExpBin(op1, ">", op2, 1, 2);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, ">", op2, 1, 2));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Mayor_igual extends Exp {
 		public Mayor_igual(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,">=",op2, 1,2);
+			return imprimeExpBin(op1, ">=", op2, 1, 2);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print(imprimeExpBinInterprete(this, op1, ">=", op2, 1, 2));			
+		public int prioridad() {
+			return 1;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print(imprimeExpBinInterprete(this, op1, ">=", op2, 1, 2));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Menor extends Exp {
 		public Menor(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"<",op2, 1,2);
+			return imprimeExpBin(op1, "<", op2, 1, 2);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print(imprimeExpBinInterprete(this, op1, "<", op2, 1, 2));			
+		public int prioridad() {
+			return 1;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print(imprimeExpBinInterprete(this, op1, "<", op2, 1, 2));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Menor_igual extends Exp {
 		public Menor_igual(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"<=",op2, 1,2);
+			return imprimeExpBin(op1, "<=", op2, 1, 2);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "<=", op2, 1, 2));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Comparacion extends Exp {
 		public Comparacion(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"==",op2, 1,2);
+			return imprimeExpBin(op1, "==", op2, 1, 2);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 1;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "==", op2, 1, 2));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Distinto extends Exp {
 		public Distinto(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"!=",op2, 1,2);
+			return imprimeExpBin(op1, "!=", op2, 1, 2);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print(imprimeExpBinInterprete(this, op1, "!=", op2, 1, 2));			
+		public int prioridad() {
+			return 1;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print(imprimeExpBinInterprete(this, op1, "!=", op2, 1, 2));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Suma extends Exp {
 		public Suma(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"+",op2, 2,3);
+			return imprimeExpBin(op1, "+", op2, 2, 3);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 2;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "+", op2, 2, 3));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Resta extends Exp {
 		public Resta(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"-",op2, 3,3);
+			return imprimeExpBin(op1, "-", op2, 3, 3);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 2;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "-", op2, 3, 3));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class And extends Exp {
 		public And(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"<and>",op2, 4,3);
+			return imprimeExpBin(op1, "<and>", op2, 4, 3);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 3;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "<and>", op2, 4, 3));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Or extends Exp {
 		public Or(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"<or>",op2, 4,4);
+			return imprimeExpBin(op1, "<or>", op2, 4, 4);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 3;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "<or>", op2, 4, 4));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Mult extends Exp {
 		public Mult(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"*",op2, 4,5);
+			return imprimeExpBin(op1, "*", op2, 4, 5);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 4;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "*", op2, 4, 5));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Div extends Exp {
 		public Div(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"/",op2, 4,5);
+			return imprimeExpBin(op1, "/", op2, 4, 5);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+		
+		@Override
+		public int prioridad() {
+			return 4;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "/", op2, 4, 5));
-			
+
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Mod extends Exp {
 		public Mod(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeExpBin(op1,"%",op2, 4,5);
+			return imprimeExpBin(op1, "%", op2, 4, 5);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 4;
 		}
 
 		@Override
 		public void imprime() {
 			System.out.print(imprimeExpBinInterprete(this, op1, "%", op2, 4, 5));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Not_unario extends Exp {
 		public Not_unario(Exp op1) {
 			super(op1);
 		}
-		
+
 		public String toString() {
-			return "<not>"+String.format("$f:%d,c:%d$",leeFila(), leeCol())
-				+ "\n" + imprimeOpnd(op1, 5);
+			return "<not>" + String.format("$f:%d,c:%d$", leeFila(), leeCol()) + "\n" + imprimeOpnd(op1, 5);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
 
 		@Override
-		public void imprime() {
-			System.out.println("<not>"+getPosDJ(leeFila(), leeCol()));
-			imprimeOpndInterprete(op1, 5);
-			
+		public int prioridad() {
+			return 5;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.println("<not>" + getPosDJ(leeFila(), leeCol()));
+			imprimeOpndInterprete(op1, 5);
+
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Resta_unario extends Exp {
 		public Resta_unario(Exp op1) {
 			super(op1);
 		}
-		
+
 		public String toString() {
-			return "-"+String.format("$f:%d,c:%d$",leeFila(), leeCol())
-			+ "\n" + imprimeOpnd(op1, 5);
+			return "-" + String.format("$f:%d,c:%d$", leeFila(), leeCol()) + "\n" + imprimeOpnd(op1, 5);
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
 
 		@Override
+		public int prioridad() {
+			return 5;
+		}
+
+		@Override
 		public void imprime() {
-			System.out.println("-"+getPosDJ(leeFila(), leeCol()));
+			System.out.println("-" + getPosDJ(leeFila(), leeCol()));
 			imprimeOpndInterprete(op1, 5);
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 
 	}
 
@@ -1760,46 +2188,60 @@ public class SintaxisAbstractaTiny {
 		public Indexacion(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
-		
+
 		public String toString() {
-			return imprimeOpnd(op1, 6) +"\n"+ String.format("%s$f:%d,c:%d$","[",leeFila(), leeCol())
-			+ "\n" + imprimeOpnd(op2, 0) + "\n]"; 
+			return imprimeOpnd(op1, 6) + "\n" + String.format("%s$f:%d,c:%d$", "[", leeFila(), leeCol()) + "\n"
+					+ imprimeOpnd(op2, 0) + "\n]";
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public Exp op2() {
 			return op2;
+		}
+
+		@Override
+		public int prioridad() {
+			return 6;
 		}
 
 		@Override
 		public void imprime() {
 			imprimeOpndInterprete(op1, 6);
 			System.out.println();
-			System.out.println("["+getPosDJ(leeFila(), leeCol()));
+			System.out.println("[" + getPosDJ(leeFila(), leeCol()));
 			imprimeOpndInterprete(op2, 6);
 			System.out.println();
 			System.out.print("]");
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Acc_reg extends Exp {
 		public Acc_reg(Exp op1, String cadena) {
 			super(op1, cadena);
 		}
-		
+
 		public String toString() {
-			return op1.toString()+"\n.\n"+String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
+			return op1.toString() + "\n.\n" + String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public Exp op1() {
 			return op1;
 		}
-		
+
 		public String cadena() {
 			return cadena;
+		}
+
+		@Override
+		public int prioridad() {
+			return 6;
 		}
 
 		@Override
@@ -1807,161 +2249,237 @@ public class SintaxisAbstractaTiny {
 			imprimeOpndInterprete(op1, 6);
 			System.out.println();
 			System.out.println(".");
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Indireccion extends Exp {
 		public Indireccion(Exp op1) {
 			super(op1);
 		}
-		
+
 		public String toString() {
-			return op1.toString()+"\n"+String.format("^$f:%d,c:%d$", leeFila(), leeCol());
+			return op1.toString() + "\n" + String.format("^$f:%d,c:%d$", leeFila(), leeCol());
 		}
-		
+
 		public Exp op1() {
 			return op1;
+		}
+
+		@Override
+		public int prioridad() {
+			return 6;
 		}
 
 		@Override
 		public void imprime() {
 			imprimeOpndInterprete(op1, 6);
 			System.out.println();
-			System.out.print("^"+getPosDJ(leeFila(), leeCol()));
+			System.out.print("^" + getPosDJ(leeFila(), leeCol()));
 		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Lit_ent extends Exp {
 		public Lit_ent(String cadena) {
 			super(cadena);
 		}
-		
+
 		public String toString() {
 			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+		public int prioridad() {
+			return 7;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Lit_real extends Exp {
 		public Lit_real(String cadena) {
 			super(cadena);
 		}
-		
+
 		public String toString() {
 			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+		public int prioridad() {
+			return 7;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class True_e extends Exp {
 		public True_e() {
 			super();
 		}
-		
+
 		public String toString() {
 			return String.format("%s$f:%d,c:%d$", "<true>", leeFila(), leeCol());
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print("<true>"+getPosDJ(leeFila(), leeCol()));			
+		public int prioridad() {
+			return 7;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print("<true>" + getPosDJ(leeFila(), leeCol()));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class False_e extends Exp {
 		public False_e() {
 			super();
 		}
-		
+
 		public String toString() {
 			return String.format("%s$f:%d,c:%d$", "<false>", leeFila(), leeCol());
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print("<false>"+getPosDJ(leeFila(), leeCol()));
+		public int prioridad() {
+			return 7;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print("<false>" + getPosDJ(leeFila(), leeCol()));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Null_e extends Exp {
 		public Null_e() {
 			super();
 		}
-		
+
 		public String toString() {
 			return String.format("%s$f:%d,c:%d$", "<null>", leeFila(), leeCol());
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print("<null>"+getPosDJ(leeFila(), leeCol()));
+		public int prioridad() {
+			return 7;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print("<null>" + getPosDJ(leeFila(), leeCol()));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Cadena extends Exp {
 		public Cadena(String cadena) {
 			super(cadena);
 		}
-		
+
 		public String toString() {
 			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+		public int prioridad() {
+			return 7;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Iden extends Exp {
 		public Iden(String cadena) {
 			super(cadena);
 		}
-		
+
 		public String toString() {
 			return String.format("%s$f:%d,c:%d$", cadena, leeFila(), leeCol());
 		}
-		
+
 		public String cadena() {
 			return cadena;
 		}
 
 		@Override
-		public void imprime() {
-			System.out.print(cadena+getPosDJ(leeFila(), leeCol()));
+		public int prioridad() {
+			return 7;
 		}
+
+		@Override
+		public void imprime() {
+			System.out.print(cadena + getPosDJ(leeFila(), leeCol()));
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Si_lista_opt_param extends LOptParam {
 		public Si_lista_opt_param(LParam lista_parametros) {
 			super(lista_parametros);
 		}
-		
+
 		public String toString() {
-			return "(\n"+lista_parametros.toString()+"\n)";
+			return "(\n" + lista_parametros.toString() + "\n)";
 		}
-		
+
 		public LParam lista_parametros() {
 			return lista_parametros;
 		}
@@ -1973,13 +2491,17 @@ public class SintaxisAbstractaTiny {
 			System.out.println();
 			System.out.print(")");
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class No_lista_opt_param extends LOptParam {
 		public No_lista_opt_param() {
 			super();
 		}
-		
+
 		public String toString() {
 			return "(\n)";
 		}
@@ -1989,21 +2511,25 @@ public class SintaxisAbstractaTiny {
 			System.out.println("(");
 			System.out.print(")");
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Muchas_lista_param extends LParam {
 		public Muchas_lista_param(LParam lista_parametros, Exp expresion) {
 			super(lista_parametros, expresion);
 		}
-		
+
 		public String toString() {
-			return lista_parametros+"\n,\n"+expresion;
+			return lista_parametros + "\n,\n" + expresion;
 		}
-		
+
 		public LParam lista_parametros() {
 			return lista_parametros;
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
@@ -2015,17 +2541,21 @@ public class SintaxisAbstractaTiny {
 			System.out.println(",");
 			expresion.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
 	public static class Una_lista_param extends LParam {
 		public Una_lista_param(Exp expresion) {
 			super(expresion);
 		}
-		
+
 		public String toString() {
 			return expresion.toString();
 		}
-		
+
 		public Exp expresion() {
 			return expresion;
 		}
@@ -2034,15 +2564,18 @@ public class SintaxisAbstractaTiny {
 		public void imprime() {
 			expresion.imprime();
 		}
+		
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 	}
 
-	
 	// Funciones para la impresion de los operandos
-	
+
 	private static boolean claseDe(Object o, Class c) {
 		return o.getClass() == c;
-		}
-	
+	}
+
 	// Funciones de llama a constructores
 	public ProgT prog_tiny(Blq bloque) {
 		return new Prog_tiny(bloque);
@@ -2175,7 +2708,7 @@ public class SintaxisAbstractaTiny {
 	public Blq si_else(Blq bloque) {
 		return new Si_else(bloque);
 	}
-	
+
 	public Blq no_else() {
 		return new No_else();
 	}
