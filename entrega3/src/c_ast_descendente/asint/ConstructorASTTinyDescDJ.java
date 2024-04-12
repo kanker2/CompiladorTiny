@@ -81,10 +81,16 @@ public class ConstructorASTTinyDescDJ extends ConstructorASTTinyDesc{
 
 	public ConstructorASTTinyDescDJ(Reader r) {
 	        super(r);
-	        disable_tracing();
+//	        disable_tracing();
 	    }
 
-	final protected void trace_token(Token t, String where) {
+	protected void trace_token(Token t, String where) {
 		imprime(t);
+	}
+	
+	protected void trace_call(String s) {
+	}
+	
+	protected void trace_return(String s) {
 	}
 }
