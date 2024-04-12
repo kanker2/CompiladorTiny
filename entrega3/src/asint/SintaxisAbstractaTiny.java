@@ -2192,7 +2192,7 @@ public class SintaxisAbstractaTiny {
 
 		public String toString() {
 			return imprimeOpnd(op1, 6) + "\n" + String.format("%s$f:%d,c:%d$", "[", leeFila(), leeCol()) + "\n"
-					+ imprimeOpnd(op2, 6) + "\n]";
+					+ imprimeOpnd(op2, 0) + "\n]";
 		}
 
 		public Exp op1() {
@@ -2213,7 +2213,7 @@ public class SintaxisAbstractaTiny {
 			imprimeOpndInterprete(op1, 6);
 			System.out.println();
 			System.out.println("[" + getPosDJ(leeFila(), leeCol()));
-			imprimeOpndInterprete(op2, 6);
+			imprimeOpndInterprete(op2, 0);
 			System.out.println();
 			System.out.print("]");
 		}

@@ -503,7 +503,7 @@ public class Impresion extends ProcesamientoDef{
 		imprimeOpnd(p.op1(), 6);
 		System.out.println();
 		System.out.println("[" + "$f:" + p.leeFila() + ",c:" + p.leeCol() + "$");
-		imprimeOpnd(p.op2(), 6);
+		imprimeOpnd(p.op2(), 0);
 		System.out.println();
 		System.out.print("]");
 		

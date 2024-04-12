@@ -27,8 +27,8 @@ public class ClaseSemanticaTiny extends SintaxisAbstractaTiny{
 	}
 	
 	public Exp mkop5(String op, Exp opnd1) {
-		switch(op) {
-		case "not": return not_unario(opnd1);
+		switch(op.toLowerCase().strip()) {
+		case "<not>": case "not": return not_unario(opnd1);
 		case  "-" : return resta_unario(opnd1);
 		default: throw new UnsupportedOperationException("Bad op");
 		}

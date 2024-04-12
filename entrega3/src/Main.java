@@ -46,21 +46,18 @@ public class Main {
 			}
 			procesar(prog);
 
-		} catch (ParseException e) {
+		} catch (ParseException | ErrorSintactico e) {
 			System.out.println("ERROR_SINTACTICO");
-		} catch (TokenMgrError e) {
+		} catch (TokenMgrError | ErrorLexico e ) {
 			System.out.println("ERROR_LEXICO");
 		}
 	}
 	
 	public static void procesar(ProgT prog) {
-		System.out.println("--------------Recursivo--------------");
 		ImpresorBonito e = new ImpresorBonitoRecursivo();
 		e.procesa(prog);
-		System.out.println("--------------Interprete--------------");
 		e = new ImpresorBonitoInterprete();
 		e.procesa(prog);
-		System.out.println("--------------Visitante--------------");
 		e = new ImpresorBonitoVisitante();
 		e.procesa(prog);
 	}

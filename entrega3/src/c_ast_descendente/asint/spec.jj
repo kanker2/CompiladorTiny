@@ -584,7 +584,7 @@ StringLocalizado OP5() :
 	{Token t;}
 	{
 		t = <NOT>
-			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+			{return new StringLocalizado("not", t.beginLine, t.beginColumn);}
 		|
 		t = "-"
 			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
