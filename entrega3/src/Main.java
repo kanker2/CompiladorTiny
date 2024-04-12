@@ -38,7 +38,7 @@ public class Main {
 				AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
 				ConstructorASTTinyDJ asint = new ConstructorASTTinyDJ(alex);
 				System.out.println("CONSTRUCCION AST ASCENDENTE");
-				prog = (ProgT) asint.parse().value;
+				prog = (ProgT) asint.debug_parse().value;
 			} else {
 				ConstructorASTTinyDescDJ asint = new ConstructorASTTinyDescDJ(input);
 				System.out.println("CONSTRUCCION AST DESCENDENTE");

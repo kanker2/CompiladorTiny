@@ -916,9 +916,9 @@ public class ConstructorASTTinyDesc implements ConstructorASTTinyDescConstants {
                          {if (true) return (Exp) e2;}
         break;
       case PUNTO:
-        op = jj_consume_token(PUNTO);
+        jj_consume_token(PUNTO);
         t = jj_consume_token(Identificador);
-        e1 = RE6((Exp) sem.acc_reg(eh, t.image).ponFila(op.beginLine).ponCol(op.beginColumn));
+        e1 = RE6((Exp) sem.acc_reg(eh, t.image).ponFila(t.beginLine).ponCol(t.beginColumn));
                          {if (true) return (Exp) e1;}
         break;
       case PUNTERO:
