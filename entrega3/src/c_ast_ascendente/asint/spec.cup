@@ -24,16 +24,16 @@ import asint.SintaxisAbstractaTiny.Exp;
 import asint.SintaxisAbstractaTiny.LOptParam;
 import asint.SintaxisAbstractaTiny.LParam;
 
-scan with {: 
-  return getScanner().next_token(); 
+scan with {:
+  return getScanner().next_token();
 :};
-parser code {: 
+parser code {:
    private GestionErroresTiny errores;
    public void syntax_error(Symbol unidadLexica) {
      errores.errorSintactico((UnidadLexica)unidadLexica);
    }
 :};
-init with {: 
+init with {:
    errores = new GestionErroresTiny();
    AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
    alex.fijaGestionErrores(errores);
@@ -62,56 +62,56 @@ non terminal  Inst instruccion, instruccion_eval, instruccion_if_else, instrucci
 non terminal  Exp expresion, E0, E1, E2, E3, E4, E5, E6, E7;
 non terminal  LOptParam lista_opt_parametros, parametros;
 non terminal  LParam lista_parametros;
-non terminal  String OP1, OP4, OP5;
+non terminal  StringLocalizado OP1, OP4, OP5;
 
 
-programa_tiny ::= bloque: blq 
+programa_tiny ::= bloque: blq
 	{: RESULT = sem.prog_tiny(blq); :};
-bloque ::= INIBLOQUE lista_opt_declaraciones: l_opt_dec lista_opt_instrucciones: l_opt_inst FINBLOQUE 
+bloque ::= INIBLOQUE lista_opt_declaraciones: l_opt_dec lista_opt_instrucciones: l_opt_inst FINBLOQUE
 	{: RESULT = sem.bloque(l_opt_dec,l_opt_inst); :};
 
-lista_opt_declaraciones ::= lista_declaraciones: l_decs FINDECLARACIONES 
+lista_opt_declaraciones ::= lista_declaraciones: l_decs FINDECLARACIONES
 	{: RESULT = sem.si_lista_opt_decs(l_decs); :};
-lista_opt_declaraciones ::= 
+lista_opt_declaraciones ::=
 	{: RESULT = sem.no_lista_opt_decs(); :};
 
-lista_declaraciones ::= lista_declaraciones: l_decs PUNTOYCOMA declaracion: dec 
+lista_declaraciones ::= lista_declaraciones: l_decs PUNTOYCOMA declaracion: dec
 	{: RESULT = sem.muchas_lista_decs(l_decs, dec); :};
-lista_declaraciones ::= declaracion: dec 
+lista_declaraciones ::= declaracion: dec
 	{: RESULT = sem.una_lista_dec(dec); :};
 
-declaracion ::= declaracion_variable: dec_var 
+declaracion ::= declaracion_variable: dec_var
 	{: RESULT = dec_var; :};
-declaracion ::= declaracion_tipo: dec_tipo 
+declaracion ::= declaracion_tipo: dec_tipo
 	{: RESULT = dec_tipo; :};
 declaracion ::= declaracion_proc: dec_proc 
 	{: RESULT = dec_proc; :};
 
-declaracion_variable ::= tipo: t Identificador: id 
+declaracion_variable ::= tipo: t Identificador: id
 	{: RESULT = (Dec) sem.dec_var(t,id.str()).ponFila(id.fila()).ponCol(id.col()); :};
-declaracion_tipo ::= TYPE tipo: t Identificador: id 
+declaracion_tipo ::= TYPE tipo: t Identificador: id
 	{: RESULT = (Dec) sem.dec_tipo(t,id.str()).ponFila(id.fila()).ponCol(id.col()); :};
-declaracion_proc ::= PROC Identificador: id INIPAR lista_opt_parametros_formales: l_opt_param_form FINPAR bloque: blq 
+declaracion_proc ::= PROC Identificador: id INIPAR lista_opt_parametros_formales: l_opt_param_form FINPAR bloque: blq
 	{: RESULT = (Dec) sem.dec_proc(id.str(),l_opt_param_form,blq).ponFila(id.fila()).ponCol(id.col()); :};
 
-lista_opt_parametros_formales ::= lista_parametros_formales: l_param_form 
+lista_opt_parametros_formales ::= lista_parametros_formales: l_param_form
 	{: RESULT = sem.si_lista_opt_param_form(l_param_form); :};
-lista_opt_parametros_formales ::= 
+lista_opt_parametros_formales ::=
 	{: RESULT = sem.no_lista_opt_param_form(); :};
 
-lista_parametros_formales ::= lista_parametros_formales: l_param_form COMA parametro_formal: param_form 
+lista_parametros_formales ::= lista_parametros_formales: l_param_form COMA parametro_formal: param_form
 	{: RESULT = sem.muchas_lista_param_form(l_param_form, param_form); :};
-lista_parametros_formales ::= parametro_formal: param_form 
+lista_parametros_formales ::= parametro_formal: param_form
 	{: RESULT = sem.una_lista_param_form(param_form); :};
 
-parametro_formal ::= tipo: t REFERENCIA Identificador: id 
+parametro_formal ::= tipo: t REFERENCIA Identificador: id
 	{: RESULT = (ParamForm) sem.param_form_ref(t,id.str()).ponFila(id.fila()).ponCol(id.col()); :};
-parametro_formal ::= tipo: t Identificador: id 
+parametro_formal ::= tipo: t Identificador: id
 	{: RESULT = (ParamForm) sem.param_form(t,id.str()).ponFila(id.fila()).ponCol(id.col()); :};
 
-tipo ::= tipo_array: t_arr 
+tipo ::= tipo_array: t_arr
 	{: RESULT = t_arr; :};
-tipo_array ::= tipo_array: t_arr INIARRAY Entero: num FINARRAY 
+tipo_array ::= tipo_array: t_arr INIARRAY Entero: num FINARRAY
 	{: RESULT = (Tipo) sem.tipo_array(t_arr,num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 tipo_array ::= tipo_puntero: t_punt
 	{: RESULT = t_punt; :};
@@ -121,42 +121,42 @@ tipo_puntero ::= PUNTERO tipo_puntero: t_punt
 tipo_puntero ::= T2: t2
 	{: RESULT = t2; :};
 
-T2 ::= tipo_basico: t_bas 
+T2 ::= tipo_basico: t_bas
 	{: RESULT = t_bas; :};
-T2 ::= tipo_registro: t_reg 
+T2 ::= tipo_registro: t_reg
 	{: RESULT = t_reg; :};
 T2 ::= tipo_definido: t_def 
 	{: RESULT = t_def; :};
 
-tipo_basico ::= INT 
+tipo_basico ::= INT
 	{: RESULT = (Tipo)sem.int_t(); :};
-tipo_basico ::= REAL 
+tipo_basico ::= REAL
 	{: RESULT = (Tipo)sem.real_t(); :};
-tipo_basico ::= BOOL 
+tipo_basico ::= BOOL
 	{: RESULT = (Tipo)sem.bool_t(); :};
-tipo_basico ::= STRING 
+tipo_basico ::= STRING
 	{: RESULT = (Tipo)sem.string_t(); :};
-tipo_registro ::= STRUCT INIBLOQUE lista_parametros_registro: l_param_reg FINBLOQUE 
+tipo_registro ::= STRUCT INIBLOQUE lista_parametros_registro: l_param_reg FINBLOQUE
 	{: RESULT = (Tipo)sem.tipo_registro(l_param_reg); :};
-tipo_definido ::= Identificador: id 
+tipo_definido ::= Identificador: id
 	{: RESULT = (Tipo) sem.tipo_definido(id.str()).ponFila(id.fila()).ponCol(id.col()); :};
 
-lista_parametros_registro ::= lista_parametros_registro: l_param_reg COMA  parametro_registro: param_reg 
+lista_parametros_registro ::= lista_parametros_registro: l_param_reg COMA  parametro_registro: param_reg
 	{: RESULT = sem.muchas_lista_param_reg(l_param_reg,param_reg); :};
-lista_parametros_registro ::= parametro_registro: param_reg 
+lista_parametros_registro ::= parametro_registro: param_reg
 	{: RESULT = sem.una_lista_param_reg(param_reg); :};
 
-parametro_registro ::= tipo: t Identificador: id 
+parametro_registro ::= tipo: t Identificador: id
 	{: RESULT = (ParamReg) sem.param_reg(t,id.str()).ponFila(id.fila()).ponCol(id.col()); :};
 
-lista_opt_instrucciones ::= lista_instrucciones: l_inst 
+lista_opt_instrucciones ::= lista_instrucciones: l_inst
 	{: RESULT = sem.si_lista_opt_inst(l_inst); :};
-lista_opt_instrucciones ::= 
+lista_opt_instrucciones ::=
 	{: RESULT = sem.no_lista_opt_inst(); :};
 
-lista_instrucciones ::= lista_instrucciones: l_inst PUNTOYCOMA instruccion: inst 
+lista_instrucciones ::= lista_instrucciones: l_inst PUNTOYCOMA instruccion: inst
 	{: RESULT = sem.muchas_lista_inst(l_inst,inst); :};
-lista_instrucciones ::= instruccion: inst 
+lista_instrucciones ::= instruccion: inst
 	{: RESULT = sem.una_lista_inst(inst); :};
 
 
@@ -176,7 +176,7 @@ instruccion ::= instruccion_new: inst_new
 	{: RESULT = inst_new; :};
 instruccion ::= instruccion_delete: inst_delete
 	{: RESULT = inst_delete; :};
-instruccion ::= instruccion_call: inst_call 
+instruccion ::= instruccion_call: inst_call
 	{: RESULT = inst_call; :};
 instruccion ::= instruccion_compuesta: inst_compuesta
 	{: RESULT = inst_compuesta; :};
@@ -187,46 +187,46 @@ instruccion_eval ::= ARROBA expresion: exp
 expresion ::= E0: exp
 	{: RESULT = exp; :};
 
-E0 ::= E1: opnd1 ASIGNACION E0: opnd2
-	{: RESULT = sem.asignacion(opnd1, opnd2); :};
+E0 ::= E1: opnd1 ASIGNACION: op E0: opnd2
+	{: RESULT = sem.asignacion(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
 E0 ::= E1: exp
 	{: RESULT = exp; :};
 
-E1 ::= E1: opnd1 OP1: op E2: opnd2 
-	{: RESULT = sem.mkop1(op, opnd1, opnd2); :};
+E1 ::= E1: opnd1 OP1: op E2: opnd2
+	{: RESULT = sem.mkop1(op.str(), opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
 E1 ::= E2: exp
 	{: RESULT = exp; :};
 
-E2 ::= E2: opnd1 MAS E3: opnd2
-	{: RESULT = sem.suma(opnd1, opnd2); :};
-E2 ::= E3: opnd1 MENOS E3:opnd2
-	{: RESULT = sem.resta(opnd1, opnd2); :}; 
+E2 ::= E2: opnd1 MAS: op E3: opnd2
+	{: RESULT = sem.suma(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+E2 ::= E3: opnd1 MENOS: op E3:opnd2
+	{: RESULT = sem.resta(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
 E2 ::= E3: exp
 	{: RESULT = exp; :};
 
-E3 ::= E4: opnd1 AND E3: opnd2 
-	{: RESULT = sem.and(opnd1, opnd2); :};
-E3 ::= E4: opnd1 OR E4: opnd2
-	{: RESULT = sem.or(opnd1, opnd2); :};
-E3 ::= E4: exp 
+E3 ::= E4: opnd1 AND: op E3: opnd2
+	{: RESULT = sem.and(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+E3 ::= E4: opnd1 OR: op E4: opnd2
+	{: RESULT = sem.or(opnd1, opnd2).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLocalizado op).col()); :};
+E3 ::= E4: exp
 	{: RESULT = exp; :};
 
-E4 ::= E4: opnd1 OP4: op E5: opnd2 
-	{: RESULT = sem.mkop4(op, opnd1, opnd2); :};
-E4 ::= E5: exp 
+E4 ::= E4: opnd1 OP4: op E5: opnd2
+	{: RESULT = sem.mkop4(op.str(), opnd1, opnd2).ponFila(((StringLocalizado) o).fila()).ponCol(((StringLocalizado o).col()); :};
+E4 ::= E5: exp
 	{: RESULT = exp; :};
 
-E5 ::= OP5: op E5: opnd1 
-	{: RESULT = sem.mkop5(op, opnd1); :};
+E5 ::= OP5: op E5: opnd1
+	{: RESULT = sem.mkop5(op, opnd1).ponFila(((StringLocalizado) o).fila()).ponCol(((StringLocalizado o).col()); :};
 E5 ::= E6: exp
 	{: RESULT = exp; :};
 
-E6 ::= E6: opnd1 INIARRAY E0: opnd2 FINARRAY
-	{: RESULT = sem.indexacion(opnd1, opnd2); :};
+E6 ::= E6: opnd1 INIARRAY: op E0: opnd2 FINARRAY
+	{: RESULT = sem.indexacion(opnd1, opnd2).ponFila(((StringLocalzado) op).fila()).ponCol(((StringLocalizado) op).col()); :};
 E6 ::= E6: opnd1 PUNTO Identificador: id
-	{: RESULT = sem.acc_reg(opnd1, id.str()); :};
-E6 ::= E6: opnd1 PUNTERO
-	{: RESULT = sem.indireccion(opnd1); :};
+	{: RESULT = sem.acc_reg(opnd1, id.str()).ponFila(id.leeFila()).ponCol(id.leeCol()); :};
+E6 ::= E6: opnd1 PUNTERO: op
+	{: RESULT = sem.indireccion(opnd1).ponFila(((StringLocalizado) op).fila()).ponCol(((StringLozalizado) op).col()); :};
 E6 ::= E7: exp
 	{: RESULT = exp; :};
 
@@ -235,77 +235,77 @@ E7 ::= Entero: num
 E7 ::= Real: num
 	{: RESULT = (Exp) sem.lit_real(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 E7 ::= TRUE: t
-	{: RESULT = (Exp) sem.true_e().ponFila(t.fila()).ponCol(t.col()); :};
+	{: RESULT = (Exp) sem.true_e().ponFila(((StringLocalizado) t).fila()).ponCol(((StringLocalizado) t).col()); :};
 E7 ::= FALSE: t
-	{: RESULT = (Exp) sem.false_e().ponFila(t.fila()).ponCol(t.col()); :};
+	{: RESULT = (Exp) sem.false_e().ponFila(((StringLocalizado) t).fila()).ponCol(((StringLocalizado) t).col()); :};
 E7 ::= NULL: t
-	{: RESULT = (Exp) sem.null_e().ponFila(t.fila()).ponCol(t.col()); :};
+	{: RESULT = (Exp) sem.null_e().ponFila(((StringLocalizado) t).fila()).ponCol(((StringLocalizado) t).col()); :};
 E7 ::= Cadena: s
 	{: RESULT = (Exp) sem.cadena(s.str()).ponFila(s.fila()).ponCol(s.col()); :};
 E7 ::= Identificador: id
 	{: RESULT = (Exp) sem.iden(id.str()).ponFila(id.fila()).ponCol(id.col()); :};
-E7 ::= INIPAR E0: exp FINPAR 
+E7 ::= INIPAR E0: exp FINPAR
 	{: RESULT = exp; :};
 
-OP1 ::= MAYOR 
-	{: RESULT = ">"; :};
-OP1 ::= MAYORIGUAL 
-	{: RESULT = ">="; :};
-OP1 ::= MENOR
-	{: RESULT = "<"; :};
-OP1 ::= MENORIGUAL 
-	{: RESULT = "<="; :};
-OP1 ::= COMPARACION 
-	{: RESULT = "=="; :};
-OP1 ::= DISTINTO 
-	{: RESULT = "!="; :};
+OP1 ::= MAYOR: o
+	{: RESULT = (StringLocalizado) o; :};
+OP1 ::= MAYORIGUAL: o
+	{: RESULT = (StringLocalizado) o; :};
+OP1 ::= MENOR: o
+	{: RESULT = (StringLocalizado) o; :};
+OP1 ::= MENORIGUAL: o
+	{: RESULT = (StringLocalizado) o; :};
+OP1 ::= COMPARACION: o
+	{: RESULT = (StringLocalizado) o; :};
+OP1 ::= DISTINTO: o
+	{: RESULT = (StringLocalizado) o; :};
 
-OP4 ::= POR 
-	{: RESULT = "*"; :};
-OP4 ::= ENTRE 
-	{: RESULT = "/"; :};
-OP4 ::= MODULO 
-	{: RESULT = "%"; :};
+OP4 ::= POR: o
+	{: RESULT = (StringLocalizado) o; :};
+OP4 ::= ENTRE: o
+	{: RESULT = (StringLocalizado) o; :};
+OP4 ::= MODULO: o
+	{: RESULT = (StringLocalizado) o; :};
 
-OP5 ::= NOT 
-	{: RESULT = "not"; :};
-OP5 ::= MENOS
-	{: RESULT = "-"; :};
+OP5 ::= NOT: o
+	{: RESULT = (StringLocalizado) o; :};
+OP5 ::= MENOS: o
+	{: RESULT = (StringLocalizado) o; :};
 
 
-instruccion_if_else ::= IF expresion: exp bloque: blq then_else: blq2 
+instruccion_if_else ::= IF expresion: exp bloque: blq then_else: blq2
 	{: RESULT = sem.inst_if_else(exp, blq, blq2); :};
 then_else ::= ELSE bloque: blq
 	{: RESULT = sem.si_else(blq); :};
-then_else ::= 
+then_else ::=
 	{: RESULT = sem.no_else(); :};
 instruccion_while ::= WHILE expresion: exp bloque: blq
-	{: RESULT = sem.inst_while(exp, blq); :}; 
+	{: RESULT = sem.inst_while(exp, blq); :};
 instruccion_read ::= READ expresion: exp
-	{: RESULT = sem.inst_read(exp); :}; 
+	{: RESULT = sem.inst_read(exp); :};
 instruccion_write ::= WRITE expresion: exp
 	{: RESULT = sem.inst_write(exp); :};
-instruccion_nl ::= NL 
+instruccion_nl ::= NL
 	{: RESULT = sem.inst_nl(); :};
 instruccion_new ::= NEW expresion: exp
 	{: RESULT = sem.inst_new(exp); :};
 instruccion_delete ::= DELETE expresion: exp
 	{: RESULT = sem.inst_delete(exp); :};
-instruccion_call ::= CALL Identificador: id parametros: param 
-	{: RESULT = (Inst) sem.inst_call(id.str(), param).ponFila(id.fila()).ponCol(id.col()); :}; 
+instruccion_call ::= CALL Identificador: id parametros: param
+	{: RESULT = (Inst) sem.inst_call(id.str(), param).ponFila(id.fila()).ponCol(id.col()); :};
 
 parametros ::= INIPAR lista_opt_parametros: l_opt_param FINPAR
 	{: RESULT = l_opt_param; :};
 
 lista_opt_parametros ::= lista_parametros: l_param
 	{: RESULT = sem.si_lista_opt_param(l_param); :};
-lista_opt_parametros ::= 
-	{: RESULT = sem.no_lista_opt_param(); :};               
+lista_opt_parametros ::=
+	{: RESULT = sem.no_lista_opt_param(); :};
 
 
 lista_parametros ::= lista_parametros: l_param COMA expresion: exp
-	{: RESULT = sem.muchas_lista_param(l_param, exp); :}; 
-lista_parametros ::= expresion: exp 
+	{: RESULT = sem.muchas_lista_param(l_param, exp); :};
+lista_parametros ::= expresion: exp
 	{: RESULT = sem.una_lista_param(exp); :};
 
 
