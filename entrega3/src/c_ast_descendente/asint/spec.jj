@@ -507,7 +507,7 @@ Exp RE6(Exp eh) :
 		op = "[" e1 = E0() "]" e2 = RE6((Exp) sem.indexacion(eh, e1).ponFila(op.beginLine).ponCol(op.beginColumn))
 			{return (Exp) e2;}
 		|
-		op = "." t = <Identificador> e1 = RE6((Exp) sem.acc_reg(eh, t.image).ponFila(op.beginLine).ponCol(op.beginColumn))
+		"." t = <Identificador> e1 = RE6((Exp) sem.acc_reg(eh, t.image).ponFila(t.beginLine).ponCol(t.beginColumn))
 			{return (Exp) e1;}
 		|
 		op = "^" e1 = RE6((Exp) sem.indireccion(eh).ponFila(op.beginLine).ponCol(op.beginColumn))
