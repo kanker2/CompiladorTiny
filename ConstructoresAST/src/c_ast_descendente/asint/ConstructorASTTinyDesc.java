@@ -750,8 +750,8 @@ StringLocalizado op; Exp e1, e2;
       case DISTINTO:{
         op = OP1();
         e1 = E2();
-        e2 = RE1(sem.mkop1(op.str(), eh, e1));
-{if ("" != null) return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
+        e2 = RE1((Exp) sem.mkop1(op.str(), eh, e1).ponFila(op.fila()).ponCol(op.col()));
+{if ("" != null) return (Exp) e2;}
         break;
         }
       default:
@@ -884,8 +884,8 @@ StringLocalizado op; Exp e1, e2;
       case MODULO:{
         op = OP4();
         e1 = E5();
-        e2 = RE4(sem.mkop4(op.str(), eh, e1));
-{if ("" != null) return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
+        e2 = RE4((Exp) sem.mkop4(op.str(), eh, e1).ponFila(op.fila()).ponCol(op.col()));
+{if ("" != null) return (Exp) e2;}
         break;
         }
       default:
@@ -1124,7 +1124,7 @@ Token t;
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case NOT:{
         t = jj_consume_token(NOT);
-{if ("" != null) return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
+{if ("" != null) return new StringLocalizado("not", t.beginLine, t.beginColumn);}
         break;
         }
       case MENOS:{

@@ -114,7 +114,7 @@ proc construye_arbol() {
       if arbol != null {
 	  call escribe_nombres(arbol^.izq);
 	  write arbol^.nombre; nl;
-  call escribe_nombres(arbol^.der)
+	  call escribe_nombres(arbol^.der)
       }
   } ## del procedimiento escribe_nombres
  &&         

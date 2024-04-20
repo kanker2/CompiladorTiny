@@ -416,8 +416,8 @@ Exp E1() :
 Exp RE1(Exp eh) : 
 	{StringLocalizado op; Exp e1, e2;}
 	{
-		op = OP1() e1 = E2() e2 = RE1(sem.mkop1(op.str(), eh, e1))
-			{return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
+		op = OP1() e1 = E2() e2 = RE1((Exp) sem.mkop1(op.str(), eh, e1).ponFila(op.fila()).ponCol(op.col()))
+			{return (Exp) e2;}
 		| 
 			{return eh;}
 	}
@@ -477,8 +477,8 @@ Exp E4() :
 Exp RE4(Exp eh) :
 	{StringLocalizado op; Exp e1, e2;}
 	{
-		op = OP4() e1 = E5() e2 = RE4(sem.mkop4(op.str(), eh, e1))
-			{return (Exp) e2.ponFila(op.fila()).ponCol(op.col());}
+		op = OP4() e1 = E5() e2 = RE4((Exp) sem.mkop4(op.str(), eh, e1).ponFila(op.fila()).ponCol(op.col()))
+			{return (Exp) e2;}
 		|
 			{return eh;}
 	}
