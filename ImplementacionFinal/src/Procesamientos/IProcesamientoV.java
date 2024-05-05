@@ -174,14 +174,10 @@ public interface IProcesamientoV {
 	void vincula(Null_e p);
 	void vincula(Cadena p);
 	void vincula(Iden p);
-	void abreAmbito(Map ts);//??????
-	void cierraAmbito(Map ts);//?????
-	void contiene(Map ts, String id);
-	void inserta(Map ts, String id, Dec dec);
-	Dec vinculo(Map ts, String id);
-	
-
-	
-	
+	void abreAmbito(Map<String, Dec> ts);//??????
+	void cierraAmbito(Map<String, Dec> ts);//?????
+	boolean contiene(Map<String, Dec> ts, String id);
+	void inserta(Map<String, Dec> ts, String id, Dec dec);
+	Dec vinculoDe(Map<String, Dec> ts, String id);
 	
 }
