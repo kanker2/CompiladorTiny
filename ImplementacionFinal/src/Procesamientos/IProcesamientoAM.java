@@ -98,10 +98,12 @@ public interface IProcesamientoAM {
 	void asig_espacio1(String_t p);
 	void asig_espacio1(Tipo_registro p);
 	void asig_espacio1(Tipo_definido p);
-	void asig_espacio1(Muchas_lista_param_reg p);
-	void asig_espacio1(Una_lista_param_reg p);
+	int asig_espacio1(Muchas_lista_param_reg p);
+	int asig_espacio1(Una_lista_param_reg p);
 	void asig_espacio1(Param_reg p);
 	////Segunda Vuelta
+	void asig_espacio2(Si_lista_opt_decs p);
+	void asig_espacio2(No_lista_opt_decs p);
 	void asig_espacio2(Muchas_lista_decs p);
 	void asig_espacio2(Una_lista_dec p);
 	void asig_espacio2(Dec_var p);
@@ -141,36 +143,7 @@ public interface IProcesamientoAM {
 	void asig_espacio(Inst_delete p);
 	void asig_espacio(Inst_call p);
 	void asig_espacio(Inst_comp p);
-	void asig_espacio(Si_lista_opt_param p);
-	void asig_espacio(No_lista_opt_param p);
-	void asig_espacio(Muchas_lista_param p);
-	void asig_espacio(Una_lista_param p);
-	void asig_espacio(Asignacion p);
-	void asig_espacio(Mayor p);
-	void asig_espacio(Mayor_igual p);
-	void asig_espacio(Menor p);
-	void asig_espacio(Menor_igual p);
-	void asig_espacio(Comparacion p);
-	void asig_espacio(Distinto p);
-	void asig_espacio(Suma p);
-	void asig_espacio(Resta p);
-	void asig_espacio(And p);
-	void asig_espacio(Or p);
-	void asig_espacio(Mult p);
-	void asig_espacio(Div p);
-	void asig_espacio(Mod p);
-	void asig_espacio(Not_unario p);
-	void asig_espacio(Resta_unario p);
-	void asig_espacio(Indexacion p);
-	void asig_espacio(Acc_reg p);
-	void asig_espacio(Indireccion p);
-	void asig_espacio(Lit_ent p);
-	void asig_espacio(Lit_real p);
-	void asig_espacio(True_e p);
-	void asig_espacio(False_e p);
-	void asig_espacio(Null_e p);
-	void asig_espacio(Cadena p);
-	void asig_espacio(Iden p);
+	
 	
 
 	
