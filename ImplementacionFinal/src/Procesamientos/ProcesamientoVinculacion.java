@@ -1,6 +1,7 @@
 package Procesamientos;
 
 import java.util.Map;
+import java.util.HashMap;
 
 import asint.SintaxisAbstractaTiny.Acc_reg;
 import asint.SintaxisAbstractaTiny.And;
@@ -79,11 +80,11 @@ import asint.SintaxisAbstractaTiny.Una_lista_param_reg;
 //Se pretende seguir el patron visitante
 public class ProcesamientoVinculacion implements IProcesamientoV{
 	
-	//Map<String,Nodo> ts;???????????
+	Map<String,Dec> ts;
 	@Override
 	public void vincula(Prog_tiny p) {
 		// TODO Auto-generated method stub
-		//ts=new Map();//?????'
+		ts=new HashMap<String,Dec>();//?????'
 		p.bloque().vincula(this);
 	}
 
@@ -135,23 +136,32 @@ public class ProcesamientoVinculacion implements IProcesamientoV{
 	@Override
 	public void vincula1(Dec_tipo p) {
 		// TODO Auto-generated method stub
-		/*p.tipo().vincula1(this);
-		if(contiene(ts,p.cadena())) {
+		p.tipo().vincula1(this);
+		/*if(contiene(ts,p.cadena())) {
 			error;
 		}
-		else inserta(ts, p.cadena(),p.tipo()??)*/
+		else inserta(ts, p.cadena(),Dec);*/
 	}
 
 	@Override
 	public void vincula1(Dec_proc p) {
 		// TODO Auto-generated method stub
-		
+		/*if contiene(ts, Id) {
+		error
+		}
+		else
+		inserta(ts, Id)
+		end if
+			abreAmbito(ts)*/
+		p.lista_opt_parametros_formales().vincula1(this);
+		p.bloque().vincula(this);	
+			//cierraAmbito(ts)
 	}
 
 	@Override
 	public void vincula1(Si_lista_opt_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_formales().vincula1(this);
 	}
 
 	@Override
@@ -163,127 +173,144 @@ public class ProcesamientoVinculacion implements IProcesamientoV{
 	@Override
 	public void vincula1(Muchas_lista_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_formales().vincula1(this);
+		p.parametro_formal().vincula1(this);
 	}
 
 	@Override
 	public void vincula1(Una_lista_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.parametro_formal().vincula1(this);
 	}
 
 	@Override
 	public void vincula1(Param_form_ref p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula1(this);
+		/*
+		 if contiene(ts, Id) then 
+			error
+		else
+			inserta(ts, Id, $)
+		end if
+
+		 * */
 	}
 
 	@Override
 	public void vincula1(Param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula1(this);
+		/*
+		 if contiene(ts, Id) then 
+			error
+		else
+			inserta(ts, Id, $)
+		end if
+
+		 * */
 	}
 
 	@Override
 	public void vincula1(Tipo_array p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula1(this);
 	}
 
 	@Override
 	public void vincula1(Tipo_puntero p) {
 		// TODO Auto-generated method stub
-		
+		/*if (p.tipo() != Dec_tipo.class) {
+				p.tipo().vincula1(this); 
+		} */
+
 	}
 
 	@Override
-	public void vincula1(Int_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula1(Int_t p) {}
 
 	@Override
-	public void vincula1(Real_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula1(Real_t p) {}
 
 	@Override
-	public void vincula1(Bool_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula1(Bool_t p) {}
 
 	@Override
-	public void vincula1(String_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula1(String_t p) {}
 
 	@Override
 	public void vincula1(Tipo_registro p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().vincula1(this);
 	}
 
 	@Override
 	public void vincula1(Tipo_definido p) {
 		// TODO Auto-generated method stub
-		
+		p.setVinculo(vinculoDe(ts,p.cadena()));
+		/*if(p.getVinculo()!=Dec_tipo) {
+			error
+		}*/
 	}
 
 	@Override
 	public void vincula1(Muchas_lista_param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().vincula1(this);
+		p.parametro_registro().vincula1(this);
 	}
 
 	@Override
 	public void vincula1(Una_lista_param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.parametro_registro().vincula1(this);
 	}
 
 	@Override
 	public void vincula1(Param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula1(this);
 	}
 
 	@Override
 	public void vincula2(Muchas_lista_decs p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_declaraciones().vincula2(this);
+		p.declaracion().vincula2(this);
 	}
 
 	@Override
 	public void vincula2(Una_lista_dec p) {
 		// TODO Auto-generated method stub
-		
+		p.declaracion().vincula2(this);
 	}
 
 	@Override
 	public void vincula2(Dec_var p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula2(this);
+
 	}
 
 	@Override
 	public void vincula2(Dec_tipo p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula2(this);
+
 	}
 
 	@Override
 	public void vincula2(Dec_proc p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_opt_parametros_formales().vincula2(this);
+
 	}
 
 	@Override
 	public void vincula2(Si_lista_opt_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_formales().vincula2(this);
+
 	}
 
 	@Override
@@ -295,97 +322,91 @@ public class ProcesamientoVinculacion implements IProcesamientoV{
 	@Override
 	public void vincula2(Muchas_lista_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_formales().vincula2(this);
+		p.parametro_formal().vincula2(this);
+
 	}
 
 	@Override
 	public void vincula2(Una_lista_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.parametro_formal().vincula2(this);
+
 	}
 
 	@Override
 	public void vincula2(Param_form_ref p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula2(this);
+
 	}
 
 	@Override
 	public void vincula2(Param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula2(this);
 	}
 
 	@Override
 	public void vincula2(Tipo_array p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula2(this);
+
 	}
 
 	@Override
 	public void vincula2(Tipo_puntero p) {
 		// TODO Auto-generated method stub
-		
+		/*if(p.tipo()==p.) {??????????
+			p.tipo().setVinculo(vinculoDe(ts,p.tipo().cadena()))
+		}*/
 	}
 
 	@Override
-	public void vincula2(Int_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula2(Int_t p) {}
 
 	@Override
-	public void vincula2(Real_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula2(Real_t p) {}
 
 	@Override
-	public void vincula2(Bool_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula2(Bool_t p) {}
 
 	@Override
-	public void vincula2(String_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula2(String_t p) {}
 
 	@Override
 	public void vincula2(Tipo_registro p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().vincula2(this);
 	}
 
 	@Override
-	public void vincula2(Tipo_definido p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula2(Tipo_definido p) {}
 
 	@Override
 	public void vincula2(Muchas_lista_param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().vincula2(this);
+		p.parametro_registro().vincula2(this);
+
 	}
 
 	@Override
 	public void vincula2(Una_lista_param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.parametro_registro().vincula2(this);
 	}
 
 	@Override
 	public void vincula2(Param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().vincula2(this);
 	}
 
 	@Override
 	public void vincula(Si_lista_opt_inst p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_instrucciones().vincula(this);
 	}
 
 	@Override
@@ -397,31 +418,34 @@ public class ProcesamientoVinculacion implements IProcesamientoV{
 	@Override
 	public void vincula(Muchas_lista_inst p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_instrucciones().vincula(this);
+		p.instruccion().vincula(this);
 	}
 
 	@Override
 	public void vincula(Una_lista_inst p) {
 		// TODO Auto-generated method stub
-		
+		p.instruccion().vincula(this);
 	}
 
 	@Override
 	public void vincula(Inst_eval p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
 	}
 
 	@Override
 	public void vincula(Inst_if_else p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
+		p.bloque1().vincula(this);
+		p.bloque2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Si_else p) {
 		// TODO Auto-generated method stub
-		
+		p.bloque().vincula(this);
 	}
 
 	@Override
@@ -433,55 +457,60 @@ public class ProcesamientoVinculacion implements IProcesamientoV{
 	@Override
 	public void vincula(Inst_while p) {
 		// TODO Auto-generated method stub
-		
+		//ambitos?????????????
+		p.expresion().vincula(this);
+		p.bloque().vincula(null);
 	}
 
 	@Override
 	public void vincula(Inst_read p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
+
 	}
 
 	@Override
 	public void vincula(Inst_write p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
+
 	}
 
 	@Override
-	public void vincula(Inst_nl p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula(Inst_nl p) {}
 
 	@Override
 	public void vincula(Inst_new p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
 	}
 
 	@Override
 	public void vincula(Inst_delete p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
 	}
 
 	@Override
 	public void vincula(Inst_call p) {
 		// TODO Auto-generated method stub
-		
+		if(contiene(ts,p.cadena())) {
+			p.setVinculo(vinculoDe(ts,p.cadena()));
+			p.lista_opt_parametros().vincula(this);
+		}
+		else {}//error}
 	}
 
 	@Override
 	public void vincula(Inst_comp p) {
 		// TODO Auto-generated method stub
-		
+		p.bloque().vincula(this);
 	}
 
 	@Override
 	public void vincula(Si_lista_opt_param p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros().vincula(this);
 	}
 
 	@Override
@@ -493,199 +522,197 @@ public class ProcesamientoVinculacion implements IProcesamientoV{
 	@Override
 	public void vincula(Muchas_lista_param p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros().vincula(this);
+		p.expresion().vincula(this);
 	}
 
 	@Override
 	public void vincula(Una_lista_param p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
+
 	}
 
 	@Override
 	public void vincula(Asignacion p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Mayor p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Mayor_igual p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Menor p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Menor_igual p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Comparacion p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Distinto p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Suma p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Resta p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(And p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Or p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Mult p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Div p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Mod p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Not_unario p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Resta_unario p) {
 		// TODO Auto-generated method stub
-		
+		p.op1().vincula(this);
+		p.op2().vincula(this);
 	}
 
 	@Override
 	public void vincula(Indexacion p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
 	}
 
 	@Override
 	public void vincula(Acc_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
 	}
 
 	@Override
 	public void vincula(Indireccion p) {
 		// TODO Auto-generated method stub
-		
+		p.expresion().vincula(this);
+
 	}
+	@Override
+	public void vincula(Lit_ent p) {}
 
 	@Override
-	public void vincula(Lit_ent p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula(Lit_real p) {}
 
 	@Override
-	public void vincula(Lit_real p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula(True_e p) {}
 
 	@Override
-	public void vincula(True_e p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula(False_e p) {}
 
 	@Override
-	public void vincula(False_e p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void vincula(Null_e p) {}
 
 	@Override
-	public void vincula(Null_e p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void vincula(Cadena p) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void vincula(Cadena p) {}
 	@Override
 	public void vincula(Iden p) {
 		// TODO Auto-generated method stub
-		
+		p.setVinculo(vinculoDe(ts, p.cadena()));
+		if(p.getVinculo()==null) {
+			//errorrrrrr
+		}
 	}
-
 	@Override
-	public void abreAmbito(Map ts) {
+	public void abreAmbito(Map<String, Dec> ts) {
 		// TODO Auto-generated method stub
 		
 	}
-
 	@Override
-	public void cierraAmbito(Map ts) {
+	public void cierraAmbito(Map<String, Dec> ts) {
 		// TODO Auto-generated method stub
 		
 	}
-
 	@Override
-	public void contiene(Map ts, String id) {
+	public boolean contiene(Map<String, Dec> ts, String id) {
 		// TODO Auto-generated method stub
-		
+		if(ts.get(id)==null)return false;
+		return true;
 	}
-
 	@Override
-	public void inserta(Map ts, String id, Dec dec) {
+	public void inserta(Map<String, Dec> ts, String id, Dec dec) {
 		// TODO Auto-generated method stub
-		
+		ts.put(id, dec);
 	}
-
 	@Override
-	public Dec vinculo(Map ts, String id) {
+	public Dec vinculoDe(Map<String, Dec> ts, String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return ts.get(id);
 	}
 
 }
