@@ -1,503 +1,726 @@
 package Procesamientos;
 
-import asint.SintaxisAbstractaTiny.Acc_reg;
-import asint.SintaxisAbstractaTiny.And;
-import asint.SintaxisAbstractaTiny.Asignacion;
-import asint.SintaxisAbstractaTiny.Bloque;
-import asint.SintaxisAbstractaTiny.Bool_t;
-import asint.SintaxisAbstractaTiny.Cadena;
-import asint.SintaxisAbstractaTiny.Comparacion;
-import asint.SintaxisAbstractaTiny.Dec_proc;
-import asint.SintaxisAbstractaTiny.Dec_tipo;
-import asint.SintaxisAbstractaTiny.Dec_var;
-import asint.SintaxisAbstractaTiny.Distinto;
-import asint.SintaxisAbstractaTiny.Div;
-import asint.SintaxisAbstractaTiny.Exp;
-import asint.SintaxisAbstractaTiny.False_e;
-import asint.SintaxisAbstractaTiny.Iden;
-import asint.SintaxisAbstractaTiny.Indexacion;
-import asint.SintaxisAbstractaTiny.Indireccion;
-import asint.SintaxisAbstractaTiny.Inst_call;
-import asint.SintaxisAbstractaTiny.Inst_comp;
-import asint.SintaxisAbstractaTiny.Inst_delete;
-import asint.SintaxisAbstractaTiny.Inst_eval;
-import asint.SintaxisAbstractaTiny.Inst_if_else;
-import asint.SintaxisAbstractaTiny.Inst_new;
-import asint.SintaxisAbstractaTiny.Inst_nl;
-import asint.SintaxisAbstractaTiny.Inst_read;
-import asint.SintaxisAbstractaTiny.Inst_while;
-import asint.SintaxisAbstractaTiny.Inst_write;
-import asint.SintaxisAbstractaTiny.Int_t;
-import asint.SintaxisAbstractaTiny.LParam;
-import asint.SintaxisAbstractaTiny.LParamForm;
-import asint.SintaxisAbstractaTiny.LParamReg;
-import asint.SintaxisAbstractaTiny.Lit_ent;
-import asint.SintaxisAbstractaTiny.Lit_real;
-import asint.SintaxisAbstractaTiny.Mayor;
-import asint.SintaxisAbstractaTiny.Mayor_igual;
-import asint.SintaxisAbstractaTiny.Menor;
-import asint.SintaxisAbstractaTiny.Menor_igual;
-import asint.SintaxisAbstractaTiny.Mod;
-import asint.SintaxisAbstractaTiny.Muchas_lista_decs;
-import asint.SintaxisAbstractaTiny.Muchas_lista_inst;
-import asint.SintaxisAbstractaTiny.Muchas_lista_param;
-import asint.SintaxisAbstractaTiny.Muchas_lista_param_reg;
-import asint.SintaxisAbstractaTiny.Mult;
-import asint.SintaxisAbstractaTiny.No_else;
-import asint.SintaxisAbstractaTiny.No_lista_opt_decs;
-import asint.SintaxisAbstractaTiny.No_lista_opt_inst;
-import asint.SintaxisAbstractaTiny.No_lista_opt_param;
-import asint.SintaxisAbstractaTiny.Not_unario;
-import asint.SintaxisAbstractaTiny.Null_e;
-import asint.SintaxisAbstractaTiny.Or;
-import asint.SintaxisAbstractaTiny.Param_reg;
-import asint.SintaxisAbstractaTiny.Prog_tiny;
-import asint.SintaxisAbstractaTiny.Real_t;
-import asint.SintaxisAbstractaTiny.Resta;
-import asint.SintaxisAbstractaTiny.Resta_unario;
-import asint.SintaxisAbstractaTiny.Si_else;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_decs;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_inst;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_param;
-import asint.SintaxisAbstractaTiny.String_t;
-import asint.SintaxisAbstractaTiny.Suma;
-import asint.SintaxisAbstractaTiny.Tipo;
-import asint.SintaxisAbstractaTiny.Tipo_array;
-import asint.SintaxisAbstractaTiny.Tipo_definido;
-import asint.SintaxisAbstractaTiny.Tipo_puntero;
-import asint.SintaxisAbstractaTiny.Tipo_registro;
-import asint.SintaxisAbstractaTiny.True_e;
-import asint.SintaxisAbstractaTiny.Una_lista_dec;
-import asint.SintaxisAbstractaTiny.Una_lista_inst;
-import asint.SintaxisAbstractaTiny.Una_lista_param;
-import asint.SintaxisAbstractaTiny.Una_lista_param_reg;
+import asint.SintaxisAbstractaTiny.*;
+
 
 public class ProcesamientoCTipos implements IProcesamientoT{
+	
 
-	@Override
 	public void tipado(Prog_tiny p) {
-		// TODO Auto-generated method stub
-		
+		p.bloque().tipado(this);
+		p.setTipo(p.bloque().getTipo());
+			
 	}
 
-	@Override
 	public void tipado(Bloque p) {
-		// TODO Auto-generated method stub
-		
+		p.lista_opt_declaraciones().tipado(this);
+		p.lista_opt_instrucciones().tipado(this);
+		p.setTipo(ambos_ok(p.lista_opt_declaraciones().getTipo(), p.lista_opt_declaraciones().getTipo()));
 	}
 
-	@Override
 	public void tipado(Si_lista_opt_decs p) {
-		// TODO Auto-generated method stub
-		
+		p.lista_declaraciones().tipado(this);
+		p.setTipo(p.lista_declaraciones().getTipo());
 	}
 
-	@Override
 	public void tipado(No_lista_opt_decs p) {
-		// TODO Auto-generated method stub
-		
+		p.setTipo(Ok_t.class);		
 	}
 
-	@Override
 	public void tipado(Muchas_lista_decs p) {
-		// TODO Auto-generated method stub
+		p.lista_declaraciones().tipado(this);
+		p.declaracion().tipado(this);
+		p.setTipo(ambos_ok(p.lista_declaraciones().getTipo(), p.declaracion().getTipo()));
+
 		
 	}
 
-	@Override
 	public void tipado(Una_lista_dec p) {
-		// TODO Auto-generated method stub
-		
+		p.declaracion().tipado(this);
+		p.setTipo(p.declaracion().getTipo());
+
 	}
 
-	@Override
 	public void tipado(Dec_var p) {
-		// TODO Auto-generated method stub
-		
-	}
+		p.tipo().tipado(this);
+		p.setTipo(p.tipo().getTipo());
 
-	@Override
+	}
+	
+
 	public void tipado(Dec_tipo p) {
-		// TODO Auto-generated method stub
+		p.tipo().tipado(this);
+		p.setTipo(p.tipo().getTipo());
 		
 	}
 
-	@Override
 	public void tipado(Dec_proc p) {
-		// TODO Auto-generated method stub
+		p.bloque().tipado(this);
+		p.setTipo(p.bloque().getTipo());
 		
 	}
 
-	@Override
 	public void tipado(Tipo_array p) {
-		// TODO Auto-generated method stub
+		p.tipo().tipado(this);
+		p.setTipo(p.tipo().getTipo());
 		
 	}
 
-	@Override
 	public void tipado(Tipo_puntero p) {
-		// TODO Auto-generated method stub
+		p.tipo().tipado(this);
+		p.setTipo(p.tipo().getTipo());
 		
 	}
 
-	@Override
 	public void tipado(Int_t p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Ok_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Real_t p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Ok_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Bool_t p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Ok_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(String_t p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Ok_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Tipo_registro p) {
-		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().tipado(this);
+		p.setTipo(p.lista_parametros_registro().getTipo());		
 	}
 
-	@Override
 	public void tipado(Tipo_definido p) {
-		// TODO Auto-generated method stub
-		
+		if (claseDe(p.getTipo(), Dec_tipo.class))
+			p.setTipo(Ok_t.class);		
+		else
+			p.setTipo(Error_t.class);		
+
 	}
 
-	@Override
 	public void tipado(Muchas_lista_param_reg p) {
-		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().tipado(this);
+		p.parametro_registro().tipado(this);
+		p.setTipo(ambos_ok(p.lista_parametros_registro().getTipo(), p.parametro_registro().getTipo()));
 	}
 
-	@Override
 	public void tipado(Una_lista_param_reg p) {
-		// TODO Auto-generated method stub
-		
+		p.parametro_registro().tipado(this);
+		p.setTipo(p.parametro_registro().getTipo());
 	}
 
-	@Override
+	
 	public void tipado(Param_reg p) {
-		// TODO Auto-generated method stub
+		p.tipo().tipado(this);
+		p.setTipo(p.tipo().getTipo());
 		
 	}
 
-	@Override
+	
 	public void tipado(Si_lista_opt_inst p) {
-		// TODO Auto-generated method stub
+		p.lista_instrucciones().tipado(this);
+		p.setTipo(p.lista_instrucciones().getTipo());
 		
 	}
 
-	@Override
+	
 	public void tipado(No_lista_opt_inst p) {
-		// TODO Auto-generated method stub
-		
+		p.setTipo(Ok_t.class);		
 	}
 
-	@Override
 	public void tipado(Muchas_lista_inst p) {
-		// TODO Auto-generated method stub
-		
+		p.lista_instrucciones().tipado(this);
+		p.instruccion().tipado(this);
+		p.setTipo(ambos_ok(p.lista_instrucciones().getTipo(), p.instruccion().getTipo()));		
 	}
 
-	@Override
 	public void tipado(Una_lista_inst p) {
-		// TODO Auto-generated method stub
-		
+		p.instruccion().tipado(this);
+		p.setTipo(p.instruccion().getTipo());		
 	}
 
-	@Override
 	public void tipado(Inst_eval p) {
-		// TODO Auto-generated method stub
+		p.expresion().tipado(this);
 		
+		if (claseDistError(p.expresion().getTipo()) )
+			p.setTipo(Ok_t.class);		
+		else
+			p.setTipo(Error_t.class);		
+
+
+			
 	}
 
-	@Override
 	public void tipado(Inst_if_else p) {
-		// TODO Auto-generated method stub
+
+		p.expresion().tipado(this);
+		p.bloque1().tipado(this);
 		
+		//let T1' == ref!(p.expresion().getTipo()) in
+			if (claseDe(p.bloque2(), Si_else.class)) { // si tiene segundo bloque
+				p.bloque2().tipado(this);
+				
+				if (/*T1' == bool &&*/claseDe(p.bloque1().getTipo(), Ok_t.class) && claseDe(p.bloque2().getTipo(), Ok_t.class))
+					p.setTipo(Ok_t.class);		
+				else 
+					p.setTipo(Error_t.class);		
+
+
+
+			}
+			else if (/*T1' == bool &&*/claseDe(p.bloque1().getTipo(), Ok_t.class))
+				p.setTipo(Ok_t.class);		
+			else 
+				p.setTipo(Error_t.class);		
+			
 	}
 
-	@Override
 	public void tipado(Si_else p) {
-		// TODO Auto-generated method stub
+		p.bloque().tipado(this);
+		p.setTipo(p.bloque().getTipo());
 		
 	}
 
-	@Override
 	public void tipado(No_else p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Ok_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Inst_while p) {
-		// TODO Auto-generated method stub
+		p.expresion().tipado(this);
+		p.bloque().tipado(this);
+		
+		//let T1' == ref!(p.expresion().getTipo()) in
+			if (/*T1' == bool &&*/claseDe(p.bloque().getTipo(), Ok_t.class))
+				p.setTipo(Ok_t.class);		
+			else 
+				p.setTipo(Error_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Inst_read p) {
-		// TODO Auto-generated method stub
+
+		p.expresion().tipado(this);
+		
+		//let T1' == ref!(p.expresion().getTipo()) in
+			if (/*T1' == int | real | string  &&*/ es_designador(p.expresion()))
+				p.setTipo(Ok_t.class);		
+			else 
+				p.setTipo(Error_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Inst_write p) {
-		// TODO Auto-generated method stub
 		
+		p.expresion().tipado(this);
+		
+		//let T1' == ref!(p.expresion().getTipo()) in
+			if (/*T1' == int | real |boolean | string  &&*/)
+				p.setTipo(Ok_t.class);		
+			else 
+				p.setTipo(Error_t.class);		
 	}
 
-	@Override
 	public void tipado(Inst_nl p) {
-		// TODO Auto-generated method stub
-		
+		p.setTipo(Ok_t.class);		
 	}
 
-	@Override
 	public void tipado(Inst_new p) {
-		// TODO Auto-generated method stub
+
+		p.expresion().tipado(this);
 		
+		//let T1' == ref!(p.expresion().getTipo()) in
+		
+			if (/*T1' == tipo_puntero &&*/)
+				p.setTipo(Ok_t.class);		
+			else 
+				p.setTipo(Error_t.class);		
 	}
 
-	@Override
 	public void tipado(Inst_delete p) {
-		// TODO Auto-generated method stub
+		p.expresion().tipado(this);
 		
+		//let T1' == ref!(p.expresion().getTipo()) in
+		
+			if (/*T1' == tipo_puntero &&*/)
+				p.setTipo(Ok_t.class);		
+			else 
+				p.setTipo(Error_t.class);		
 	}
 
 	@Override
 	public void tipado(Inst_call p) {
-		// TODO Auto-generated method stub
+		p.parametro().tipado(this);
 		
+		//ns como hacerla porq ns como sacar los parametros q usa
+			
 	}
 
-	@Override
 	public void tipado(Inst_comp p) {
-		// TODO Auto-generated method stub
-		
+		p.bloque().tipado(this);
+		p.setTipo(p.bloque().getTipo());
 	}
 
-	@Override
 	public void tipado(Si_lista_opt_param p) {
-		// TODO Auto-generated method stub
-		
-	}
+		p.lista_parametros().tipado(this);
+		p.setTipo(p.lista_parametros().getTipo());	}
 
-	@Override
 	public void tipado(No_lista_opt_param p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Ok_t.class);		
 		
 	}
 
-	@Override
+	
 	public void tipado(Muchas_lista_param p) {
-		// TODO Auto-generated method stub
+		p.lista_parametros().tipado(this);
+		p.expresion().tipado(this);
 		
+		if (claseDistError(p.expresion().getTipo()) && claseDe(p.lista_parametros().getTipo(), Ok_t.class))
+			p.setTipo(true);
+
 	}
 
-	@Override
 	public void tipado(Una_lista_param p) {
-		// TODO Auto-generated method stub
 		
+		p.expresion().tipado(this);
+		
+		if (claseDistError(p.expresion().getTipo()))
+			p.setTipo(Ok_t.class);		
+	
 	}
 
-	@Override
 	public void tipado(Asignacion p) {
-		// TODO Auto-generated method stub
 		
+		p.op1().tipado(this);
+		p.op2().tipado(this);
+		
+		if (es_designador(p.op1())){
+			if (compatibles(p.op1().getTipo(), p.op2().getTipo())) {
+				p.setTipo(p.op1().getTipo());
+			}
+			else
+				p.setTipo(Error_t.class);
+		}
+
+			
 	}
 
-	@Override
 	public void tipado(Mayor p) {
-		// TODO Auto-generated method stub
+		
+		p.op1().tipado(this);
+		p.op2().tipado(this);
+		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if ((claseDe(p.op1(), Int_t.class) || claseDe(p.op1(), Real_t.class)) && 
+				(claseDe(p.op2(), Int_t.class) || claseDe(p.op2(), Real_t.class)))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), Bool_t.class) && claseDe(p.op2(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), String_t.class) && claseDe(p.op2(), String_t.class))
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);
+
+		
 		
 	}
 
-	@Override
 	public void tipado(Mayor_igual p) {
-		// TODO Auto-generated method stub
 		
+		p.op1().tipado(this);
+		p.op2().tipado(this);
+		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if ((claseDe(p.op1(), Int_t.class) || claseDe(p.op1(), Real_t.class)) && 
+				(claseDe(p.op2(), Int_t.class) || claseDe(p.op2(), Real_t.class)))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), Bool_t.class) && claseDe(p.op2(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), String_t.class) && claseDe(p.op2(), String_t.class))
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);		
 	}
 
-	@Override
 	public void tipado(Menor p) {
-		// TODO Auto-generated method stub
 		
+		p.op1().tipado(this);
+		p.op2().tipado(this);
+		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if ((claseDe(p.op1(), Int_t.class) || claseDe(p.op1(), Real_t.class)) && 
+				(claseDe(p.op2(), Int_t.class) || claseDe(p.op2(), Real_t.class)))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), Bool_t.class) && claseDe(p.op2(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), String_t.class) && claseDe(p.op2(), String_t.class))
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);		
 	}
 
-	@Override
 	public void tipado(Menor_igual p) {
-		// TODO Auto-generated method stub
 		
+		p.op1().tipado(this);
+		p.op2().tipado(this);
+		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if ((claseDe(p.op1(), Int_t.class) || claseDe(p.op1(), Real_t.class)) && 
+				(claseDe(p.op2(), Int_t.class) || claseDe(p.op2(), Real_t.class)))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), Bool_t.class) && claseDe(p.op2(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), String_t.class) && claseDe(p.op2(), String_t.class))
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);		
 	}
 
 	@Override
 	public void tipado(Comparacion p) {
-		// TODO Auto-generated method stub
 		
+		p.op1().tipado(this);
+		p.op2().tipado(this);
+		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if ((claseDe(p.op1(), Int_t.class) || claseDe(p.op1(), Real_t.class)) && 
+				(claseDe(p.op2(), Int_t.class) || claseDe(p.op2(), Real_t.class)))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), Bool_t.class) && claseDe(p.op2(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), String_t.class) && claseDe(p.op2(), String_t.class))
+			p.setTipo(Bool_t.class);
+		else if ((claseDe(p.op1(), Tipo_puntero.class) || claseDe(p.op1(), Null_t.class)) && 
+				(claseDe(p.op2(), Tipo_puntero.class) || claseDe(p.op2(), Null_t.class)) )
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);		
 	}
 
 	@Override
 	public void tipado(Distinto p) {
-		// TODO Auto-generated method stub
+
+		p.op1().tipado(this);
+		p.op2().tipado(this);
 		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if ((claseDe(p.op1(), Int_t.class) || claseDe(p.op1(), Real_t.class)) && 
+				(claseDe(p.op2(), Int_t.class) || claseDe(p.op2(), Real_t.class)))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), Bool_t.class) && claseDe(p.op2(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else if (claseDe(p.op1(), String_t.class) && claseDe(p.op2(), String_t.class))
+			p.setTipo(Bool_t.class);
+		else if ((claseDe(p.op1(), Tipo_puntero.class) || claseDe(p.op1(), Null_t.class)) && 
+				(claseDe(p.op2(), Tipo_puntero.class) || claseDe(p.op2(), Null_t.class)) )
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Suma p) {
-		// TODO Auto-generated method stub
+
+		p.op1().tipado(this);
+		p.op2().tipado(this);
 		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if (claseDe(p.op1(), Int_t.class) && claseDe(p.op2(), Int_t.class))
+			p.setTipo(Int_t.class);
+		else if (claseDe(p.op1(), Real_t.class) && claseDe(p.op2(), Real_t.class))
+			p.setTipo(Real_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Resta p) {
-		// TODO Auto-generated method stub
 		
+		p.op1().tipado(this);
+		p.op2().tipado(this);
+		
+		Tipo t1 = ref(p.op1().tipo());
+		Tipo t2 = ref(p.op2().tipo());
+		
+		if (claseDe(p.op1(), Int_t.class) && claseDe(p.op2(), Int_t.class))
+			p.setTipo(Int_t.class);
+		else if (claseDe(p.op1(), Real_t.class) && claseDe(p.op2(), Real_t.class))
+			p.setTipo(Real_t.class);
+		else
+			p.setTipo(Error_t.class);		
 	}
 
 	@Override
 	public void tipado(And p) {
-		// TODO Auto-generated method stub
+
+		Tipo t1 = ref(p.op1().tipo());
+		Tipo t2 = ref(p.op2().tipo());
 		
+		Tipo t1 = ref(p.op1());
+		Tipo t2 = ref(p.op2());
+		
+		if (claseDe(p.op1(), Bool_t.class) && claseDe(p.op2(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Or p) {
-		// TODO Auto-generated method stub
+
+		p.op1().tipado(this);
+		p.op2().tipado(this);
 		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if (claseDe(p.op1(), Bool_t.class) && claseDe(p.op2(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Mult p) {
-		// TODO Auto-generated method stub
+
+		p.op1().tipado(this);
+		p.op2().tipado(this);
 		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if (claseDe(p.op1(), Int_t.class) && claseDe(p.op2(), Int_t.class))
+			p.setTipo(Int_t.class);
+		else if ((claseDe(p.op1(), Real_t.class) && claseDe(p.op2(), Int_t.class))
+				|| (claseDe(p.op1(), Int_t.class) && claseDe(p.op2(), Real_t.class)))
+			p.setTipo(Real_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Div p) {
-		// TODO Auto-generated method stub
+
+		p.op1().tipado(this);
+		p.op2().tipado(this);
 		
+		TTipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if (claseDe(p.op1(), Int_t.class) && claseDe(p.op2(), Int_t.class))
+			p.setTipo(Int_t.class);
+		else if ((claseDe(p.op1(), Real_t.class) && claseDe(p.op2(), Int_t.class))
+				|| (claseDe(p.op1(), Int_t.class) && claseDe(p.op2(), Real_t.class)))
+			p.setTipo(Real_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Mod p) {
-		// TODO Auto-generated method stub
+
+		p.op1().tipado(this);
+		p.op2().tipado(this);
 		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if (claseDe(p.op1(), Int_t.class) && claseDe(p.op2(), Int_t.class))
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Not_unario p) {
-		// TODO Auto-generated method stub
+
+		p.op().tipado(this);
 		
+		Tipo t1 = ref(p.op().getTipo());
+		
+		if (claseDe(p.op(), Int_t.class))
+			p.setTipo(Int_t.class);
+		else if (claseDe(p.op(), Real_t.class)
+			p.setTipo(Real_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Resta_unario p) {
-		// TODO Auto-generated method stub
+
 		
+		p.op().tipado(this);
+		
+		Tipo t1 = ref(p.op().getTipo());
+		
+		if (claseDe(p.op(), Bool_t.class))
+			p.setTipo(Bool_t.class);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Indexacion p) {
-		// TODO Auto-generated method stub
+
+		p.op1().tipado(this);
+		p.op2().tipado(this);
 		
+		Tipo t1 = ref(p.op1().getTipo());
+		Tipo t2 = ref(p.op2().getTipo());
+		
+		if (claseDe(p.op1(), Tipo_array.class) && claseDe(p.op2(), Int_t.class))
+			p.setTipo(/*T*/);
+		else
+			p.setTipo(Error_t.class);
 	}
 
 	@Override
 	public void tipado(Acc_reg p) {
-		// TODO Auto-generated method stub
+
+		p.op().tipado(this);
 		
+		Tipo t = ref(p.op().getTipo());
+		
+		if (claseDe(p.op(), Tipo_registro.class) && /*existe(LParamReg, c)*/)
+			p.setTipo(/*(LParamReg, c)*/);
+		else
+			p.setTipo(Error_t.class);
 	}
 
-	@Override
 	public void tipado(Indireccion p) {
-		// TODO Auto-generated method stub
+
+		p.op1().tipado(this);
 		
+		Tipo t = ref(p.op1().getTipo());
+		
+		if (claseDe(p.op1(), Tipo_puntero.class))
+			p.setTipo(/*T*/);
+		else
+			p.setTipo(Error_t.class);
 	}
 
-	@Override
 	public void tipado(Lit_ent p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Int_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Lit_real p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Real_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(True_e p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Bool_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(False_e p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Bool_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Null_e p) {
-		// TODO Auto-generated method stub
+		p.setTipo(Null_t.class);		
 		
 	}
 
-	@Override
 	public void tipado(Cadena p) {
-		// TODO Auto-generated method stub
+		p.setTipo(String_t.class);		
 		
 	}
 
-	@Override
+	
 	public void tipado(Iden p) {
-		// TODO Auto-generated method stub
 		
+		if (claseDe(p.getTipo(), Dec_var.class)) {
+			p.setTipo(Tipo.class);		
+
+		}
+		else if (claseDe(p.getTipo(), Param_form_ref.class)) {
+			p.setTipo(Tipo.class);		
+
+		}
+		else if if (claseDe(p.getTipo(), Param_form.class)) {
+			p.setTipo(Tipo.class);		
+
+		}
+		else
+			p.setTipo(Error_t.class);		
+
 	}
 
-	@Override
+	 ////////////////////////////////////METODOS ADICIONALES//////////////////////////////////////////////////////
+	public Tipo ambos_ok(Tipo t1, Tipo t2) {
+		
+		if (claseDe(t1, Ok.class) && claseDe(t2, Ok.class)) 
+			return Ok.class;
+		else
+			return Error.class; ///error
+		
+	}
+	
+    public boolean claseDe(Object o, Class c) {
+        return o.getClass() == c;
+    } 
+    
+    public boolean claseDistError(Object o) {
+        return o.getClass() != Error.class;
+    } 
+    
+    public boolean es_designador(Exp e) {
+    	return claseDe(e, Iden.class) ||  claseDe(e, Indexacion.class) ||  claseDe(e, Acc_reg.class) ||  claseDe(e, Indireccion.class);
+    }
+	    
+	    
+	
 	public boolean compatibles(Tipo t1, Tipo T2) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean compatibles_registro(LParamReg l1, LParamReg l2) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public boolean compatibles_proc(LParam lp, LParamForm lpf) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public boolean es_designador(Exp e) {
-		// TODO Auto-generated method stub
-		return false;
+
+	public Tipo ref(Tipo t) {
+		
+		if (claseDe(t, Tipo_definido.class)) {
+			t.setVinculo(Dec_tipo.class);
+			return ref(t);
+		}
+		else return t;
 	}
 
-	@Override
-	public boolean ambos_ok(Tipo T0, Tipo T1) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }
