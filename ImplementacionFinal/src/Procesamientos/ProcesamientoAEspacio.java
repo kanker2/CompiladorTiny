@@ -80,19 +80,23 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 	@Override
 	public void asig_espacio(Prog_tiny p) {
 		// TODO Auto-generated method stub
-		
+		p.bloque().asig_espacio(this);
 	}
 
 	@Override
 	public void asig_espacio(Bloque p) {
 		// TODO Auto-generated method stub
-		
+		int dir_ant=dir;
+		p.lista_opt_declaraciones().asig_espacio1(this);
+		p.lista_opt_declaraciones().asig_espacio2(this);
+		p.lista_opt_instrucciones().asig_espacio(this);
+		dir=dir_ant;
 	}
 
 	@Override
 	public void asig_espacio1(Si_lista_opt_decs p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_declaraciones().asig_espacio1(this);
 	}
 
 	@Override
@@ -104,37 +108,52 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 	@Override
 	public void asig_espacio1(Muchas_lista_decs p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_declaraciones().asig_espacio1(this);
+		p.declaracion().asig_espacio1(this);
+
 	}
 
 	@Override
 	public void asig_espacio1(Una_lista_dec p) {
 		// TODO Auto-generated method stub
-		
+		p.declaracion().asig_espacio1(this);
+
 	}
 
 	@Override
 	public void asig_espacio1(Dec_var p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio1(this);
+		p.setDir(dir);
+		p.setNivel(nivel);
+		dir+=p.tipo().getTam();
 	}
 
 	@Override
 	public void asig_espacio1(Dec_tipo p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio1(this);
 	}
 
 	@Override
 	public void asig_espacio1(Dec_proc p) {
 		// TODO Auto-generated method stub
-		
+		int dir_ant=dir;
+		nivel++;
+		p.setNivel(nivel);
+		dir=0;
+		p.lista_opt_parametros_formales().asig_espacio1(this);
+		p.lista_opt_parametros_formales().asig_espacio1(this);
+		p.bloque().asig_espacio(this);
+		p.setTam(dir);
+		dir=dir_ant;
+		nivel--;
 	}
 
 	@Override
 	public void asig_espacio1(Si_lista_opt_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_formales().asig_espacio1(this);
 	}
 
 	@Override
@@ -146,229 +165,256 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 	@Override
 	public void asig_espacio1(Muchas_lista_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_formales().asig_espacio1(this);
+		p.parametro_formal().asig_espacio1(this);
 	}
 
 	@Override
 	public void asig_espacio1(Una_lista_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.parametro_formal().asig_espacio1(this);
 	}
 
 	@Override
 	public void asig_espacio1(Param_form_ref p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio1(this);
+		p.setDir(dir);
+		p.setNivel(nivel);
+		dir++;
 	}
 
 	@Override
 	public void asig_espacio1(Param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio1(this);
+		p.setDir(dir);
+		p.setNivel(nivel);
+		dir+=p.tipo().getTam();
 	}
 
 	@Override
 	public void asig_espacio1(Tipo_array p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio1(this);
+		p.setTam(p.tipo().getTam()*Integer.parseInt(p.cadena()));
 	}
 
 	@Override
 	public void asig_espacio1(Tipo_puntero p) {
 		// TODO Auto-generated method stub
-		
+		/*if(p.tipo()!=Tipo_def(id)) {
+			p.tipo().asig_espacio1(this);
+		}*/
+		p.setTam(1);
 	}
 
 	@Override
 	public void asig_espacio1(Int_t p) {
 		// TODO Auto-generated method stub
-		
+		p.setTam(1);
 	}
 
 	@Override
 	public void asig_espacio1(Real_t p) {
 		// TODO Auto-generated method stub
-		
+		p.setTam(1);
 	}
 
 	@Override
 	public void asig_espacio1(Bool_t p) {
 		// TODO Auto-generated method stub
-		
+		p.setTam(1);
 	}
 
 	@Override
 	public void asig_espacio1(String_t p) {
 		// TODO Auto-generated method stub
-		
+		p.setTam(1);
 	}
 
 	@Override
 	public void asig_espacio1(Tipo_registro p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().asig_espacio1(this);
+		p.setTam(p.lista_parametros_registro().getTam()); //Tuve que poner que LParamReg extienede de Nodo
 	}
 
 	@Override
 	public void asig_espacio1(Tipo_definido p) {
 		// TODO Auto-generated method stub
-		
+		//p.setVinculo(p.tipo().);
+		p.setTam(p.tipo().getTam());
 	}
 
 	@Override
-	public void asig_espacio1(Muchas_lista_param_reg p) {
+	public int asig_espacio1(Muchas_lista_param_reg p) {
 		// TODO Auto-generated method stub
-		
+		int d=p.lista_parametros_registro().asig_espacio1(this);
+		p.parametro_registro().asig_espacio1(this);
+		p.parametro_registro().setDesp(d);
+		return d+p.parametro_registro().getTam();
 	}
 
 	@Override
-	public void asig_espacio1(Una_lista_param_reg p) {
+	public int asig_espacio1(Una_lista_param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.parametro_registro().asig_espacio1(this);
+		p.parametro_registro().setDesp(0);
+		return p.parametro_registro().getTam();
 	}
 
 	@Override
 	public void asig_espacio1(Param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio1(this);
+		p.setTam(p.tipo().getTam());
 	}
 
 	@Override
-	public void asig_espacio2(Muchas_lista_decs p) {
+	public void asig_espacio2(Si_lista_opt_decs p) {
+		// TODO Auto-generated method stub
+		p.lista_declaraciones().asig_espacio2(this);
+	}
+
+	@Override
+	public void asig_espacio2(No_lista_opt_decs p) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void asig_espacio2(Muchas_lista_decs p) {
+		// TODO Auto-generated method stub
+		p.lista_declaraciones().asig_espacio2(this);
+		p.declaracion().asig_espacio2(this);
 	}
 
 	@Override
 	public void asig_espacio2(Una_lista_dec p) {
 		// TODO Auto-generated method stub
-		
+		p.declaracion().asig_espacio2(this);
+
 	}
 
 	@Override
 	public void asig_espacio2(Dec_var p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio2(this);;
+
 	}
 
 	@Override
 	public void asig_espacio2(Dec_tipo p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio2(this);;
+
 	}
 
 	@Override
-	public void asig_espacio2(Dec_proc p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void asig_espacio2(Dec_proc p) {}
 
 	@Override
 	public void asig_espacio2(Si_lista_opt_param_form p) {
 		// TODO Auto-generated method stub
-		
-	}
+		p.lista_parametros_formales().asig_espacio2(this);	}
 
 	@Override
-	public void asig_espacio2(No_lista_opt_param_form p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void asig_espacio2(No_lista_opt_param_form p) {}
 
 	@Override
 	public void asig_espacio2(Muchas_lista_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_formales().asig_espacio2(this);
+		p.parametro_formal().asig_espacio2(this);
 	}
 
 	@Override
 	public void asig_espacio2(Una_lista_param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.parametro_formal().asig_espacio2(this);
+
 	}
 
 	@Override
 	public void asig_espacio2(Param_form_ref p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio2(this);
+
 	}
 
 	@Override
 	public void asig_espacio2(Param_form p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio2(this);
+
 	}
 
 	@Override
 	public void asig_espacio2(Tipo_array p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio2(this);
+
 	}
 
 	@Override
 	public void asig_espacio2(Tipo_puntero p) {
 		// TODO Auto-generated method stub
-		
+		/*if(p.tipo()==tipo_definido(id)) {
+			p.tipo().getVinculo()=dec_tipo(T’,id);
+			p.tipo().setTam(p.tipo().tipo().getTam());???????
+		}*/
 	}
 
 	@Override
-	public void asig_espacio2(Int_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void asig_espacio2(Int_t p) {}
 
 	@Override
-	public void asig_espacio2(Real_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void asig_espacio2(Real_t p) {}
 
 	@Override
-	public void asig_espacio2(Bool_t p) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void asig_espacio2(Bool_t p) {}
 	@Override
-	public void asig_espacio2(String_t p) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void asig_espacio2(String_t p) {}
 
 	@Override
 	public void asig_espacio2(Tipo_registro p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().asig_espacio2(this);
 	}
 
 	@Override
 	public void asig_espacio2(Tipo_definido p) {
 		// TODO Auto-generated method stub
 		
+
 	}
 
 	@Override
 	public void asig_espacio2(Muchas_lista_param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_parametros_registro().asig_espacio2(this);
+		p.parametro_registro().asig_espacio2(this);
 	}
 
 	@Override
 	public void asig_espacio2(Una_lista_param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.parametro_registro().asig_espacio2(this);
+
 	}
 
 	@Override
 	public void asig_espacio2(Param_reg p) {
 		// TODO Auto-generated method stub
-		
+		p.tipo().asig_espacio2(this);
+
 	}
 
 	@Override
 	public void asig_espacio(Si_lista_opt_inst p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_instrucciones().asig_espacio(this);
 	}
 
 	@Override
@@ -380,31 +426,40 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 	@Override
 	public void asig_espacio(Muchas_lista_inst p) {
 		// TODO Auto-generated method stub
-		
+		p.lista_instrucciones().asig_espacio(this);
+		p.instruccion().asig_espacio(this);
+
 	}
 
 	@Override
 	public void asig_espacio(Una_lista_inst p) {
 		// TODO Auto-generated method stub
-		
+		p.instruccion().asig_espacio(this);
+
 	}
 
 	@Override
 	public void asig_espacio(Inst_eval p) {
 		// TODO Auto-generated method stub
-		
+		//????????????''
 	}
 
 	@Override
 	public void asig_espacio(Inst_if_else p) {
 		// TODO Auto-generated method stub
-		
+		if(p.bloque2()!=null) {//???????
+			p.bloque1().asig_espacio(this);
+			p.bloque2().asig_espacio(this);
+		}
+		else {
+			p.bloque1().asig_espacio(this);
+		}
 	}
 
 	@Override
 	public void asig_espacio(Si_else p) {
 		// TODO Auto-generated method stub
-		
+		p.bloque().asig_espacio(this);
 	}
 
 	@Override
@@ -416,7 +471,7 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 	@Override
 	public void asig_espacio(Inst_while p) {
 		// TODO Auto-generated method stub
-		
+		p.bloque().asig_espacio(this);
 	}
 
 	@Override
@@ -458,187 +513,11 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 	@Override
 	public void asig_espacio(Inst_comp p) {
 		// TODO Auto-generated method stub
-		
+		p.bloque().asig_espacio(this);
 	}
 
-	@Override
-	public void asig_espacio(Si_lista_opt_param p) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
-	@Override
-	public void asig_espacio(No_lista_opt_param p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Muchas_lista_param p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Una_lista_param p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Asignacion p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Mayor p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Mayor_igual p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Menor p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Menor_igual p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Comparacion p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Distinto p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Suma p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Resta p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(And p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Or p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Mult p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Div p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Mod p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Not_unario p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Resta_unario p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Indexacion p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Acc_reg p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Indireccion p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Lit_ent p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Lit_real p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(True_e p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(False_e p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Null_e p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Cadena p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void asig_espacio(Iden p) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }
