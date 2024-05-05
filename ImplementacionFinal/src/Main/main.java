@@ -10,11 +10,7 @@ import c_ast_descendente.asint.*;
 
 public class main {
 
-	ProcesamientoVinculacion p1;
-	ProcesamientoAEspacio p2;
-	ProcesamientoCTipos p3;
-	ProcesamientoEtiquetado p4;
-	ProcesamientoGDC p5;
+	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -45,16 +41,22 @@ public class main {
 	}
 	
 	public static void procesar(ProgT prog) {
-		//1บ proceso de vinculacion con exito
-		//Empezar a vincular p1.vincula(prog)????
+		VinculacionVisitante p1=new VinculacionVisitante();
+		AEspacioVisitante p2=new AEspacioVisitante();
+		CTiposVisitante p3= new CTiposVisitante();
+		EtiquetadoVisitante p4 = new EtiquetadoVisitante();
+		GDCVisitante p5 = new GDCVisitante();
+		
+		//1ยบ proceso de vinculacion con exito
+		p1.vincula(prog);
 		//Hay que comprobrar que no hay errores para continuar
-		//2บ proceso de vinculacion con exito
+		//2ยบ proceso de vinculacion con exito
+		p2.asig_espacio(prog);
+		//3ยบ proceso de vinculacion con exito
 		
-		//3บ proceso de vinculacion con exito
+		//4ยบ proceso de vinculacion con exito
 		
-		//4บ proceso de vinculacion con exito
-		
-		//5บ proceso de vinculacion con exito
+		//5ยบ proceso de vinculacion con exito
 	}
 
 }
