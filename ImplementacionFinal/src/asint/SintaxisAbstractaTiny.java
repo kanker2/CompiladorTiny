@@ -50,6 +50,7 @@ public class SintaxisAbstractaTiny {
 		//DEcorar el arbol tipos
 		//DEcorar el arbol espacio
 		private int dir;
+		private int tam;
 		private int nivel;
 		public int getDir() {
 			return dir;
@@ -63,6 +64,14 @@ public class SintaxisAbstractaTiny {
 		public void setNivel(int n) {
 			nivel=n;
 		}
+		
+		public int getTam() {
+			return tam;
+		}
+		public void setTam(int n) {
+			tam=n;
+		}
+		
 		//decorar arbol etiquetado
 		/*public abstract void vincula(IProcesamientoV p);
 		public abstract void vincula1(IProcesamientoV p);
@@ -277,6 +286,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		}
 
+		
 	public static abstract class Tipo extends Nodo {
 		protected Tipo tipo;
 		protected String cadena;
@@ -320,7 +330,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		}
 
-	public static abstract class LParamReg {
+	public static abstract class LParamReg extends Nodo{
 		protected LParamReg lista_parametros_registro;
 		protected ParamReg parametro_registro;
 
@@ -343,13 +353,21 @@ public class SintaxisAbstractaTiny {
 		
 		public abstract void vincula1(IProcesamientoV p);
 		public abstract void vincula2(IProcesamientoV p);
-		public abstract void asig_espacio1(IProcesamientoAM p);
+		public abstract int asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 	}
 
 	public static abstract class ParamReg extends Nodo {
 		protected Tipo tipo;
 		protected String cadena;
+		protected int desp;
+		public int getDesp() {
+			return desp;
+		}
+
+		public void setDesp(int desp) {
+			this.desp = desp;
+		}
 
 		public ParamReg(Tipo tipo, String cadena) {
 			this.tipo = tipo;
@@ -363,6 +381,8 @@ public class SintaxisAbstractaTiny {
 		public String cadena() {
 			throw new UnsupportedOperationException();
 		}
+		
+		
 		
 		public abstract void vincula1(IProcesamientoV p);
 		public abstract void vincula2(IProcesamientoV p);
@@ -1559,9 +1579,9 @@ public class SintaxisAbstractaTiny {
 			p.vincula2(this);
 		}
 		
-		public void asig_espacio1(IProcesamientoAM p) {
+		public int asig_espacio1(IProcesamientoAM p) {
 			// TODO Auto-generated method stub
-			p.asig_espacio1(this);
+			return p.asig_espacio1(this);
 			
 		}
 		
@@ -1597,9 +1617,9 @@ public class SintaxisAbstractaTiny {
 			p.vincula2(this);
 		}
 		
-		public void asig_espacio1(IProcesamientoAM p) {
+		public int asig_espacio1(IProcesamientoAM p) {
 			// TODO Auto-generated method stub
-			p.asig_espacio1(this);
+			return p.asig_espacio1(this);
 			
 		}
 		
