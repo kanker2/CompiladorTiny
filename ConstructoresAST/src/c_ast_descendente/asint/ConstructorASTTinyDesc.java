@@ -610,7 +610,7 @@ Inst inst;
         break;
         }
       case IF:{
-        inst = instruccion_if_else();
+        inst = fact_if();
 {if ("" != null) return inst;}
         break;
         }
@@ -1143,39 +1143,39 @@ Token t;
     }
 }
 
-  final public Inst instruccion_if_else() throws ParseException {
-    trace_call("instruccion_if_else");
+  final public Inst fact_if() throws ParseException {
+    trace_call("fact_if");
     try {
-Blq b1, b2; Exp e;
+Blq b; Exp e; Inst inst;
       jj_consume_token(IF);
       e = expresion();
-      b1 = bloque();
-      b2 = then_else();
-{if ("" != null) return sem.inst_if_else(e, b1, b2);}
+      b = bloque();
+      inst = parte_else(e, b);
+{if ("" != null) return inst;}
     throw new Error("Missing return statement in function");
     } finally {
-      trace_return("instruccion_if_else");
+      trace_return("fact_if");
     }
 }
 
-  final public Blq then_else() throws ParseException {
-    trace_call("then_else");
+  final public Inst parte_else(Exp eh, Blq bh) throws ParseException {
+    trace_call("parte_else");
     try {
-Blq blq;
+Blq b;
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case ELSE:{
         jj_consume_token(ELSE);
-        blq = bloque();
-{if ("" != null) return sem.si_else(blq);}
+        b = bloque();
+{if ("" != null) return sem.inst_if_else(eh, bh, b);}
         break;
         }
       default:
         jj_la1[26] = jj_gen;
-{if ("" != null) return sem.no_else();}
+{if ("" != null) return sem.inst_if(eh, bh);}
       }
     throw new Error("Missing return statement in function");
     } finally {
-      trace_return("then_else");
+      trace_return("parte_else");
     }
 }
 

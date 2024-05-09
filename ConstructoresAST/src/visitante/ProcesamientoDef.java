@@ -20,6 +20,7 @@ import asint.SintaxisAbstractaTiny.Inst_call;
 import asint.SintaxisAbstractaTiny.Inst_comp;
 import asint.SintaxisAbstractaTiny.Inst_delete;
 import asint.SintaxisAbstractaTiny.Inst_eval;
+import asint.SintaxisAbstractaTiny.Inst_if;
 import asint.SintaxisAbstractaTiny.Inst_if_else;
 import asint.SintaxisAbstractaTiny.Inst_new;
 import asint.SintaxisAbstractaTiny.Inst_nl;
@@ -40,7 +41,6 @@ import asint.SintaxisAbstractaTiny.Muchas_lista_param;
 import asint.SintaxisAbstractaTiny.Muchas_lista_param_form;
 import asint.SintaxisAbstractaTiny.Muchas_lista_param_reg;
 import asint.SintaxisAbstractaTiny.Mult;
-import asint.SintaxisAbstractaTiny.No_else;
 import asint.SintaxisAbstractaTiny.No_lista_opt_decs;
 import asint.SintaxisAbstractaTiny.No_lista_opt_inst;
 import asint.SintaxisAbstractaTiny.No_lista_opt_param;
@@ -55,7 +55,6 @@ import asint.SintaxisAbstractaTiny.Prog_tiny;
 import asint.SintaxisAbstractaTiny.Real_t;
 import asint.SintaxisAbstractaTiny.Resta;
 import asint.SintaxisAbstractaTiny.Resta_unario;
-import asint.SintaxisAbstractaTiny.Si_else;
 import asint.SintaxisAbstractaTiny.Si_lista_opt_decs;
 import asint.SintaxisAbstractaTiny.Si_lista_opt_inst;
 import asint.SintaxisAbstractaTiny.Si_lista_opt_param;
@@ -267,17 +266,6 @@ public class ProcesamientoDef implements Procesamiento {
 		
 	}
 
-	@Override
-	public void procesa(Si_else p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void procesa(No_else p) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void procesa(Inst_while p) {
@@ -503,6 +491,12 @@ public class ProcesamientoDef implements Procesamiento {
 
 	@Override
 	public void procesa(Una_lista_param p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void procesa(Inst_if p) {
 		// TODO Auto-generated method stub
 		
 	}

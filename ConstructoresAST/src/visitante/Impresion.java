@@ -41,7 +41,6 @@ import asint.SintaxisAbstractaTiny.Muchas_lista_param;
 import asint.SintaxisAbstractaTiny.Muchas_lista_param_form;
 import asint.SintaxisAbstractaTiny.Muchas_lista_param_reg;
 import asint.SintaxisAbstractaTiny.Mult;
-import asint.SintaxisAbstractaTiny.No_else;
 import asint.SintaxisAbstractaTiny.No_lista_opt_decs;
 import asint.SintaxisAbstractaTiny.No_lista_opt_inst;
 import asint.SintaxisAbstractaTiny.No_lista_opt_param;
@@ -56,7 +55,7 @@ import asint.SintaxisAbstractaTiny.Prog_tiny;
 import asint.SintaxisAbstractaTiny.Real_t;
 import asint.SintaxisAbstractaTiny.Resta;
 import asint.SintaxisAbstractaTiny.Resta_unario;
-import asint.SintaxisAbstractaTiny.Si_else;
+import asint.SintaxisAbstractaTiny.Inst_if;
 import asint.SintaxisAbstractaTiny.Si_lista_opt_decs;
 import asint.SintaxisAbstractaTiny.Si_lista_opt_inst;
 import asint.SintaxisAbstractaTiny.Si_lista_opt_param;
@@ -326,21 +325,18 @@ public class Impresion extends ProcesamientoDef{
 		p.expresion().procesa(this);
 		System.out.println();
 		p.bloque().procesa(this);
+		System.out.println();
+		System.out.println("<else>");
 		p.bloque2().procesa(this);
 		
 	}
-
+	
 	@Override
-	public void procesa(Si_else p) {
+	public void procesa(Inst_if p) {
+		System.out.println("<if>");
+		p.expresion().procesa(this);
 		System.out.println();
-		System.out.println("<else>");
 		p.bloque().procesa(this);
-		
-	}
-
-	@Override
-	public void procesa(No_else p) {
-		// TODO Auto-generated method stub
 		
 	}
 

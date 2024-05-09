@@ -1383,6 +1383,40 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 	}
+	
+	public static  class Inst_if extends Inst{
+		private Blq bloque;
+		
+		public Inst_if(Exp expresion, Blq bloque) {
+			super(expresion, bloque);
+			this.bloque = bloque;
+		}
+		
+		public String toString() {
+			return "<if>\n" + expresion + "\n" + bloque;
+		}
+		
+		public Exp expresion() {
+			return expresion;
+		}
+
+		public Blq bloque() {
+			return bloque;
+		}
+		
+		@Override
+		public void imprime() {
+			System.out.println("<if>");
+			expresion.imprime();
+			System.out.println();
+			bloque.imprime();
+		}
+
+		public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+		
+	}
 
 	public static class Inst_if_else extends Inst {
 		private Blq bloque, bloque2;
@@ -1394,7 +1428,7 @@ public class SintaxisAbstractaTiny {
 		}
 
 		public String toString() {
-			return "<if>\n" + expresion + "\n" + bloque + bloque2;
+			return "<if>\n" + expresion + "\n" + bloque + "\n<else>\n" + bloque2;
 		}
 
 		public Exp expresion() {
@@ -1415,55 +1449,11 @@ public class SintaxisAbstractaTiny {
 			expresion.imprime();
 			System.out.println();
 			bloque.imprime();
+			System.out.println();
+			System.out.println("<else>");
 			bloque2.imprime();
 		}
 
-		public void procesa(Procesamiento p) {
-            p.procesa(this);
-        }
-	}
-
-	public static class Si_else extends Blq {
-		private Blq bloque;
-
-		public Si_else(Blq bloque) {
-			super(bloque);
-			this.bloque = bloque;
-		}
-
-		public String toString() {
-			return "\n<else>\n" + bloque;
-		}
-
-		public Blq bloque() {
-			return bloque;
-		}
-
-		@Override
-		public void imprime() {
-			System.out.println();
-			System.out.println("<else>");
-			bloque.imprime();
-		}
-		
-		public void procesa(Procesamiento p) {
-            p.procesa(this);
-        }
-	}
-
-	public static class No_else extends Blq {
-		public No_else() {
-			super();
-		}
-
-		public String toString() {
-			return "";
-		}
-
-		@Override
-		public void imprime() {
-		}
-		
 		public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -2706,12 +2696,8 @@ public class SintaxisAbstractaTiny {
 		return new Inst_if_else(expresion, bloque1, bloque2);
 	}
 
-	public Blq si_else(Blq bloque) {
-		return new Si_else(bloque);
-	}
-
-	public Blq no_else() {
-		return new No_else();
+	public Inst inst_if(Exp expresion, Blq bloque) {
+		return new Inst_if(expresion, bloque);
 	}
 
 	public Inst inst_while(Exp expresion, Blq bloque) {

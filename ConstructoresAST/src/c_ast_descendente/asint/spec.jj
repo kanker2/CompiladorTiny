@@ -92,8 +92,6 @@ PARSER_END(ConstructorASTTinyDesc)
   TOKEN:{<Cadena:"\""(~["\""])*"\"">}
 
 
-
-
 ProgT analiza() :
 	{ProgT prog;}
 	{
@@ -348,7 +346,7 @@ Inst instruccion() :
 		inst = instruccion_eval()
 			{return inst;}
 		|
-		inst = instruccion_if_else()
+		inst = fact_if()
 			{return inst;}
 		| 
 		inst = instruccion_while()
@@ -590,20 +588,20 @@ StringLocalizado OP5() :
 			{return new StringLocalizado(t.image, t.beginLine, t.beginColumn);}
 	}	
 
-Inst instruccion_if_else() : 
-	{Blq b1, b2; Exp e;}
+Inst fact_if() :
+	{Blq b; Exp e; Inst inst;}
 	{
-		<IF> e = expresion() b1 = bloque() b2 = then_else()
-			{return sem.inst_if_else(e, b1, b2);}
+		<IF> e = expresion() b = bloque() inst = parte_else(e, b)
+			{return inst;}
 	}
 
-Blq then_else() :
-	{Blq blq;}
+Inst parte_else(Exp eh, Blq bh) : 
+	{Blq b;}
 	{
-		<ELSE> blq = bloque()
-			{return sem.si_else(blq);}
-		| 
-			{return sem.no_else();}	
+		<ELSE> b = bloque()
+			{return sem.inst_if_else(eh, bh, b);}
+		|
+			{return sem.inst_if(eh, bh);}
 	}
 
 Inst instruccion_while() :

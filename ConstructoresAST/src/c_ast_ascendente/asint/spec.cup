@@ -46,7 +46,7 @@ terminal INIBLOQUE, FINBLOQUE, FINDECLARACIONES, PUNTOYCOMA, PUNTO, INIPAR, FINP
 terminal StringLocalizado Identificador, Entero, Real, Cadena;
 
 non terminal  ProgT programa_tiny;
-non terminal  Blq bloque, then_else;
+non terminal  Blq bloque;
 non terminal  LOptDecs lista_opt_declaraciones;
 non terminal  LDecs lista_declaraciones;
 non terminal  Dec declaracion, declaracion_variable, declaracion_tipo, declaracion_proc;
@@ -58,7 +58,7 @@ non terminal  LParamReg lista_parametros_registro;
 non terminal  ParamReg parametro_registro;
 non terminal  LOptInst lista_opt_instrucciones;
 non terminal  LInst lista_instrucciones;
-non terminal  Inst instruccion, instruccion_eval, instruccion_if_else, instruccion_while, instruccion_read, instruccion_write, instruccion_nl, instruccion_new, instruccion_delete, instruccion_call, instruccion_compuesta;
+non terminal  Inst instruccion, instruccion_eval, instruccion_if, instruccion_if_else, instruccion_while, instruccion_read, instruccion_write, instruccion_nl, instruccion_new, instruccion_delete, instruccion_call, instruccion_compuesta;
 non terminal  Exp expresion, E0, E1, E2, E3, E4, E5, E6, E7;
 non terminal  LOptParam lista_opt_parametros, parametros;
 non terminal  LParam lista_parametros;
@@ -162,6 +162,8 @@ lista_instrucciones ::= instruccion: inst
 
 instruccion ::= instruccion_eval: inst_eval
 	{: RESULT = inst_eval; :};
+instruccion ::= instruccion_if: inst_if
+	{: RESULT = inst_if; :};
 instruccion ::= instruccion_if_else: inst_if_else
 	{: RESULT = inst_if_else; :};
 instruccion ::= instruccion_while: inst_while
@@ -273,12 +275,10 @@ OP5 ::= MENOS: o
 	{: RESULT = (StringLocalizado) o; :};
 
 
-instruccion_if_else ::= IF expresion: exp bloque: blq then_else: blq2
+instruccion_if ::= IF expresion: exp bloque: blq 
+	{: RESULT = sem.inst_if(exp, blq); :};
+instruccion_if_else ::= IF expresion: exp bloque: blq ELSE bloque: blq2
 	{: RESULT = sem.inst_if_else(exp, blq, blq2); :};
-then_else ::= ELSE bloque: blq
-	{: RESULT = sem.si_else(blq); :};
-then_else ::=
-	{: RESULT = sem.no_else(); :};
 instruccion_while ::= WHILE expresion: exp bloque: blq
 	{: RESULT = sem.inst_while(exp, blq); :};
 instruccion_read ::= READ expresion: exp
