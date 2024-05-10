@@ -16,6 +16,8 @@ public class SintaxisAbstractaTiny {
 
 	public static abstract class Nodo {
 
+		public Nodo vinculo;
+		
 		public Nodo() {
 			fila = col = -1;
 		}
