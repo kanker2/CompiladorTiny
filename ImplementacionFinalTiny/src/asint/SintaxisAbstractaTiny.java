@@ -49,7 +49,7 @@ public class SintaxisAbstractaTiny {
 	}
 
 	// Clases abstractas (Generos)
-	public static abstract class ProgT implements ImpresionInterprete {
+	public static abstract class ProgT extends Nodo implements ImpresionInterprete {
 		protected Blq bloque;
 
 		public ProgT(Blq bloque) {
@@ -63,7 +63,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class Blq implements ImpresionInterprete {
+	public static abstract class Blq extends Nodo implements ImpresionInterprete {
 		protected Blq bloque;
 		protected LOptDecs lista_opt_declaraciones;
 		protected LOptInst lista_opt_instrucciones;
@@ -92,7 +92,7 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	public static abstract class LOptDecs implements ImpresionInterprete {
+	public static abstract class LOptDecs extends Nodo implements ImpresionInterprete {
 		protected LDecs lista_declaraciones;
 
 		public LOptDecs(LDecs lista_declaraciones) {
@@ -109,7 +109,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LDecs implements ImpresionInterprete {
+	public static abstract class LDecs extends Nodo implements ImpresionInterprete {
 		protected LDecs lista_declaraciones;
 		protected Dec declaracion;
 
@@ -169,7 +169,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LOptParamForm implements ImpresionInterprete {
+	public static abstract class LOptParamForm extends Nodo implements ImpresionInterprete {
 		protected LParamForm lista_parametros_formales;
 
 		public LOptParamForm(LParamForm lista_parametros_formales) {
@@ -186,7 +186,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LParamForm implements ImpresionInterprete {
+	public static abstract class LParamForm extends Nodo implements ImpresionInterprete {
 		protected LParamForm lista_parametros_formales;
 		protected ParamForm parametro_formal;
 
@@ -273,7 +273,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LParamReg implements ImpresionInterprete {
+	public static abstract class LParamReg extends Nodo implements ImpresionInterprete {
 		protected LParamReg lista_parametros_registro;
 		protected ParamReg parametro_registro;
 
@@ -317,7 +317,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LOptInst implements ImpresionInterprete {
+	public static abstract class LOptInst extends Nodo implements ImpresionInterprete {
 		protected LInst lista_instrucciones;
 
 		public LOptInst() {
@@ -335,7 +335,7 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	public static abstract class LInst implements ImpresionInterprete {
+	public static abstract class LInst extends Nodo implements ImpresionInterprete {
 		protected LInst lista_instrucciones;
 		protected Inst instruccion;
 
@@ -546,7 +546,7 @@ public class SintaxisAbstractaTiny {
 		public abstract void procesa(Procesamiento p);
 	}
 
-	public static abstract class LOptParam implements ImpresionInterprete {
+	public static abstract class LOptParam extends Nodo implements ImpresionInterprete {
 		protected LParam lista_parametros;
 
 		public LOptParam() {
@@ -564,7 +564,7 @@ public class SintaxisAbstractaTiny {
 
 	}
 
-	public static abstract class LParam implements ImpresionInterprete {
+	public static abstract class LParam extends Nodo implements ImpresionInterprete {
 		protected LParam lista_parametros;
 		protected Exp expresion;
 
