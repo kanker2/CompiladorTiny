@@ -237,6 +237,7 @@ public class SintaxisAbstractaTiny {
 		protected Tipo tipo;
 		protected String cadena;
 		protected LParamReg lista_parametros_registro;
+		protected boolean tipo_definido = false;
 
 		public Tipo() {
 		};
@@ -269,6 +270,8 @@ public class SintaxisAbstractaTiny {
 		public LParamReg lista_parametros_registro() {
 			throw new UnsupportedOperationException();
 		}
+		
+		public boolean tipoDefinido() { return tipo_definido; }
 		
 		public abstract void procesa(Procesamiento p);
 	}
@@ -1165,6 +1168,7 @@ public class SintaxisAbstractaTiny {
 	public static class Tipo_definido extends Tipo {
 		public Tipo_definido(String cadena) {
 			super(cadena);
+			tipo_definido = true;
 		}
 
 		public String toString() {

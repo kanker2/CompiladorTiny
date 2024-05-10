@@ -3,6 +3,7 @@ package visitante;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,14 +85,36 @@ import asint.SintaxisAbstractaTiny.Una_lista_param_reg;
 public class Vinculacion extends ProcesamientoDef {
 	
 	private TablaDeSimbolosAnidados ts; 
+	private boolean primeraPasada;
+	private SimbolosRegistro sr;
 	
 	public Vinculacion() {
 		ts = new TablaDeSimbolosAnidados();
+		primeraPasada = true;
+	}
+	
+	public class SimbolosRegistro {
+		private HashSet<String> ambito;
+		public void abreAmbitoRegistro() {
+			ambito = new HashSet<String>();
+		}
+		public void cierraAmbitoRegistro() {
+			ambito = null;
+		}
+		
+		public boolean duplicadoRegistro(String id) {
+			return ambito.contains(id);
+		}
+		
+		public void apuntaRegistro(String id) {
+			ambito.add(id);
+		}
 	}
 	
 	public class TablaDeSimbolos extends HashMap<String, Nodo> {}
 	
 	public class TablaDeSimbolosAnidados extends ArrayDeque<TablaDeSimbolos> {
+		
 		public void abreAmbito() {
 			addFirst(new TablaDeSimbolos());
 		}
@@ -113,6 +136,20 @@ public class Vinculacion extends ProcesamientoDef {
 		public boolean contiene(String id) {
 			return getFirst().containsKey(id);
 		}
+		
+		public void inserta(String id, Nodo p) {
+			getFirst().put(id,  p);
+		}
+		
+		/* Añade en el ámbito más reciente
+		 * Excepción en caso de que ya esté declarado en ese ámbito */
+		public void recolecta(String id, Nodo p) {
+			TablaDeSimbolos tsCurrent = getFirst();
+			if (contiene(id))
+				throw ;// Identificador duplicado
+			else
+				inserta(id, p);
+		}
 	}
 	
 	// procesa() == metodo vinculacion de la especificación
@@ -132,8 +169,11 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Si_lista_opt_decs p) {
-		vincula1(p.lista_declaraciones());
-		vincula2(p.lista_declaraciones());
+		//vincula1
+		p.lista_declaraciones().procesa(this);
+		primeraPasada = false;
+		//vincula2
+		p.lista_declaraciones().procesa(this);
 	}
 	
 	@Override
@@ -141,125 +181,226 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Muchas_lista_decs p) {
+		if (primeraPasada) { 	// vincula1
+			p.lista_declaraciones().procesa(this);
+			p.declaracion().procesa(this);
+		} else {				// vincula2
+			p.lista_declaraciones().procesa(this);
+			p.declaracion().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Una_lista_dec p) {
+		if (primeraPasada) { 	// vincula1
+			p.declaracion().procesa(this);
+		} else {				// vincula2
+			p.declaracion().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Dec_var p) {
+		if (primeraPasada) { 	// vincula1
+			p.tipo().procesa(this);
+			ts.recolecta(p.cadena(), p);
+		} else {				// vincula2
+			p.tipo().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Dec_tipo p) {
+		if (primeraPasada) { 	// vincula1
+			p.tipo().procesa(this);
+			ts.recolecta(p.cadena(), p);
+		} else {				// vincula2
+			p.tipo().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Dec_proc p) {
-		
+		if (primeraPasada) { 	// vincula1
+			ts.recolecta(p.cadena(), p);
+			ts.abreAmbito();
+			p.lista_opt_parametros_formales().procesa(this);
+			p.bloque().procesa(this);
+			ts.cierraAmbito();
+		} else {				// vincula2
+			p.lista_opt_parametros_formales().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Si_lista_opt_param_form p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			p.lista_parametros_formales().procesa(this);
+		} else {				// vincula2
+			p.lista_parametros_formales().procesa(this);
+		}
 	}
 
-	@Overridep.expresion().procesa(this);
+	@Override
 	public void procesa(No_lista_opt_param_form p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			/* noop */
+		} else {				// vincula2
+			/* noop */
+		}
 	}
 
 	@Override
 	public void procesa(Muchas_lista_param_form p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			p.lista_parametros_formales().procesa(this);
+			p.parametro_formal().procesa(this);
+		} else {				// vincula2
+			p.lista_parametros_formales().procesa(this);
+			p.parametro_formal().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Una_lista_param_form p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			p.parametro_formal().procesa(this);
+		} else {				// vincula2
+			p.parametro_formal().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Param_form_ref p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			p.tipo().procesa(this);
+			ts.recolecta(p.cadena(), p);
+		} else {				// vincula2
+			p.tipo().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Param_form p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			p.tipo().procesa(this);
+			ts.recolecta(p.cadena(), p);
+		} else {				// vincula2
+			p.tipo().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Tipo_array p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			p.tipo().procesa(this);
+		} else {				// vincula2
+			p.tipo().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Tipo_puntero p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			if (!p.tipo().tipoDefinido())
+				p.tipo().procesa(this);
+		} else {				// vincula2
+			if (p.tipo().tipoDefinido()) {
+				p.tipo().vinculo = ts.vinculoDe(p.tipo().cadena());
+				if (p.tipo().vinculo == null)
+					throw ;// Identificador de Tipo no definido
+			} else {
+				p.tipo().procesa(this);
+			}
+		}
 	}
 
 	@Override
 	public void procesa(Int_t p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			/* noop */
+		} else {				// vincula2
+			/* noop */
+		}
 	}
 
 	@Override
 	public void procesa(Real_t p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			/* noop */
+		} else {				// vincula2
+			/* noop */
+		}
 	}
 
 	@Override
 	public void procesa(Bool_t p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			/* noop */
+		} else {				// vincula2
+			/* noop */
+		}
 	}
-
+	
 	@Override
 	public void procesa(String_t p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			/* noop */
+		} else {				// vincula2
+			/* noop */
+		}
 	}
 
 	@Override
 	public void procesa(Tipo_registro p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Tipo_definido p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			sr.abreAmbitoRegistro();
+			p.lista_parametros_registro().procesa(this);
+			sr.cierraAmbitoRegistro();
+		} else {				// vincula2
+			p.lista_parametros_registro().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Muchas_lista_param_reg p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			p.lista_parametros_registro().procesa(this);
+			p.parametro_registro().procesa(this);
+		} else {				// vincula2
+			p.lista_parametros_registro().procesa(this);
+			p.parametro_registro().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Una_lista_param_reg p) {
-		// TODO Auto-generated method stub
-
+		if (primeraPasada) { 	// vincula1
+			p.parametro_registro().procesa(this);
+		} else {				// vincula2
+			p.parametro_registro().procesa(this);
+		}
 	}
 
 	@Override
 	public void procesa(Param_reg p) {
-		// TODO Auto-generated method stub
+		if (primeraPasada) { 	// vincula1
+			p.tipo().procesa(this);
+			if (sr.duplicadoRegistro(p.cadena()))
+				throw ;// Identificador registro duplicado
+			else
+				sr.apuntaRegistro(p.cadena());
+		} else {				// vincula2
+			p.tipo().procesa(this);
+		}
+	}
 
+	@Override
+	public void procesa(Tipo_definido p) {
+		if (primeraPasada) { 	// vincula1
+		} else {				// vincula2
+			/* noop */
+		}
 	}
 
 	@Override
@@ -335,7 +476,7 @@ public class Vinculacion extends ProcesamientoDef {
 			p.lista_opt_parametros().procesa(this);
 		}
 		else
-			throw
+			throw ;//Identificador no declarado
 	}
 
 	@Override
@@ -494,6 +635,6 @@ public class Vinculacion extends ProcesamientoDef {
 	public void procesa(Iden p) {
 		p.vinculo = ts.vinculoDe(p.cadena());
 		if (p.vinculo == null)
-			throw 
+			throw ;//Identificador no declarado 
 	}
 }
