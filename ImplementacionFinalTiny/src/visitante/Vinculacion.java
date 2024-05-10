@@ -1,5 +1,14 @@
 package visitante;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import asint.SintaxisAbstractaTiny.Nodo;
 import asint.SintaxisAbstractaTiny.Acc_reg;
 import asint.SintaxisAbstractaTiny.And;
 import asint.SintaxisAbstractaTiny.Asignacion;
@@ -72,60 +81,83 @@ import asint.SintaxisAbstractaTiny.Una_lista_param;
 import asint.SintaxisAbstractaTiny.Una_lista_param_form;
 import asint.SintaxisAbstractaTiny.Una_lista_param_reg;
 
-public class Vinculacion implements Procesamiento {
-
+public class Vinculacion extends ProcesamientoDef {
+	
+	private TablaDeSimbolosAnidados ts; 
+	
+	public Vinculacion() {
+		ts = new TablaDeSimbolosAnidados();
+	}
+	
+	public class TablaDeSimbolos extends HashMap<String, Nodo> {}
+	
+	public class TablaDeSimbolosAnidados extends ArrayDeque<TablaDeSimbolos> {
+		public void abreAmbito() {
+			addFirst(new TablaDeSimbolos());
+		}
+		
+		public void cierraAmbito() {
+			removeFirst();
+		}
+		
+		public Nodo vinculoDe(String id) {
+			Iterator<TablaDeSimbolos> i = iterator();
+			while (i.hasNext()) {
+				TablaDeSimbolos tsCurrent = i.next();
+				if (tsCurrent.containsKey(id))
+					return tsCurrent.get(id);
+			}
+			return null;
+		}
+		
+		public boolean contiene(String id) {
+			return getFirst().containsKey(id);
+		}
+	}
+	
+	// procesa() == metodo vinculacion de la especificación
+	
 	@Override
 	public void procesa(Prog_tiny p) {
-		// TODO Auto-generated method stub
-
+		p.bloque().procesa(this);
 	}
 
 	@Override
 	public void procesa(Bloque p) {
-		// TODO Auto-generated method stub
-
+		ts.abreAmbito();
+		p.lista_opt_declaraciones().procesa(this);
+		p.lista_opt_instrucciones().procesa(this);
+		ts.cierraAmbito();
 	}
 
 	@Override
 	public void procesa(Si_lista_opt_decs p) {
-		// TODO Auto-generated method stub
-
+		vincula1(p.lista_declaraciones());
+		vincula2(p.lista_declaraciones());
 	}
-
+	
 	@Override
-	public void procesa(No_lista_opt_decs p) {
-		// TODO Auto-generated method stub
-
-	}
+	public void procesa(No_lista_opt_decs p) { /* noop */ }
 
 	@Override
 	public void procesa(Muchas_lista_decs p) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void procesa(Una_lista_dec p) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void procesa(Dec_var p) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void procesa(Dec_tipo p) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void procesa(Dec_proc p) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -134,7 +166,7 @@ public class Vinculacion implements Procesamiento {
 
 	}
 
-	@Override
+	@Overridep.expresion().procesa(this);
 	public void procesa(No_lista_opt_param_form p) {
 		// TODO Auto-generated method stub
 
@@ -232,272 +264,236 @@ public class Vinculacion implements Procesamiento {
 
 	@Override
 	public void procesa(Si_lista_opt_inst p) {
-		// TODO Auto-generated method stub
-
+		p.lista_instrucciones().procesa(this);
 	}
 
 	@Override
-	public void procesa(No_lista_opt_inst p) {
-		// TODO Auto-generated method stub
-
-	}
+	public void procesa(No_lista_opt_inst p) { /* noop */ }
 
 	@Override
 	public void procesa(Muchas_lista_inst p) {
-		// TODO Auto-generated method stub
-
+		p.lista_instrucciones().procesa(this);
+		p.instruccion().procesa(this);
 	}
 
 	@Override
 	public void procesa(Una_lista_inst p) {
-		// TODO Auto-generated method stub
-
+		p.instruccion().procesa(this);
 	}
 
 	@Override
 	public void procesa(Inst_eval p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
 	}
 
 	@Override
 	public void procesa(Inst_if_else p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
+		p.bloque1().procesa(this);
+		p.bloque2().procesa(this);
 	}
 
 	@Override
 	public void procesa(Inst_if p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
+		p.bloque().procesa(this);
 	}
 
 	@Override
 	public void procesa(Inst_while p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
+		p.bloque().procesa(this);
 	}
 
 	@Override
 	public void procesa(Inst_read p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
 	}
 
 	@Override
 	public void procesa(Inst_write p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
 	}
 
 	@Override
-	public void procesa(Inst_nl p) {
-		// TODO Auto-generated method stub
-
-	}
+	public void procesa(Inst_nl p) { /* noop */ }
 
 	@Override
 	public void procesa(Inst_new p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
 	}
 
 	@Override
 	public void procesa(Inst_delete p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
 	}
 
 	@Override
 	public void procesa(Inst_call p) {
-		// TODO Auto-generated method stub
-
+		if(ts.contiene(p.cadena())) {
+			p.vinculo = ts.vinculoDe(p.cadena());
+			p.lista_opt_parametros().procesa(this);
+		}
+		else
+			throw
 	}
 
 	@Override
 	public void procesa(Inst_comp p) {
-		// TODO Auto-generated method stub
-
+		p.bloque().procesa(this);
 	}
 
-	@Override
-	public void procesa(Asignacion p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Mayor p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Mayor_igual p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Menor p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Menor_igual p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Comparacion p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Distinto p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Suma p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Resta p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(And p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Or p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Mult p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Div p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Mod p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Not_unario p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Resta_unario p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Indexacion p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Acc_reg p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Indireccion p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Lit_ent p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Lit_real p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(True_e p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(False_e p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Null_e p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Cadena p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void procesa(Iden p) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void procesa(Si_lista_opt_param p) {
-		// TODO Auto-generated method stub
-
+		p.lista_parametros().procesa(this);
 	}
 
 	@Override
-	public void procesa(No_lista_opt_param p) {
-		// TODO Auto-generated method stub
-
-	}
+	public void procesa(No_lista_opt_param p) { /* noop */ }
 
 	@Override
 	public void procesa(Muchas_lista_param p) {
-		// TODO Auto-generated method stub
-
+		p.lista_parametros().procesa(this);
+		p.expresion().procesa(this);
 	}
 
 	@Override
 	public void procesa(Una_lista_param p) {
-		// TODO Auto-generated method stub
-
+		p.expresion().procesa(this);
+	}
+	
+	@Override
+	public void procesa(Asignacion p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
 	}
 
+	@Override
+	public void procesa(Mayor p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Mayor_igual p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Menor p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Menor_igual p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Comparacion p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Distinto p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Suma p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Resta p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(And p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Or p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Mult p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Div p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Mod p) {
+		p.op1().procesa(this);
+		p.op2().procesa(this);
+	}
+
+	@Override
+	public void procesa(Not_unario p) {
+		p.op1().procesa(this);
+	}
+
+	@Override
+	public void procesa(Resta_unario p) {
+		p.op1().procesa(this);
+	}
+
+	@Override
+	public void procesa(Indexacion p) {
+		p.op1().procesa(this);
+	}
+
+	@Override
+	public void procesa(Acc_reg p) {
+		p.op1().procesa(this);
+	}
+
+	@Override
+	public void procesa(Indireccion p) {
+		p.op1().procesa(this);
+	}
+
+	@Override
+	public void procesa(Lit_ent p) { /* noop */ }
+
+	@Override
+	public void procesa(Lit_real p) { /* noop */ }
+	
+	@Override
+	public void procesa(True_e p) { /* noop */ }
+
+	@Override
+	public void procesa(False_e p) { /* noop */ }
+
+	@Override
+	public void procesa(Null_e p) { /* noop */ }
+
+	@Override
+	public void procesa(Cadena p) { /* noop */ }
+
+	@Override
+	public void procesa(Iden p) {
+		p.vinculo = ts.vinculoDe(p.cadena());
+		if (p.vinculo == null)
+			throw 
+	}
 }
