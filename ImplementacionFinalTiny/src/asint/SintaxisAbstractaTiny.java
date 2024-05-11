@@ -1,5 +1,6 @@
 package asint;
 
+import visitante.ComprobacionTipos.Tipos;
 import visitante.Procesamiento;
 
 public class SintaxisAbstractaTiny {
@@ -17,6 +18,8 @@ public class SintaxisAbstractaTiny {
 	public static abstract class Nodo {
 
 		public Nodo vinculo;
+		public boolean tipoCorrecto;
+		public Tipo tipo;
 		
 		public Nodo() {
 			fila = col = -1;

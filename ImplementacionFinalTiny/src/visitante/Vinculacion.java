@@ -5,78 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import asint.SintaxisAbstractaTiny.Nodo;
-import asint.SintaxisAbstractaTiny.Acc_reg;
-import asint.SintaxisAbstractaTiny.And;
-import asint.SintaxisAbstractaTiny.Asignacion;
-import asint.SintaxisAbstractaTiny.Bloque;
-import asint.SintaxisAbstractaTiny.Bool_t;
-import asint.SintaxisAbstractaTiny.Cadena;
-import asint.SintaxisAbstractaTiny.Comparacion;
-import asint.SintaxisAbstractaTiny.Dec_proc;
-import asint.SintaxisAbstractaTiny.Dec_tipo;
-import asint.SintaxisAbstractaTiny.Dec_var;
-import asint.SintaxisAbstractaTiny.Distinto;
-import asint.SintaxisAbstractaTiny.Div;
-import asint.SintaxisAbstractaTiny.False_e;
-import asint.SintaxisAbstractaTiny.Iden;
-import asint.SintaxisAbstractaTiny.Indexacion;
-import asint.SintaxisAbstractaTiny.Indireccion;
-import asint.SintaxisAbstractaTiny.Inst_call;
-import asint.SintaxisAbstractaTiny.Inst_comp;
-import asint.SintaxisAbstractaTiny.Inst_delete;
-import asint.SintaxisAbstractaTiny.Inst_eval;
-import asint.SintaxisAbstractaTiny.Inst_if;
-import asint.SintaxisAbstractaTiny.Inst_if_else;
-import asint.SintaxisAbstractaTiny.Inst_new;
-import asint.SintaxisAbstractaTiny.Inst_nl;
-import asint.SintaxisAbstractaTiny.Inst_read;
-import asint.SintaxisAbstractaTiny.Inst_while;
-import asint.SintaxisAbstractaTiny.Inst_write;
-import asint.SintaxisAbstractaTiny.Int_t;
-import asint.SintaxisAbstractaTiny.Lit_ent;
-import asint.SintaxisAbstractaTiny.Lit_real;
-import asint.SintaxisAbstractaTiny.Mayor;
-import asint.SintaxisAbstractaTiny.Mayor_igual;
-import asint.SintaxisAbstractaTiny.Menor;
-import asint.SintaxisAbstractaTiny.Menor_igual;
-import asint.SintaxisAbstractaTiny.Mod;
-import asint.SintaxisAbstractaTiny.Muchas_lista_decs;
-import asint.SintaxisAbstractaTiny.Muchas_lista_inst;
-import asint.SintaxisAbstractaTiny.Muchas_lista_param;
-import asint.SintaxisAbstractaTiny.Muchas_lista_param_form;
-import asint.SintaxisAbstractaTiny.Muchas_lista_param_reg;
-import asint.SintaxisAbstractaTiny.Mult;
-import asint.SintaxisAbstractaTiny.No_lista_opt_decs;
-import asint.SintaxisAbstractaTiny.No_lista_opt_inst;
-import asint.SintaxisAbstractaTiny.No_lista_opt_param;
-import asint.SintaxisAbstractaTiny.No_lista_opt_param_form;
-import asint.SintaxisAbstractaTiny.Not_unario;
-import asint.SintaxisAbstractaTiny.Null_e;
-import asint.SintaxisAbstractaTiny.Or;
-import asint.SintaxisAbstractaTiny.Param_form;
-import asint.SintaxisAbstractaTiny.Param_form_ref;
-import asint.SintaxisAbstractaTiny.Param_reg;
-import asint.SintaxisAbstractaTiny.Prog_tiny;
-import asint.SintaxisAbstractaTiny.Real_t;
-import asint.SintaxisAbstractaTiny.Resta;
-import asint.SintaxisAbstractaTiny.Resta_unario;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_decs;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_inst;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_param;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_param_form;
-import asint.SintaxisAbstractaTiny.String_t;
-import asint.SintaxisAbstractaTiny.Suma;
-import asint.SintaxisAbstractaTiny.Tipo_array;
-import asint.SintaxisAbstractaTiny.Tipo_definido;
-import asint.SintaxisAbstractaTiny.Tipo_puntero;
-import asint.SintaxisAbstractaTiny.Tipo_registro;
-import asint.SintaxisAbstractaTiny.True_e;
-import asint.SintaxisAbstractaTiny.Una_lista_dec;
-import asint.SintaxisAbstractaTiny.Una_lista_inst;
-import asint.SintaxisAbstractaTiny.Una_lista_param;
-import asint.SintaxisAbstractaTiny.Una_lista_param_form;
-import asint.SintaxisAbstractaTiny.Una_lista_param_reg;
+import asint.SintaxisAbstractaTiny.*;
 import errores.Errores;
 import errores.VinculacionIdentificadorDuplicado;
 import errores.VinculacionIdentificadorNoDefinido;
@@ -93,6 +22,7 @@ public class Vinculacion extends ProcesamientoDef {
 		errores = e;
 	}
 	
+	//Estas dos clases se usan para la parte del pre tipado encargada de evitar la duplicidad en los campos registro
 	public class SimbolosRegistro extends HashSet<String>{}
 	
 	public class SimbolosRegistroAnidados extends ArrayDeque<SimbolosRegistro> {
