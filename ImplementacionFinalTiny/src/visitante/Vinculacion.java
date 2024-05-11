@@ -119,7 +119,26 @@ public class Vinculacion extends ProcesamientoDef {
 		}
 	}
 	
-	public class TablaDeSimbolos extends HashMap<String, Nodo> {}
+	public class TablaDeSimbolos extends HashMap<String, Nodo> {
+		private Boolean primeraPasada;
+		
+		public void iniPrimeraPasada() {
+			primeraPasada = new Boolean(true);
+		}
+		
+		public void finPrimeraPasada() {
+			primeraPasada = false ;
+		}
+		
+		public boolean necesitaNuevaPasada() {
+			return primeraPasada != null;
+		}
+		
+		public boolean primeraPasada() {
+			return primeraPasada;
+		}
+		
+	}
 	
 	public class TablaDeSimbolosAnidados extends ArrayDeque<TablaDeSimbolos> {
 		
@@ -165,6 +184,30 @@ public class Vinculacion extends ProcesamientoDef {
 				System.out.println("Insertando '"+id+"' de:\nf:"+p.leeFila()+";c:"+p.leeCol()+" en la Tabla de Simbolos");
 			}
 		}
+	
+		/*
+		 * Gestionamos nuevas pasadas anidadas
+		 * 
+		 * */
+		
+		public void iniPrimeraPasada() {
+			getFirst().iniPrimeraPasada();
+		}
+		
+		public void finPrimeraPasada() {
+			getFirst().finPrimeraPasada();
+		}
+		
+		public boolean primeraPasada() {
+			Iterator<TablaDeSimbolos> i = iterator();
+			while (i.hasNext()) {
+				TablaDeSimbolos tsCurrent = i.next();
+				if (tsCurrent.necesitaNuevaPasada())
+					return tsCurrent.primeraPasada();
+			}
+			System.err.println("No se han gestionado bien los ámbitos y las pasadas por ellos");
+			return false;
+		}
 	}
 	
 	// procesa() == metodo vinculacion de la especificación
@@ -185,7 +228,9 @@ public class Vinculacion extends ProcesamientoDef {
 	@Override
 	public void procesa(Si_lista_opt_decs p) {
 		//vincula1
+		ts.iniPrimeraPasada();
 		p.lista_declaraciones().procesa(this);
+		ts.finPrimeraPasada();
 		primeraPasada = false;
 		//vincula2
 		p.lista_declaraciones().procesa(this);
@@ -196,7 +241,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Muchas_lista_decs p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.lista_declaraciones().procesa(this);
 			p.declaracion().procesa(this);
 		} else {				// vincula2
@@ -207,7 +252,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Una_lista_dec p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.declaracion().procesa(this);
 		} else {				// vincula2
 			p.declaracion().procesa(this);
@@ -216,7 +261,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Dec_var p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.tipo().procesa(this);
 			ts.recolecta(p.cadena(), p);
 		} else {				// vincula2
@@ -226,7 +271,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Dec_tipo p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.tipo().procesa(this);
 			ts.recolecta(p.cadena(), p);
 		} else {				// vincula2
@@ -236,7 +281,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Dec_proc p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			ts.recolecta(p.cadena(), p);
 			ts.abreAmbito();
 			p.lista_opt_parametros_formales().procesa(this);
@@ -249,7 +294,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Si_lista_opt_param_form p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.lista_parametros_formales().procesa(this);
 		} else {				// vincula2
 			p.lista_parametros_formales().procesa(this);
@@ -258,7 +303,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(No_lista_opt_param_form p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			/* noop */
 		} else {				// vincula2
 			/* noop */
@@ -267,7 +312,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Muchas_lista_param_form p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.lista_parametros_formales().procesa(this);
 			p.parametro_formal().procesa(this);
 		} else {				// vincula2
@@ -278,7 +323,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Una_lista_param_form p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.parametro_formal().procesa(this);
 		} else {				// vincula2
 			p.parametro_formal().procesa(this);
@@ -287,7 +332,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Param_form_ref p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.tipo().procesa(this);
 			ts.recolecta(p.cadena(), p);
 		} else {				// vincula2
@@ -297,7 +342,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Param_form p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.tipo().procesa(this);
 			ts.recolecta(p.cadena(), p);
 		} else {				// vincula2
@@ -307,7 +352,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Tipo_array p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.tipo().procesa(this);
 		} else {				// vincula2
 			p.tipo().procesa(this);
@@ -316,7 +361,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Tipo_puntero p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			if (!p.tipo().tipoDefinido())
 				p.tipo().procesa(this);
 		} else {				// vincula2
@@ -332,7 +377,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Int_t p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			/* noop */
 		} else {				// vincula2
 			/* noop */
@@ -341,7 +386,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Real_t p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			/* noop */
 		} else {				// vincula2
 			/* noop */
@@ -350,7 +395,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Bool_t p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			/* noop */
 		} else {				// vincula2
 			/* noop */
@@ -359,7 +404,7 @@ public class Vinculacion extends ProcesamientoDef {
 	
 	@Override
 	public void procesa(String_t p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			/* noop */
 		} else {				// vincula2
 			/* noop */
@@ -368,7 +413,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Tipo_registro p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			sr.abreRegistro();
 			p.lista_parametros_registro().procesa(this);
 			sr.cierraRegistro();
@@ -379,7 +424,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Muchas_lista_param_reg p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.lista_parametros_registro().procesa(this);
 			p.parametro_registro().procesa(this);
 		} else {				// vincula2
@@ -390,7 +435,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Una_lista_param_reg p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.parametro_registro().procesa(this);
 		} else {				// vincula2
 			p.parametro_registro().procesa(this);
@@ -399,7 +444,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Param_reg p) {
-		if (primeraPasada) { 	// vincula1
+		if (ts.primeraPasada()) { 	// vincula1
 			p.tipo().procesa(this);
 			if (sr.duplicadoRegistro(p.cadena()))
 				errores.nuevoError(new VinculacionIdentificadorDuplicado(p));
@@ -412,7 +457,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Tipo_definido p) {
-		if (primeraPasada) {
+		if (ts.primeraPasada()) {
 			ts.vincular(p, p.cadena());
 			if (p.vinculo == null) {
 				errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
@@ -458,7 +503,7 @@ public class Vinculacion extends ProcesamientoDef {
 	@Override
 	public void procesa(Inst_if p) {
 		p.expresion().procesa(this);
-		p.bloque().procesa(this);
+		p.bloque1().procesa(this);
 	}
 
 	@Override
