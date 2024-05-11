@@ -68,13 +68,12 @@ import asint.SintaxisAbstractaTiny.Una_lista_param;
 import asint.SintaxisAbstractaTiny.Una_lista_param_form;
 import maquina_p.MaquinaP;
 
-public class GeneracionCodigo extends ProcesamientoDef {
-	private MaquinaP m;
+public class Etiquetado extends ProcesamientoDef {
 	private Stack<Dec_proc> proc_pendientes;
+	private int etq;
 
-	public GeneracionCodigo(MaquinaP maquinaP) {
-		this.m = maquinaP;
-		this.proc_pendientes = new Stack<>();
+	public Etiquetado() {
+		this.etq = 0;
 	}
 
 	// Funciones de apoyo que recolecta los procedimientos
@@ -100,20 +99,20 @@ public class GeneracionCodigo extends ProcesamientoDef {
 	}
 
 	// Funciones de apoyo para el paso de parametros en funcion
-	public void gen_paso_params(LOptParamForm pfs, LOptParam preals) {
+	public void etiquetado_paso_params(LOptParamForm pfs, LOptParam preals) {
 		if (pfs instanceof Si_lista_opt_param_form && preals instanceof Si_lista_opt_param) {
-			gen_paso_params(pfs.lista_parametros_formales(), preals.lista_parametros());
+			etiquetado_paso_params(pfs.lista_parametros_formales(), preals.lista_parametros());
 		}
 	}
 
-	public void gen_paso_params(LParamForm pfs, LParam preals) {
+	public void etiquetado_paso_params(LParamForm pfs, LParam preals) {
 		if (pfs instanceof Muchas_lista_param_form && preals instanceof Muchas_lista_param) {
-			gen_paso_params(pfs.lista_parametros_formales(), preals.lista_parametros());
-			gen_paso_param(pfs.parametro_formal(), preals.expresion());
+			etiquetado_paso_params(pfs.lista_parametros_formales(), preals.lista_parametros());
+			etiquetado_paso_param(pfs.parametro_formal(), preals.expresion());
 		}
 
 		if (pfs instanceof Una_lista_param_form && preals instanceof Una_lista_param) {
-			gen_paso_param(pfs.parametro_formal(), preals.expresion());
+			etiquetado_paso_param(pfs.parametro_formal(), preals.expresion());
 		}
 	}
 
@@ -126,35 +125,42 @@ public class GeneracionCodigo extends ProcesamientoDef {
 		return false;
 	}
 
-	public void gen_acc_val(Exp e, MaquinaP m) {
+	public void etiquetado_acc_val(Exp e) {
 		if (es_designador(e)) {
-			m.emit(m.apila_ind());
+			etq++;
 		}
 	}
 
 	// Patron visitante
 	@Override
 	public void procesa(Prog_tiny p) {
+		p.prim = etq;
 		p.bloque().procesa(this);
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Bloque p) {
+		p.prim = etq;
 		recolecta_procs(p.lista_opt_declaraciones());
 		p.lista_opt_instrucciones().procesa(this);
-		m.emit(m.stop());
+		etq++;
 		while (!proc_pendientes.isEmpty()) {
 			Dec_proc proc = proc_pendientes.pop();
-			m.emit(m.desapilad(proc.nivel));
+			proc.prim = etq;
+			etq++;
 			recolecta_procs(p.lista_opt_declaraciones());
-			m.emit(m.desactiva(proc.nivel, proc.tam));
-			m.emit(m.ir_ind());
+			etq += 2;
+			proc.sig = etq;
 		}
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Si_lista_opt_inst p) {
+		p.prim = etq;
 		p.lista_instrucciones().procesa(this);
+		p.sig = etq;
 	}
 
 	@Override
@@ -164,46 +170,58 @@ public class GeneracionCodigo extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Muchas_lista_inst p) {
+		p.prim = etq;
 		p.lista_instrucciones().procesa(this);
 		p.instruccion().procesa(this);
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Una_lista_inst p) {
+		p.prim = etq;
 		p.instruccion().procesa(this);
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Inst_eval p) {
+		p.prim = etq;
 		p.expresion().procesa(this);
-		m.emit(m.desapila());
+		etq++;
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Inst_if p) {
+		p.prim = etq;
 		p.expresion().procesa(this);
-		gen_acc_val(p.expresion(), m);
-		m.emit(m.ir_f(p.sig));
+		etiquetado_acc_val(p.expresion());
+		etq++;
 		p.bloque1().procesa(this);
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Inst_if_else p) {
+		p.prim = etq;
 		p.expresion().procesa(this);
-		gen_acc_val(p.expresion(), m);
-		m.emit(m.ir_f(p.bloque2().prim));
+		etiquetado_acc_val(p.expresion());
+		etq++;
 		p.bloque1().procesa(this);
-		m.emit(m.ir_a(p.sig));
+		etq++;
 		p.bloque2().procesa(this);
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Inst_while p) {
+		p.prim = etq;
 		p.expresion().procesa(this);
-		gen_acc_val(p.expresion(), m);
-		m.emit(m.ir_f(p.sig));
+		etiquetado_acc_val(p.expresion());
+		etq++;
 		p.bloque1().procesa(this);
-		m.emit(m.ir_a(p.prim));
+		etq++;
+		p.sig = etq;
 	}
 
 	@Override
@@ -213,14 +231,18 @@ public class GeneracionCodigo extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Inst_write p) {
+		p.prim = etq;
 		p.expresion().procesa(this);
-		gen_acc_val(p.expresion(), m);
-		m.emit(m.desapila_escribe());
+		etiquetado_acc_val(p.expresion());
+		etq++;
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Inst_nl p) {
-		m.emit(m.apila_String("\n"));
+		p.prim = etq;
+		etq++;
+		p.sig = etq;
 	}
 
 	@Override
@@ -235,18 +257,22 @@ public class GeneracionCodigo extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Inst_call p) {
-		m.emit(m.activa(p.vinculo.nivel, p.vinculo.tam, p.sig));
+		p.prim = etq;
+		etq++;
 		Dec_proc decProc = (Dec_proc) p.vinculo;
-		gen_paso_params(decProc.lista_opt_parametros_formales(), p.lista_opt_parametros());
-		m.emit(m.ir_a(p.vinculo.prim));
+		etiquetado_paso_params(decProc.lista_opt_parametros_formales(), p.lista_opt_parametros());
+		etq++;
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Inst_comp p) {
-		p.bloque1().procesa(this);
+		p.prim = etq;
+		etq++;
+		p.sig = etq;
 	}
 
-	public void gen_paso_param(ParamForm pf, Exp e) {
+	public void etiquetado_paso_param(ParamForm pf, Exp e) {
 
 	}
 
@@ -353,67 +379,75 @@ public class GeneracionCodigo extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Lit_ent n) {
-		m.emit(m.apila_int(Integer.parseInt(n.cadena())));
+		n.prim = etq;
+		etq++;
+		n.sig = etq;
 	}
 
 	@Override
 	public void procesa(Lit_real n) {
-		m.emit(m.apila_real(Float.parseFloat(n.cadena())));
+		n.prim = etq;
+		etq++;
+		n.sig = etq;
 	}
 
 	@Override
 	public void procesa(True_e e) {
-		m.emit(m.apila_bool(true));
+		e.prim = etq;
+		etq++;
+		e.sig = etq;
 	}
 
 	@Override
 	public void procesa(False_e e) {
-		m.emit(m.apila_bool(false));
+		e.prim = etq;
+		etq++;
+		e.sig = etq;
 	}
 
 	@Override
 	public void procesa(Null_e e) {
-		m.emit(m.apila_int(-1));
+		e.prim = etq;
+		etq++;
+		e.sig = etq;
 	}
 
 	@Override
 	public void procesa(Cadena c) {
-		m.emit(m.apila_String(c.cadena()));
+		e.prim = etq;
+		etq++;
+		e.sig = etq;
 	}
 
 	@Override
 	public void procesa(Iden id) {
+		id.prim = etq;
 		if (id.vinculo instanceof Dec_var) {
-			gen_acc_id((Dec_var) id.vinculo);
+			etiquetado_acc_id((Dec_var) id.vinculo);
 		} else if (id.vinculo instanceof Param_form_ref) {
-			gen_acc_id((Param_form_ref) id.vinculo);
+			etiquetado_acc_id((Param_form_ref) id.vinculo);
 		} else if (id.vinculo instanceof Param_form) {
-			gen_acc_id((Param_form) id.vinculo);
+			etiquetado_acc_id((Param_form) id.vinculo);
 		}
+		id.sig = etq;
 	}
 
-	public void gen_acc_id(Dec_var dec) {
+	public void etiquetado_acc_id(Dec_var dec) {
 
 	}
 
-	public void gen_acc_id(Param_form_ref pf) {
-		m.emit(m.apilad(pf.nivel));
-		m.emit(m.apila_int(pf.dir));
-		m.emit(m.suma_int());
-		m.emit(m.apila_ind());
+	public void etiquetado_acc_id(Param_form_ref pf) {
+		etq += 4;
 	}
 
-	public void gen_acc_id(Param_form pf) {
-		m.emit(m.apilad(pf.nivel));
-		m.emit(m.apila_int(pf.dir));
-		m.emit(m.suma_int());
+	public void etiquetado_acc_id(Param_form pf) {
+		etq += 3;
 	}
 
-	public void gen_cod_op(Exp Opnd0, Exp Opnd1) {
+	public void etiquetado_op(Exp Opnd0, Exp Opnd1) {
 		Opnd0.procesa(this);
-		gen_acc_val(Opnd0, m);
+		etiquetado_acc_val(Opnd0);
 		Opnd1.procesa(this);
-		gen_acc_val(Opnd1, m);
+		etiquetado_acc_val(Opnd1);
 	}
-
 }
