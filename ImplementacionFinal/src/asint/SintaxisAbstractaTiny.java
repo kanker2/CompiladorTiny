@@ -1,8 +1,11 @@
 package asint;
 
 import Procesamientos.IProcesamientoAM;
+import Procesamientos.IProcesamientoE;
+import Procesamientos.IProcesamientoGDC;
 import Procesamientos.IProcesamientoT;
 import Procesamientos.IProcesamientoV;
+import Procesamientos.ProcesamientoAEspacio;
 import Procesamientos.ProcesamientoVinculacion;
 
 public class SintaxisAbstractaTiny {
@@ -49,13 +52,13 @@ public class SintaxisAbstractaTiny {
 			vinculo=v;
 		}
 		//DEcorar el arbol tipos
-		private Tipo tipo; //ok es True
+		private Tipo tipo; 
 		public Tipo getTipo() {
 			return tipo;
 		}
 		
 		
-		public void setTipo(Tipo_array t) {
+		/*public void setTipo(Tipo_array t) {
 			tipo=t;
 		}
 		public void setTipo(Tipo_registro t) {
@@ -88,13 +91,13 @@ public class SintaxisAbstractaTiny {
 		
 		public void setTipo(Tipo t) {
 			tipo=t;
-		}
+		}*/
 	
 		
 		//DEcorar el arbol espacio
-		private int dir;
-		private int tam;
-		private int nivel;
+		private int dir = 0;
+		private int tam = 0;
+		private int nivel = 0;
 		public int getDir() {
 			return dir;
 		}
@@ -116,6 +119,15 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		//decorar arbol etiquetado
+		private int prim = 0;
+		private int sig = 0;
+		
+		public void setPrim(int p) {prim = p;}
+		public int getPrim() {return prim;}
+		public void setSig(int s) {sig = s;}
+		public int getSig() {return sig;}
+		
+		
 		/*public abstract void vincula(IProcesamientoV p);
 		public abstract void vincula1(IProcesamientoV p);
 		public abstract void vincula2(IProcesamientoV p);
@@ -138,8 +150,12 @@ public class SintaxisAbstractaTiny {
 			throw new UnsupportedOperationException();
 		}
 
+
 		public abstract void vincula(IProcesamientoV p);
 		public abstract void asig_espacio(IProcesamientoAM p);
+		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 	}
 
 	public static abstract class Blq  extends Nodo{
@@ -170,6 +186,9 @@ public class SintaxisAbstractaTiny {
 		public abstract void vincula(IProcesamientoV p);
 		public abstract void asig_espacio(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
+
 
 
 	}
@@ -192,6 +211,10 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
+
+
 
 
 		}
@@ -222,6 +245,10 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
+
+
 
 	}
 
@@ -263,6 +290,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);		
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 		}
 
@@ -285,6 +314,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 		}
 
@@ -314,8 +345,10 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
-		}
+	}
 
 	public static abstract class ParamForm extends Dec {
 		/*protected Tipo tipo;
@@ -341,8 +374,10 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
-		}
+	}
 
 		
 	public static abstract class Tipo extends Nodo {
@@ -387,6 +422,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 		}
 
@@ -413,9 +450,11 @@ public class SintaxisAbstractaTiny {
 		
 		public abstract void vincula1(IProcesamientoV p);
 		public abstract void vincula2(IProcesamientoV p);
-		public abstract int asig_espacio1(IProcesamientoAM p);
+		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 	}
 
@@ -451,6 +490,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void asig_espacio1(IProcesamientoAM p);
 		public abstract void asig_espacio2(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 	}
 
@@ -471,6 +512,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void vincula(IProcesamientoV p);
 		public abstract void asig_espacio(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 	}
 
@@ -498,6 +541,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void vincula(IProcesamientoV p);
 		public abstract void asig_espacio(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 
 	}
@@ -559,6 +604,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void vincula(IProcesamientoV p);
 		public abstract void asig_espacio(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 
 	}
@@ -693,6 +740,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void vincula(IProcesamientoV p);
 		public abstract void asig_espacio(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 
 	}
@@ -714,6 +763,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void vincula(IProcesamientoV p);
 		public abstract void asig_espacio(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 
 
@@ -743,6 +794,8 @@ public class SintaxisAbstractaTiny {
 		public abstract void vincula(IProcesamientoV p);
 		public abstract void asig_espacio(IProcesamientoAM p);
 		public abstract void tipado(IProcesamientoT p);
+		public abstract void etiquetado(IProcesamientoE p);
+		public abstract void gen_codigo(IProcesamientoGDC p);
 
 
 	}
@@ -767,15 +820,28 @@ public class SintaxisAbstractaTiny {
 			p.vincula(this);
 			
 		}
-		
+
+		@Override
 		public void asig_espacio(IProcesamientoAM p) {
-			p.asig_espacio(this);
+			p.asig_espacio(this);;
 			
 		}
-		
 
+		@Override
 		public void tipado(IProcesamientoT p) {
-			p.tipado(this);
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 		
@@ -819,6 +885,17 @@ public class SintaxisAbstractaTiny {
 			
 		}
 
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	
 
 	}
@@ -841,18 +918,15 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -860,6 +934,15 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 
@@ -876,19 +959,16 @@ public class SintaxisAbstractaTiny {
 		}
 		
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 			
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -896,6 +976,15 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -919,24 +1008,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -944,6 +1029,15 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 		
@@ -964,24 +1058,20 @@ public class SintaxisAbstractaTiny {
 		
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -989,6 +1079,15 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1014,25 +1113,21 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1040,6 +1135,15 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 
@@ -1064,25 +1168,21 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1093,9 +1193,19 @@ public class SintaxisAbstractaTiny {
 			
 		}
 
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 
 	public static class Dec_proc extends Dec {
+		
 		public Dec_proc(String cadena, LOptParamForm lista_opt_parametros_formales, Blq bloque) {
 			super(cadena, lista_opt_parametros_formales, bloque);
 		}
@@ -1119,24 +1229,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1144,6 +1250,15 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 
@@ -1164,31 +1279,33 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
 
 		@Override
-		public void tipado(IProcesamientoT p) {
-			p.tipado(this);
+		public void tipado(IProcesamientoT p) {}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1204,31 +1321,33 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
 
 		@Override
-		public void tipado(IProcesamientoT p) {
-			p.tipado(this);
+		public void tipado(IProcesamientoT p) {}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1252,31 +1371,33 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
 
 		@Override
-		public void tipado(IProcesamientoT p) {
-			p.tipado(this);
+		public void tipado(IProcesamientoT p) {}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1296,31 +1417,33 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
 
 		@Override
-		public void tipado(IProcesamientoT p) {
-			p.tipado(this);
+		public void tipado(IProcesamientoT p) {}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1344,31 +1467,33 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
 
 		@Override
-		public void tipado(IProcesamientoT p) {
-			p.tipado(this);
+		public void tipado(IProcesamientoT p) {}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1392,31 +1517,33 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
 
 		@Override
-		public void tipado(IProcesamientoT p) {
-			p.tipado(this);
+		public void tipado(IProcesamientoT p) {}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1440,24 +1567,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1465,6 +1588,15 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1485,24 +1617,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1510,6 +1638,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1525,24 +1664,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1550,6 +1685,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1566,24 +1712,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1591,6 +1733,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1606,24 +1759,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1631,6 +1780,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -1647,24 +1807,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
-		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
+		public void asig_espacio2(IProcesamientoAM p) {			
 			p.asig_espacio2(this);
 			
 		}
@@ -1672,6 +1828,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1690,24 +1857,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1715,6 +1878,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1733,24 +1907,20 @@ public class SintaxisAbstractaTiny {
 		}
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1758,6 +1928,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 	
@@ -1793,6 +1974,19 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			throw new UnsupportedOperationException();
 		}
+
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			throw new UnsupportedOperationException();
+		}		
+
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 	
 	public static class Error_t extends Tipo {
@@ -1826,6 +2020,20 @@ public class SintaxisAbstractaTiny {
 		}
 		public void tipado(IProcesamientoT p) {
 			throw new UnsupportedOperationException();
+		}
+
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			throw new UnsupportedOperationException();
+		}		
+		
+
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 		
@@ -1861,6 +2069,19 @@ public class SintaxisAbstractaTiny {
 			public void tipado(IProcesamientoT p) {
 				throw new UnsupportedOperationException();
 			}
+
+
+			@Override
+			public void etiquetado(IProcesamientoE p) {
+				
+			}		
+
+
+			@Override
+			public void gen_codigo(IProcesamientoGDC p) {
+				// TODO Auto-generated method stub
+				
+			}
 		}
 
 	public static class Muchas_lista_param_reg extends LParamReg {
@@ -1882,24 +2103,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
-		public int asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			return p.asig_espacio1(this);
+		public void asig_espacio1(IProcesamientoAM p) {
+			 p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1907,6 +2124,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1925,24 +2153,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 		
-		public int asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			return p.asig_espacio1(this);
+		public void asig_espacio1(IProcesamientoAM p) {
+			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1950,6 +2174,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -1972,24 +2207,20 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula1(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula1(this);
 		}
 
 		@Override
 		public void vincula2(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula2(this);
 		}
 
 		public void asig_espacio1(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio1(this);
 			
 		}
 		
 		public void asig_espacio2(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio2(this);
 			
 		}
@@ -1997,6 +2228,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2015,12 +2257,10 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 		
 		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio(this);
 			
 		}
@@ -2028,6 +2268,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 		
@@ -2044,12 +2295,10 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 		
 		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio(this);
 			
 		}
@@ -2057,6 +2306,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2079,12 +2339,10 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 		
 		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio(this);
 			
 		}
@@ -2092,6 +2350,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2110,12 +2379,10 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 		
 		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio(this);
 			
 		}
@@ -2123,6 +2390,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2141,12 +2419,10 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
 		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
 			p.asig_espacio(this);
 			
 		}
@@ -2155,6 +2431,17 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
 			
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -2200,6 +2487,17 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
 		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Si_else extends Blq {
@@ -2234,6 +2532,17 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
 		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class No_else extends Blq {
@@ -2258,7 +2567,13 @@ public class SintaxisAbstractaTiny {
 		}
 
 		@Override
-		public void tipado(IProcesamientoT p) {
+		public void tipado(IProcesamientoT p) {}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -2300,6 +2615,17 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
 		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Inst_read extends Inst {
@@ -2330,6 +2656,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2362,6 +2699,17 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
 		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Inst_nl extends Inst {
@@ -2388,6 +2736,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2420,6 +2779,17 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
 		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Inst_delete extends Inst {
@@ -2450,6 +2820,17 @@ public class SintaxisAbstractaTiny {
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2490,6 +2871,17 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
 		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Inst_comp extends Inst {
@@ -2524,6 +2916,17 @@ public class SintaxisAbstractaTiny {
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
 		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public static class Asignacion extends Exp {
@@ -2554,15 +2957,22 @@ public class SintaxisAbstractaTiny {
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2590,19 +3000,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -2635,15 +3051,22 @@ public class SintaxisAbstractaTiny {
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2671,19 +3094,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2711,19 +3140,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2751,19 +3186,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
@@ -2792,19 +3233,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2832,19 +3279,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2871,19 +3324,25 @@ public class SintaxisAbstractaTiny {
 		}
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2911,19 +3370,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2951,19 +3416,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -2991,19 +3462,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3031,19 +3508,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3071,19 +3554,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3107,19 +3596,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3142,24 +3637,31 @@ public class SintaxisAbstractaTiny {
 		}
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
 		}
 
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 
 	public static class Indexacion extends Exp {
+		
 		public Indexacion(Exp op1, Exp op2) {
 			super(op1, op2);
 		}
@@ -3184,19 +3686,25 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			//TODO
+			
 		}
 	}
 
@@ -3224,19 +3732,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3260,19 +3775,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3296,19 +3818,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3332,19 +3861,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3364,19 +3900,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3396,19 +3939,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3428,19 +3978,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3464,19 +4021,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3500,19 +4064,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3531,19 +4102,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 		
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3558,19 +4136,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 		
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3593,19 +4178,26 @@ public class SintaxisAbstractaTiny {
 
 		@Override
 		public void vincula(IProcesamientoV p) {
-			// TODO Auto-generated method stub
 			p.vincula(this);
 		}
 		
-		public void asig_espacio(IProcesamientoAM p) {
-			// TODO Auto-generated method stub
-			p.asig_espacio(this);
-			
-		}
+		public void asig_espacio(IProcesamientoAM p) {}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -3630,13 +4222,24 @@ public class SintaxisAbstractaTiny {
 		
 		public void asig_espacio(IProcesamientoAM p) {
 			// TODO Auto-generated method stub
-			p.asig_espacio(this);
 			
 		}
 
 		@Override
 		public void tipado(IProcesamientoT p) {
 			p.tipado(this);			
+		}
+
+		@Override
+		public void etiquetado(IProcesamientoE p) {
+			p.etiquetado(this);				
+			
+		}
+
+		@Override
+		public void gen_codigo(IProcesamientoGDC p) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 

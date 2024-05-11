@@ -150,7 +150,7 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 		nivel--;
 	}
 
-	@Override
+	
 	public void asig_espacio1(Si_lista_opt_param_form p) {
 		// TODO Auto-generated method stub
 		p.lista_parametros_formales().asig_espacio1(this);
@@ -232,14 +232,7 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 		// TODO Auto-generated method stub
 		p.setTam(1);
 	}
-
-	@Override
-	public void asig_espacio1(Tipo_registro p) {
-		// TODO Auto-generated method stub
-		p.lista_parametros_registro().asig_espacio1(this);
-		p.setTam(p.lista_parametros_registro().getTam()); //Tuve que poner que LParamReg extienede de Nodo
-	}
-
+	
 	@Override
 	public void asig_espacio1(Tipo_definido p) {
 		// TODO Auto-generated method stub
@@ -248,27 +241,55 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 	}
 
 	@Override
-	public int asig_espacio1(Muchas_lista_param_reg p) {
+	public void asig_espacio1(Tipo_registro p) {
 		// TODO Auto-generated method stub
+		int dir_ant=dir;
+		dir =0;
+		p.lista_parametros_registro().asig_espacio1(this);
+		p.setTam(dir);
+		dir=dir_ant;
+		
+		/* Asi lo teniamos
+		p.lista_parametros_registro().asig_espacio1(this);
+		p.setTam(p.lista_parametros_registro().getTam()); //Tuve que poner que LParamReg extienede de Nodo
+	*/
+	}
+
+	
+
+	@Override
+	public void asig_espacio1(Muchas_lista_param_reg p) {
+		// TODO Auto-generated method stub
+		p.lista_parametros_registro().asig_espacio1(this);
+		p.parametro_registro().asig_espacio1(this);
+		
+		
+		/* Asi lo teniamos
 		int d=p.lista_parametros_registro().asig_espacio1(this);
 		p.parametro_registro().asig_espacio1(this);
 		p.parametro_registro().setDesp(d);
-		return d+p.parametro_registro().getTam();
+		return d+p.parametro_registro().getTam();*/
 	}
 
 	@Override
-	public int asig_espacio1(Una_lista_param_reg p) {
+	public void asig_espacio1(Una_lista_param_reg p) {
 		// TODO Auto-generated method stub
 		p.parametro_registro().asig_espacio1(this);
+		
+		/*p.parametro_registro().asig_espacio1(this);
 		p.parametro_registro().setDesp(0);
-		return p.parametro_registro().getTam();
+		return p.parametro_registro().getTam();*/
 	}
 
 	@Override
 	public void asig_espacio1(Param_reg p) {
 		// TODO Auto-generated method stub
+		p.setDesp(dir);
 		p.tipo().asig_espacio1(this);
-		p.setTam(p.tipo().getTam());
+		dir+=p.tipo().getTam();
+		
+		/*p.tipo().asig_espacio1(this);
+		p.setTam(p.tipo().getTam());*/
 	}
 
 	@Override
@@ -361,7 +382,7 @@ public class ProcesamientoAEspacio implements IProcesamientoAM{
 	public void asig_espacio2(Tipo_puntero p) {
 		// TODO Auto-generated method stub
 		/*if(p.tipo()==tipo_definido(id)) {
-			p.tipo().getVinculo()=dec_tipo(T’,id);
+			p.tipo().getVinculo()=dec_tipo(T�,id);
 			p.tipo().setTam(p.tipo().tipo().getTam());???????
 		}*/
 	}

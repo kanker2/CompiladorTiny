@@ -1,18 +1,23 @@
 package Main;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import Procesamientos.*;
 import asint.SintaxisAbstractaTiny.ProgT;
 import c_ast_ascendente.alex.*;
 import c_ast_ascendente.asint.*;
 import c_ast_ascendente.errors.*;
+import c_ast_ascendente.errors.GestionErroresTiny.ErrorLexico;
+import c_ast_ascendente.errors.GestionErroresTiny.ErrorSintactico;
 import c_ast_descendente.asint.*;
 
 public class main {
 
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		Reader input = new InputStreamReader(new FileInputStream(args[0]));
 		String op = args[1];
@@ -47,16 +52,16 @@ public class main {
 		EtiquetadoVisitante p4 = new EtiquetadoVisitante();
 		GDCVisitante p5 = new GDCVisitante();
 		
-		//1º proceso de vinculacion con exito
+		//1� proceso de vinculacion con exito
 		p1.vincula(prog);
 		//Hay que comprobrar que no hay errores para continuar
-		//2º proceso de vinculacion con exito
+		//2� proceso de vinculacion con exito
 		p2.asig_espacio(prog);
-		//3º proceso de vinculacion con exito
+		//3� proceso de vinculacion con exito
 		
-		//4º proceso de vinculacion con exito
+		//4� proceso de vinculacion con exito
 		
-		//5º proceso de vinculacion con exito
+		//5� proceso de vinculacion con exito
 	}
 
 }

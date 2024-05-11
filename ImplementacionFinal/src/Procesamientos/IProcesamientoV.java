@@ -180,4 +180,8 @@ public interface IProcesamientoV {
 	void inserta(Map<String, Dec> ts, String id, Dec dec);
 	Dec vinculoDe(Map<String, Dec> ts, String id);
 	
+
+	
+	
+	
 }

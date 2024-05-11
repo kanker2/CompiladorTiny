@@ -2,7 +2,6 @@ package Procesamientos;
 
 import asint.SintaxisAbstractaTiny.*;
 
-
 public interface IProcesamientoT{
 	
 	void tipado(Prog_tiny p);
@@ -79,9 +78,12 @@ public interface IProcesamientoT{
 	void tipado(Iden p);
 	boolean compatibles(Tipo t1,Tipo T2);
 	boolean compatibles_registro(LParamReg l1, LParamReg l2);
-	boolean compatibles_proc(LParam lp, LParamForm lpf);
+	//boolean compatibles_registro(Muchas_lista_param_reg l1, Muchas_lista_param_reg l2);
+	boolean compatibles_registro(Una_lista_param_reg l1, Una_lista_param_reg l2);
+	boolean compatibles_registro(ParamReg l1, ParamReg l2);
+	//boolean compatibles_proc(LParam lp, LParamForm lpf);
 	boolean es_designador(Exp e);
-	boolean ambos_ok(Tipo T0,Tipo T1);
+	Tipo ambos_ok(Tipo T0,Tipo T1);
 	
 	
 }

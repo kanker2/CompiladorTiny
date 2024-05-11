@@ -98,8 +98,8 @@ public interface IProcesamientoAM {
 	void asig_espacio1(String_t p);
 	void asig_espacio1(Tipo_registro p);
 	void asig_espacio1(Tipo_definido p);
-	int asig_espacio1(Muchas_lista_param_reg p);
-	int asig_espacio1(Una_lista_param_reg p);
+	void asig_espacio1(Muchas_lista_param_reg p);
+	void asig_espacio1(Una_lista_param_reg p);
 	void asig_espacio1(Param_reg p);
 	////Segunda Vuelta
 	void asig_espacio2(Si_lista_opt_decs p);
