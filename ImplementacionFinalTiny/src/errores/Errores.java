@@ -14,7 +14,7 @@ public class Errores {
 	}
 	
 	public void traza() {
-		errs.forEach(x -> { System.out.println(x); });
+		errs.forEach(x -> { System.out.println(x.getMotivo()); });
 	}
 	
 	public boolean hayError() {
