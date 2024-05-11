@@ -1245,27 +1245,27 @@ public class MaquinaP {
 	public void mostrarInstrucciones() {
 		System.out.println("CodigoP:");
 		for (int i = 0; i < codigoP.size(); i++) {
-			System.out.println("<" + (i + 1) + ">" + ":" + codigoP.get(i));
+			System.out.println("<" + i + ">" + ":" + codigoP.get(i));
 		}
 	}
 
 	public void mostrarEstadoMaquinaP() {
 		System.out.println("PC:" + pc);
 		
-		System.out.println("Datos");
+		System.out.println("Memoria de Datos:");
 		for (int i = 0; i < datos.length; i++) {
-			System.out.println("<" + (i + 1) + ">" + ":" + datos[i]);
+			System.out.println("<" + i + ">" + ":" + datos[i]);
 		}
 
 		System.out.println("Pila de evaluacion:");
 		for (int i = 0; i < pilaEvaluacion.size(); i++) {
-			System.out.println("<" + (i + 1) + ">" + ":" + pilaEvaluacion.get(i));
+			System.out.println("<" + i + ">" + ":" + pilaEvaluacion.get(i));
 		}
 		
 		System.out.println("Displays:");
 		for (int i = 1; i <= num_display; i++)
 			System.out.println("<" + i+ ">" + ":" + gestorPilaActivaciones.valorDisplay(i));
-		System.out.println("------------------");
+		System.out.println("-----------------");
 	}
 
 	public static void main(String[] args) {
@@ -1276,7 +1276,7 @@ public class MaquinaP {
 //	       x = v
 //	       }
 //	       store(5)
-	            	       
+	       
 	       m.emit(m.activa(1,1,8));
 	       m.emit(m.dup());
 	       m.emit(m.apila_int(0));
@@ -1292,7 +1292,7 @@ public class MaquinaP {
 	       m.emit(m.suma_int());
 	       m.emit(m.copia(1));
 	       m.emit(m.desactiva(1,1));
-	       m.emit(m.ir_ind());
+			m.emit(m.ir_ind());
 	       m.ejecuta();
 
 	   }
