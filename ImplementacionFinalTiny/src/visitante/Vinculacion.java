@@ -1,13 +1,9 @@
 package visitante;
 
 import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 import asint.SintaxisAbstractaTiny.Nodo;
 import asint.SintaxisAbstractaTiny.Acc_reg;
@@ -88,13 +84,11 @@ import errores.VinculacionIdentificadorNoDefinido;
 public class Vinculacion extends ProcesamientoDef {
 	
 	private TablaDeSimbolosAnidados ts; 
-	private boolean primeraPasada;
 	private SimbolosRegistroAnidados sr;
 	private Errores errores;
 	
 	public Vinculacion(Errores e) {
 		ts = new TablaDeSimbolosAnidados();
-		primeraPasada = true;
 		sr = new SimbolosRegistroAnidados();
 		errores = e;
 	}
