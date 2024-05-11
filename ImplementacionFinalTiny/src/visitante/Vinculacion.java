@@ -231,7 +231,6 @@ public class Vinculacion extends ProcesamientoDef {
 		ts.iniPrimeraPasada();
 		p.lista_declaraciones().procesa(this);
 		ts.finPrimeraPasada();
-		primeraPasada = false;
 		//vincula2
 		p.lista_declaraciones().procesa(this);
 	}
@@ -537,12 +536,11 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Inst_call p) {
-		if(ts.contiene(p.cadena())) {
-			ts.vincular(p, p.cadena());
-			p.lista_opt_parametros().procesa(this);
-		}
-		else
+		ts.vincular(p, p.cadena());
+		if (p.vinculo == null) {
 			errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
+			return;
+		}
 	}
 
 	@Override
