@@ -1,20 +1,23 @@
 package errores;
 
-import java.util.Stack;
+import java.util.ArrayList;
 
 public class Errores {
-	Stack<Error> errs;
+	ArrayList<Error> errs;
 	
 	public Errores() {
-		errs = new Stack<Error>();
+		errs = new ArrayList<Error>();
 	}
 	
 	public void nuevoError(Error e) {
-		errs.push(e);
+		errs.add(e);
 	}
 	
 	public void traza() {
-		while(!errs.isEmpty())
-			System.err.println(errs.pop().getMotivo());
+		errs.forEach(x -> { System.out.println(x); });
+	}
+	
+	public boolean hayError() {
+		return !errs.isEmpty();
 	}
 }
