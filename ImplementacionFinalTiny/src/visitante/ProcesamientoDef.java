@@ -73,6 +73,12 @@ import asint.SintaxisAbstractaTiny.Una_lista_param_form;
 import asint.SintaxisAbstractaTiny.Una_lista_param_reg;
 
 public class ProcesamientoDef implements Procesamiento {
+	
+	public boolean verbose;
+	
+	ProcesamientoDef(){
+		verbose = false;
+	}
 
 	@Override
 	public void procesa(Prog_tiny p) {

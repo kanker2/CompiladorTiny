@@ -156,7 +156,8 @@ public class Vinculacion extends ProcesamientoDef {
 		
 		public void vincular(Nodo p, String id) {
 			p.vinculo = vinculoDe(id);
-			System.out.println("Vinculando '"+p+"' a simbolo "+p.vinculo);
+			if (verbose)
+				System.out.println("Vinculando '"+p+"' a simbolo "+p.vinculo);
 		}
 		
 		public boolean contiene(String id) {
@@ -175,7 +176,8 @@ public class Vinculacion extends ProcesamientoDef {
 				errores.nuevoError(new VinculacionIdentificadorDuplicado(p));
 			else {
 				inserta(id, p);
-				System.out.println("Insertando '"+id+"' de:\nf:"+p.leeFila()+";c:"+p.leeCol()+" en la Tabla de Simbolos");
+				if (verbose)
+					System.out.println("Insertando '"+id+"' de:\nf:"+p.leeFila()+";c:"+p.leeCol()+" en la Tabla de Simbolos");
 			}
 		}
 	
@@ -209,6 +211,8 @@ public class Vinculacion extends ProcesamientoDef {
 	@Override
 	public void procesa(Prog_tiny p) {
 		p.bloque().procesa(this);
+		if ( errores.hayError() )
+			errores.traza();
 	}
 
 	@Override
