@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class GestorPilaActivaciones {
 	private int dir_ini; 
 	private int dir_fin;
-	private ArrayList<Integer> Displays; 
+	private int[] Displays; 
 	
 	public static class DesbordamientoPilaException extends Exception{
 		
@@ -17,16 +17,16 @@ public class GestorPilaActivaciones {
 	public GestorPilaActivaciones(int ini, int fin, int num_displays) {
 		this.dir_ini = ini;
 		this.dir_fin = fin;
-		this.Displays = new ArrayList<>(num_displays);
+		this.Displays = new int[num_displays];
 	}
 			
 	// Operaciones sobre Displays
 	public void setValorDisplay(int nivel, int val) {
-		Displays.set(nivel-1, val);
+		Displays[nivel-1] = val;
 	}
 	
 	public int valorDisplay(int nivel) {
-		return Displays.get(nivel-1);
+		return Displays[nivel-1];
 	}
 	
 	// Operaciones sobre Registros de Activacion

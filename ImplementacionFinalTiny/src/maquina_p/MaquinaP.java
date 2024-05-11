@@ -1,5 +1,6 @@
 package maquina_p;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
@@ -14,6 +15,10 @@ public class MaquinaP {
 	private int pc; // contador del programa
 	private GestorMemoriaDinamica gestorMemoriaDinamica;
 	private GestorPilaActivaciones gestorPilaActivaciones;
+	private int tamEstatico; // Numero de celdas de la memeoria estatica
+	private int tamPila; // Numero de celdas para la pila de registro de activacion
+	private int tamMemDin; // Numero de celdas para la memoria dinamica
+	private int num_display; // Numero de displays
 
 	public static class EAccesoIlegitimo extends RuntimeException {
 	}
@@ -176,18 +181,14 @@ public class MaquinaP {
 		};
 	}
 
-	private class IDesapilaCima implements Instruccion {
-
-		public IDesapilaCima() {
-		}
-
+	private class IDesapila implements Instruccion {
 		public void ejecuta() {
 			pilaEvaluacion.pop();
 			pc++;
 		}
 
 		public String toString() {
-			return "desapilaCima";
+			return "desapila";
 		};
 	}
 
@@ -1078,7 +1079,19 @@ public class MaquinaP {
 			return "irV";
 		}
 	}
-	
+
+	private class IrInd implements Instruccion {
+
+		public void ejecuta() {
+			int d = pilaEvaluacion.pop().valorInt();
+			pc = d;
+		}
+
+		public String toString() {
+			return "ir-ind()";
+		}
+	}
+
 	private class IStop implements Instruccion {
 
 		public void ejecuta() {
@@ -1088,6 +1101,452 @@ public class MaquinaP {
 		public String toString() {
 			return "Stop";
 		}
+	}
+
+	private IApilaInt IAPILAINT;
+	private IApilaReal IAPILAREAL;
+	private IApilaBool IAPILABOOL;
+	private IApilaString IAPILASTRING;
+	private IDesapila IDESAPILA;
+	private IDesapilaEscribe IDESAPILAE;
+	private IReadInt IREADINT;
+	private IReadReal IREADREAL;
+	private IReadBool IREADBOOL;
+	private IReadString IREADSTRING;
+	private ISumaInt ISUMAINT;
+	private ISumaReal ISUMAREAL;
+	private IRestaInt IRESTAINT;
+	private IRestaReal IRESTAREAL;
+	private IMultInt IMULTINT;
+	private IMultReal IMULTREAL;
+	private IDivInt IDIVINT;
+	private IDivReal IDIVREAL;
+	private IAnd IAND;
+	private IOr IOR;
+	private IMod IMOD;
+	private IMenosUnarioInt IMENOSUNARIOINT;
+	private IMenosUnarioReal IMENOSUNARIOREAL;
+	private IMayorInt IMAYORINT;
+	private IMayorReal IMAYORREAL;
+	private IMayorBool IMAYORBOOL;
+	private IMayorString IMAYORSTRING;
+	private IMayorIgualInt IMAYORIGUALINT;
+	private IMayorIgualReal IMAYORIGUALREAL;
+	private IMayorIgualBool IMAYORIGUALBOOL;
+	private IMayorIgualString IMAYORIGUALSTRING;
+	private IMenorInt IMENORINT;
+	private IMenorReal IMENORREAL;
+	private IMenorBool IMENORBOOL;
+	private IMenorString IMENORSTRING;
+	private IMenorIgualInt IMENORIGUALINT;
+	private IMenorIgualReal IMENORIGUALREAL;
+	private IMenorIgualBool IMENORIGUALBOOL;
+	private IMenorIgualString IMENORIGUALSTRING;
+	private IComparacionInt ICOMPARACIONINT;
+	private IComparacionReal ICOMPARACIONREAL;
+	private IComparacionBool ICOMPARACIONBOOL;
+	private IComparacionString ICOMPARACIONSTRING;
+	private IDistintoInt IDISTINTOINT;
+	private IDistintoReal IDISTINTOREAL;
+	private IDistintoBool IDISTINTOBOOL;
+	private IDistintoString IDISTINTOSTRING;
+	private IInt2Real IINT2REAL;
+	private IDup IDUP;
+	private ICopia ICOPIA;
+	private IAlloc IALLOC;
+	private IDealloc IDEALLOC;
+	private IApilaInd IAPILAIND;
+	private IDesapilaInd IDESAPILAIND;
+	private IActiva IACTIVA;
+	private IDesactiva IDESACTIVA;
+	private IApilad IAPILAD;
+	private IDesapilad IDESAPILAD;
+	private IrV IRV;
+	private IrF IRF;
+	private IrA IRA;
+	private IrInd IRIND;
+	private IStop ISTOP;
+
+	public MaquinaP(int tamEstatico, int tamPila, int tamMemDin, int num_display) {
+		this.tamEstatico = tamEstatico;
+		this.tamPila = tamPila;
+		this.tamMemDin = tamMemDin;
+		this.num_display = num_display;
+		this.codigoP = new ArrayList<>();
+		this.pilaEvaluacion = new Stack<>();
+		this.datos = new Valor[tamEstatico + tamPila + tamMemDin];
+		this.pc = 0;
+		this.gestorPilaActivaciones = new GestorPilaActivaciones(tamEstatico, tamEstatico + tamPila - 1, num_display);
+		this.gestorMemoriaDinamica = new GestorMemoriaDinamica(tamEstatico + tamPila,
+				tamEstatico + tamPila + tamMemDin - 1);
+
+		IDESAPILA = new IDesapila();
+		IDESAPILAE = new IDesapilaEscribe();
+		IREADINT = new IReadInt();
+		IREADREAL = new IReadReal();
+		IREADBOOL = new IReadBool();
+		IREADSTRING = new IReadString();
+		ISUMAINT = new ISumaInt();
+		ISUMAREAL = new ISumaReal();
+		IRESTAINT = new IRestaInt();
+		IRESTAREAL = new IRestaReal();
+		IMULTINT = new IMultInt();
+		IMULTREAL = new IMultReal();
+		IDIVINT = new IDivInt();
+		IDIVREAL = new IDivReal();
+		IAND = new IAnd();
+		IOR = new IOr();
+		IMOD = new IMod();
+		IMENOSUNARIOINT = new IMenosUnarioInt();
+		IMENOSUNARIOREAL = new IMenosUnarioReal();
+		IMAYORINT = new IMayorInt();
+		IMAYORREAL = new IMayorReal();
+		IMAYORBOOL = new IMayorBool();
+		IMAYORSTRING = new IMayorString();
+		IMAYORIGUALINT = new IMayorIgualInt();
+		IMAYORIGUALREAL = new IMayorIgualReal();
+		IMAYORIGUALBOOL = new IMayorIgualBool();
+		IMAYORIGUALSTRING = new IMayorIgualString();
+		IMENORINT = new IMenorInt();
+		IMENORREAL = new IMenorReal();
+		IMENORBOOL = new IMenorBool();
+		IMENORSTRING = new IMenorString();
+		IMENORIGUALINT = new IMenorIgualInt();
+		IMENORIGUALREAL = new IMenorIgualReal();
+		IMENORIGUALBOOL = new IMenorIgualBool();
+		IMENORIGUALSTRING = new IMenorIgualString();
+		ICOMPARACIONINT = new IComparacionInt();
+		ICOMPARACIONREAL = new IComparacionReal();
+		ICOMPARACIONBOOL = new IComparacionBool();
+		ICOMPARACIONSTRING = new IComparacionString();
+		IDISTINTOINT = new IDistintoInt();
+		IDISTINTOREAL = new IDistintoReal();
+		IDISTINTOBOOL = new IDistintoBool();
+		IDISTINTOSTRING = new IDistintoString();
+		IINT2REAL = new IInt2Real();
+		IDUP = new IDup();
+		IAPILAIND = new IApilaInd();
+		IDESAPILAIND = new IDesapilaInd();
+		IRIND = new IrInd();
+		ISTOP = new IStop();
+	}
+
+	public void emit(Instruccion inst) {
+		this.codigoP.add(inst);
+	}
+
+	public void ejecuta() {
+		while (pc != codigoP.size()) {
+			codigoP.get(pc).ejecuta();
+			mostrarEstadoMaquinaP();
+		}
+	}
+
+	public void mostrarInstrucciones() {
+		System.out.println("CodigoP:");
+		for (int i = 0; i < codigoP.size(); i++) {
+			System.out.println("<" + (i + 1) + ">" + ":" + codigoP.get(i));
+		}
+	}
+
+	public void mostrarEstadoMaquinaP() {
+		System.out.println("PC:" + pc);
+		
+		System.out.println("Datos");
+		for (int i = 0; i < datos.length; i++) {
+			System.out.println("<" + (i + 1) + ">" + ":" + datos[i]);
+		}
+
+		System.out.println("Pila de evaluacion:");
+		for (int i = 0; i < pilaEvaluacion.size(); i++) {
+			System.out.println("<" + (i + 1) + ">" + ":" + pilaEvaluacion.get(i));
+		}
+		
+		System.out.println("Displays:");
+		for (int i = 1; i <= num_display; i++)
+			System.out.println("<" + i+ ">" + ":" + gestorPilaActivaciones.valorDisplay(i));
+		System.out.println("------------------");
+	}
+
+	public static void main(String[] args) {
+	       MaquinaP m = new MaquinaP(5,10,10,2);
+	        
+//	       int x;
+//	       proc store(int v) {
+//	       x = v
+//	       }
+//	       store(5)
+	            	       
+	       m.emit(m.activa(1,1,8));
+	       m.emit(m.dup());
+	       m.emit(m.apila_int(0));
+	       m.emit(m.suma_int());
+	       m.emit(m.apila_int(5));
+	       m.emit(m.desapila_ind());
+	       m.emit(m.desapilad(1));
+	       m.emit(m.ir_a(9));
+	       m.emit(m.stop());
+	       m.emit(m.apila_int(0));
+	       m.emit(m.apilad(1));
+	       m.emit(m.apila_int(0));
+	       m.emit(m.suma_int());
+	       m.emit(m.copia(1));
+	       m.emit(m.desactiva(1,1));
+	       m.emit(m.ir_ind());
+	       m.ejecuta();
+
+	   }
+
+	public Instruccion apila_int(int n) {
+		return new IApilaInt(n);
+	}
+
+	public Instruccion apila_real(float n) {
+		return new IApilaReal(n);
+	}
+
+	public Instruccion apila_bool(boolean n) {
+		return new IApilaBool(n);
+	}
+
+	public Instruccion apila_String(String n) {
+		return new IApilaString(n);
+	}
+
+	public Instruccion desapila() {
+		return IDESAPILA;
+	}
+
+	public Instruccion desapila_escribe() {
+		return IDESAPILAE;
+	}
+
+	public Instruccion read_int() {
+		return IREADINT;
+	}
+
+	public Instruccion read_real() {
+		return IREADREAL;
+	}
+
+	public Instruccion read_bool() {
+		return IREADBOOL;
+	}
+
+	public Instruccion read_string() {
+		return IREADSTRING;
+	}
+
+	public Instruccion suma_int() {
+		return ISUMAINT;
+	}
+
+	public Instruccion suma_real() {
+		return ISUMAREAL;
+	}
+
+	public Instruccion resta_int() {
+		return IRESTAINT;
+	}
+
+	public Instruccion resta_real() {
+		return IRESTAREAL;
+	}
+
+	public Instruccion mult_int() {
+		return IMULTINT;
+	}
+
+	public Instruccion mult_real() {
+		return IMULTREAL;
+	}
+
+	public Instruccion div_int() {
+		return IDIVINT;
+	}
+
+	public Instruccion div_real() {
+		return IDIVREAL;
+	}
+
+	public Instruccion and() {
+		return IAND;
+	}
+
+	public Instruccion or() {
+		return IOR;
+	}
+
+	public Instruccion mod() {
+		return IMOD;
+	}
+
+	public Instruccion menosUnario_int() {
+		return IMENOSUNARIOINT;
+	}
+
+	public Instruccion menosUnario_real() {
+		return IMENOSUNARIOREAL;
+	}
+
+	public Instruccion mayor_int() {
+		return IMAYORINT;
+	}
+
+	public Instruccion mayor_real() {
+		return IMAYORREAL;
+	}
+
+	public Instruccion mayor_bool() {
+		return IMAYORBOOL;
+	}
+
+	public Instruccion mayor_string() {
+		return IMAYORSTRING;
+	}
+
+	public Instruccion mayorIgual_int() {
+		return IMAYORIGUALINT;
+	}
+
+	public Instruccion mayorIgual_real() {
+		return IMAYORIGUALREAL;
+	}
+
+	public Instruccion mayorIgual_bool() {
+		return IMAYORIGUALBOOL;
+	}
+
+	public Instruccion mayorIgual_string() {
+		return IMAYORIGUALSTRING;
+	}
+
+	public Instruccion menor_int() {
+		return IMENORINT;
+	}
+
+	public Instruccion menor_real() {
+		return IMENORREAL;
+	}
+
+	public Instruccion menor_bool() {
+		return IMENORBOOL;
+	}
+
+	public Instruccion menor_string() {
+		return IMENORSTRING;
+	}
+
+	public Instruccion menorIgual_int() {
+		return IMENORIGUALINT;
+	}
+
+	public Instruccion menorIgual_real() {
+		return IMENORIGUALREAL;
+	}
+
+	public Instruccion menorIgual_bool() {
+		return IMENORIGUALBOOL;
+	}
+
+	public Instruccion menorIgual_string() {
+		return IMENORIGUALSTRING;
+	}
+
+	public Instruccion comparacion_int() {
+		return ICOMPARACIONINT;
+	}
+
+	public Instruccion comparacion_real() {
+		return ICOMPARACIONREAL;
+	}
+
+	public Instruccion comparacion_bool() {
+		return ICOMPARACIONBOOL;
+	}
+
+	public Instruccion comparacion_string() {
+		return ICOMPARACIONSTRING;
+	}
+
+	public Instruccion distinto_int() {
+		return IDISTINTOINT;
+	}
+
+	public Instruccion distinto_real() {
+		return IDISTINTOREAL;
+	}
+
+	public Instruccion distinto_bool() {
+		return IDISTINTOBOOL;
+	}
+
+	public Instruccion distinto_string() {
+		return IDISTINTOSTRING;
+	}
+
+	public Instruccion int2real() {
+		return IINT2REAL;
+	}
+
+	public Instruccion dup() {
+		return IDUP;
+	}
+
+	public Instruccion apila_ind() {
+		return IAPILAIND;
+	}
+
+	public Instruccion desapila_ind() {
+		return IDESAPILAIND;
+	}
+
+	public Instruccion stop() {
+		return ISTOP;
+	}
+
+	public Instruccion copia(int n) {
+		return new ICopia(n);
+	}
+
+	public Instruccion alloc(int n) {
+		return new IAlloc(n);
+	}
+
+	public Instruccion dealloc(int n) {
+		return new IDealloc(n);
+	}
+
+	public Instruccion activa(int nivel, int tamDatos, int dir_ret) {
+		return new IActiva(nivel, tamDatos, dir_ret);
+	}
+
+	public Instruccion desactiva(int nivel, int tamDatos) {
+		return new IDesactiva(nivel, tamDatos);
+	}
+
+	public Instruccion apilad(int nivel) {
+		return new IApilad(nivel);
+	}
+
+	public Instruccion desapilad(int nivel) {
+		return new IDesapilad(nivel);
+	}
+
+	public Instruccion ir_v(int d) {
+		return new IrV(d);
+	}
+
+	public Instruccion ir_f(int d) {
+		return new IrF(d);
+	}
+
+	public Instruccion ir_a(int d) {
+		return new IrA(d);
+	}
+
+	public Instruccion ir_ind() {
+		return IRIND;
 	}
 
 }
