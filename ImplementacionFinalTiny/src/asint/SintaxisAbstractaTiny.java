@@ -1406,8 +1406,8 @@ public class SintaxisAbstractaTiny {
 			return expresion;
 		}
 
-		public Blq bloque() {
-			return bloque;
+		public Blq bloque1() {
+			return bloque1;
 		}
 		
 		@Override
@@ -1441,8 +1441,8 @@ public class SintaxisAbstractaTiny {
 			return expresion;
 		}
 
-		public Blq bloque() {
-			return bloque;
+		public Blq bloque1() {
+			return bloque1;
 		}
 
 		public Blq bloque2() {
