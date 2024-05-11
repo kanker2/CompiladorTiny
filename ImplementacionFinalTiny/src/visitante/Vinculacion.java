@@ -89,30 +89,33 @@ public class Vinculacion extends ProcesamientoDef {
 	
 	private TablaDeSimbolosAnidados ts; 
 	private boolean primeraPasada;
-	private SimbolosRegistro sr;
+	private SimbolosRegistroAnidados sr;
 	private Errores errores;
 	
 	public Vinculacion(Errores e) {
 		ts = new TablaDeSimbolosAnidados();
 		primeraPasada = true;
+		sr = new SimbolosRegistroAnidados();
 		errores = e;
 	}
 	
-	public class SimbolosRegistro {
-		private HashSet<String> ambito;
-		public void abreAmbitoRegistro() {
-			ambito = new HashSet<String>();
+	public class SimbolosRegistro extends HashSet<String>{}
+	
+	public class SimbolosRegistroAnidados extends ArrayDeque<SimbolosRegistro> {
+		public void abreRegistro() {
+			addFirst(new SimbolosRegistro());
 		}
-		public void cierraAmbitoRegistro() {
-			ambito = null;
+		
+		public void cierraRegistro() {
+			removeFirst();
 		}
 		
 		public boolean duplicadoRegistro(String id) {
-			return ambito.contains(id);
+			return getFirst().contains(id);
 		}
 		
 		public void apuntaRegistro(String id) {
-			ambito.add(id);
+			getFirst().add(id);
 		}
 	}
 	
@@ -128,7 +131,7 @@ public class Vinculacion extends ProcesamientoDef {
 			removeFirst();
 		}
 		
-		public Nodo vinculoDe(String id) {
+		private Nodo vinculoDe(String id) {
 			Iterator<TablaDeSimbolos> i = iterator();
 			while (i.hasNext()) {
 				TablaDeSimbolos tsCurrent = i.next();
@@ -136,6 +139,11 @@ public class Vinculacion extends ProcesamientoDef {
 					return tsCurrent.get(id);
 			}
 			return null;
+		}
+		
+		public void vincular(Nodo p, String id) {
+			p.vinculo = vinculoDe(id);
+			System.out.println("Vinculando '"+p+"' a simbolo "+p.vinculo);
 		}
 		
 		public boolean contiene(String id) {
@@ -152,8 +160,10 @@ public class Vinculacion extends ProcesamientoDef {
 			TablaDeSimbolos tsCurrent = getFirst();
 			if (contiene(id))
 				errores.nuevoError(new VinculacionIdentificadorDuplicado(p));
-			else
+			else {
 				inserta(id, p);
+				System.out.println("Insertando '"+id+"' de:\nf:"+p.leeFila()+";c:"+p.leeCol()+" en la Tabla de Simbolos");
+			}
 		}
 	}
 	
@@ -311,7 +321,7 @@ public class Vinculacion extends ProcesamientoDef {
 				p.tipo().procesa(this);
 		} else {				// vincula2
 			if (p.tipo().tipoDefinido()) {
-				p.tipo().vinculo = ts.vinculoDe(p.tipo().cadena());
+				ts.vincular(p.tipo(), p.tipo().cadena());
 				if (p.tipo().vinculo == null)
 					errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
 			} else {
@@ -359,9 +369,9 @@ public class Vinculacion extends ProcesamientoDef {
 	@Override
 	public void procesa(Tipo_registro p) {
 		if (primeraPasada) { 	// vincula1
-			sr.abreAmbitoRegistro();
+			sr.abreRegistro();
 			p.lista_parametros_registro().procesa(this);
-			sr.cierraAmbitoRegistro();
+			sr.cierraRegistro();
 		} else {				// vincula2
 			p.lista_parametros_registro().procesa(this);
 		}
@@ -402,8 +412,14 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Tipo_definido p) {
-		if (primeraPasada) { 	// vincula1
-		} else {				// vincula2
+		if (primeraPasada) {
+			ts.vincular(p, p.cadena());
+			if (p.vinculo == null) {
+				errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
+				return;
+			}
+		}
+		else {
 			/* noop */
 		}
 	}
@@ -477,7 +493,7 @@ public class Vinculacion extends ProcesamientoDef {
 	@Override
 	public void procesa(Inst_call p) {
 		if(ts.contiene(p.cadena())) {
-			p.vinculo = ts.vinculoDe(p.cadena());
+			ts.vincular(p, p.cadena());
 			p.lista_opt_parametros().procesa(this);
 		}
 		else
@@ -638,7 +654,7 @@ public class Vinculacion extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Iden p) {
-		p.vinculo = ts.vinculoDe(p.cadena());
+		ts.vincular(p, p.cadena());
 		if (p.vinculo == null) {
 			errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
 			return;
