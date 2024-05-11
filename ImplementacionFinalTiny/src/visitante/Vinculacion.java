@@ -365,7 +365,7 @@ public class Vinculacion extends ProcesamientoDef {
 			if (p.tipo().tipoDefinido()) {
 				ts.vincular(p.tipo(), p.tipo().cadena());
 				if (p.tipo().vinculo == null)
-					errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
+					errores.nuevoError(new VinculacionIdentificadorNoDefinido(p.tipo()));
 			} else {
 				p.tipo().procesa(this);
 			}

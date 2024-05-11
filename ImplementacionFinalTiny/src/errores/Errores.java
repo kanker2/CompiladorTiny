@@ -1,6 +1,7 @@
 package errores;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Errores {
 	ArrayList<Error> errs;
@@ -14,6 +15,8 @@ public class Errores {
 	}
 	
 	public void traza() {
+		errs.sort(Comparator.comparingInt(Error::getFila)
+							.thenComparingInt(Error::getColumna));
 		errs.forEach(x -> { System.out.println(x.getMotivo()); });
 	}
 	
