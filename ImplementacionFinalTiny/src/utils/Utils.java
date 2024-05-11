@@ -5,6 +5,7 @@ import asint.SintaxisAbstractaTiny.Exp;
 import asint.SintaxisAbstractaTiny.Iden;
 import asint.SintaxisAbstractaTiny.Indexacion;
 import asint.SintaxisAbstractaTiny.Indireccion;
+import asint.SintaxisAbstractaTiny.Int_t;
 import asint.SintaxisAbstractaTiny.Tipo;
 import asint.SintaxisAbstractaTiny.Tipo_definido;
 
@@ -19,5 +20,21 @@ public class Utils {
 		if (e instanceof Iden || e instanceof Indexacion || e instanceof Acc_reg || e instanceof Indireccion)
 			return true;
 		return false;
+	}
+	
+	static public boolean esEntero(Tipo t) {
+		return t instanceof Int_t;
+	}
+	
+	static public boolean esReal(Tipo t) {
+		return t instanceof Int_t;
+	}
+	
+	static public boolean esString(Tipo t) {
+		return t instanceof Int_t;
+	}
+	
+	static public boolean esTipoBasico(Tipo t) {
+		return esEntero(t) || esReal(t) || esString(t);
 	}
 }
