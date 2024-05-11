@@ -2,7 +2,71 @@ package visitante;
 
 import java.util.Stack;
 
-import asint.SintaxisAbstractaTiny.*;
+import asint.SintaxisAbstractaTiny.Acc_reg;
+import asint.SintaxisAbstractaTiny.And;
+import asint.SintaxisAbstractaTiny.Asignacion;
+import asint.SintaxisAbstractaTiny.Bloque;
+import asint.SintaxisAbstractaTiny.Cadena;
+import asint.SintaxisAbstractaTiny.Comparacion;
+import asint.SintaxisAbstractaTiny.Dec;
+import asint.SintaxisAbstractaTiny.Dec_proc;
+import asint.SintaxisAbstractaTiny.Dec_var;
+import asint.SintaxisAbstractaTiny.Distinto;
+import asint.SintaxisAbstractaTiny.Div;
+import asint.SintaxisAbstractaTiny.Exp;
+import asint.SintaxisAbstractaTiny.False_e;
+import asint.SintaxisAbstractaTiny.Iden;
+import asint.SintaxisAbstractaTiny.Indexacion;
+import asint.SintaxisAbstractaTiny.Indireccion;
+import asint.SintaxisAbstractaTiny.Inst_call;
+import asint.SintaxisAbstractaTiny.Inst_comp;
+import asint.SintaxisAbstractaTiny.Inst_delete;
+import asint.SintaxisAbstractaTiny.Inst_eval;
+import asint.SintaxisAbstractaTiny.Inst_if;
+import asint.SintaxisAbstractaTiny.Inst_if_else;
+import asint.SintaxisAbstractaTiny.Inst_new;
+import asint.SintaxisAbstractaTiny.Inst_nl;
+import asint.SintaxisAbstractaTiny.Inst_read;
+import asint.SintaxisAbstractaTiny.Inst_while;
+import asint.SintaxisAbstractaTiny.Inst_write;
+import asint.SintaxisAbstractaTiny.LDecs;
+import asint.SintaxisAbstractaTiny.LOptDecs;
+import asint.SintaxisAbstractaTiny.LOptParam;
+import asint.SintaxisAbstractaTiny.LOptParamForm;
+import asint.SintaxisAbstractaTiny.LParam;
+import asint.SintaxisAbstractaTiny.LParamForm;
+import asint.SintaxisAbstractaTiny.Lit_ent;
+import asint.SintaxisAbstractaTiny.Lit_real;
+import asint.SintaxisAbstractaTiny.Mayor;
+import asint.SintaxisAbstractaTiny.Mayor_igual;
+import asint.SintaxisAbstractaTiny.Menor;
+import asint.SintaxisAbstractaTiny.Menor_igual;
+import asint.SintaxisAbstractaTiny.Mod;
+import asint.SintaxisAbstractaTiny.Muchas_lista_decs;
+import asint.SintaxisAbstractaTiny.Muchas_lista_inst;
+import asint.SintaxisAbstractaTiny.Muchas_lista_param;
+import asint.SintaxisAbstractaTiny.Muchas_lista_param_form;
+import asint.SintaxisAbstractaTiny.Mult;
+import asint.SintaxisAbstractaTiny.No_lista_opt_inst;
+import asint.SintaxisAbstractaTiny.Not_unario;
+import asint.SintaxisAbstractaTiny.Null_e;
+import asint.SintaxisAbstractaTiny.Or;
+import asint.SintaxisAbstractaTiny.ParamForm;
+import asint.SintaxisAbstractaTiny.Param_form;
+import asint.SintaxisAbstractaTiny.Param_form_ref;
+import asint.SintaxisAbstractaTiny.Prog_tiny;
+import asint.SintaxisAbstractaTiny.Resta;
+import asint.SintaxisAbstractaTiny.Resta_unario;
+import asint.SintaxisAbstractaTiny.Si_lista_opt_decs;
+import asint.SintaxisAbstractaTiny.Si_lista_opt_inst;
+import asint.SintaxisAbstractaTiny.Si_lista_opt_param;
+import asint.SintaxisAbstractaTiny.Si_lista_opt_param_form;
+import asint.SintaxisAbstractaTiny.Suma;
+import asint.SintaxisAbstractaTiny.Tipo;
+import asint.SintaxisAbstractaTiny.True_e;
+import asint.SintaxisAbstractaTiny.Una_lista_inst;
+import asint.SintaxisAbstractaTiny.Una_lista_param;
+import asint.SintaxisAbstractaTiny.Una_lista_param_form;
 import maquina_p.MaquinaP;
 import utils.Utils;
 
@@ -139,7 +203,18 @@ public class GeneracionCodigo extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Inst_read p) {
+		p.expresion().procesa(this);
 
+		if (Utils.esEntero(p.expresion().tipo)) {
+			m.emit(m.read_int());
+		} else if (Utils.esReal(p.expresion().tipo)) {
+			m.emit(m.read_real());
+		} else if (Utils.esString(p.expresion().tipo)) {
+			m.emit(m.read_string());
+		} else if (Utils.esBoolean(p.expresion().tipo)) {
+			m.emit(m.read_bool());
+		}
+		m.emit(m.desapila_ind());
 	}
 
 	@Override
@@ -156,11 +231,22 @@ public class GeneracionCodigo extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Inst_new p) {
-
+		if (Utils.es_designador(p.expresion()) && Utils.esPuntero(Utils.ref(p.expresion().tipo))) {
+			p.expresion().procesa(this);
+			Tipo t = p.expresion().tipo;
+			m.emit(m.alloc(t.tam));
+			m.emit(m.desapila_ind());
+		}
 	}
 
 	@Override
 	public void procesa(Inst_delete p) {
+		p.expresion().procesa(this);
+		Tipo T = Utils.ref(p.expresion().tipo);
+
+		if (Utils.es_designador(p.expresion()) && Utils.esPuntero(T)) {
+			m.emit(m.dealloc(T.tipo().tam));
+		}
 
 	}
 
@@ -178,11 +264,60 @@ public class GeneracionCodigo extends ProcesamientoDef {
 	}
 
 	public void gen_paso_param(ParamForm pf, Exp e) {
+		m.emit(m.dup());
+		m.emit(m.apila_int(pf.dir));
+		m.emit(m.suma_int());
+
+		if (pf instanceof Param_form) {
+			m.emit(m.dup());
+			m.emit(m.alloc(pf.tipo().tam));
+			m.emit(m.desapila_ind());
+			e.procesa(this);
+
+			Tipo pft = Utils.ref(pf.tipo());
+
+			if (Utils.esReal(pft) && Utils.esEntero(e.tipo)) {
+				gen_acc_val(e, m);
+				m.emit(m.int2real());
+				m.emit(m.desapila_ind());
+			} else {
+				if (Utils.es_designador(e)) {
+					m.emit(m.copia(pf.tipo().tam));
+				} else {
+					m.emit(m.desapila_ind());
+				}
+
+			}
+
+		} else if (pf instanceof Param_form_ref) {
+			m.emit(m.dup());
+			m.emit(m.alloc(1));
+			m.emit(m.desapila_ind());
+			e.procesa(this);
+			m.emit(m.desapila_ind());
+
+		}
 
 	}
 
 	@Override
 	public void procesa(Asignacion e) {
+		e.op1().procesa(this);
+		e.op2().procesa(this);
+
+		if (Utils.esEntero(e.op2().tipo) && Utils.esReal(e.op1().tipo)) {
+			gen_acc_val(e.op2(), m);
+			m.emit(m.int2real());
+			m.emit(m.desapila_ind());
+		}
+		else {
+			if(Utils.es_designador(e.op2())) {
+				m.emit(m.copia(e.op1().tam));
+			}
+			else {
+				m.emit(m.desapila_ind());
+			}
+		}
 
 	}
 
