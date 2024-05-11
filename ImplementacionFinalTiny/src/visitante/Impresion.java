@@ -324,7 +324,7 @@ public class Impresion extends ProcesamientoDef{
 		System.out.println("<if>");
 		p.expresion().procesa(this);
 		System.out.println();
-		p.bloque().procesa(this);
+		p.bloque1().procesa(this);
 		System.out.println();
 		System.out.println("<else>");
 		p.bloque2().procesa(this);
@@ -336,7 +336,7 @@ public class Impresion extends ProcesamientoDef{
 		System.out.println("<if>");
 		p.expresion().procesa(this);
 		System.out.println();
-		p.bloque().procesa(this);
+		p.bloque1().procesa(this);
 		
 	}
 
