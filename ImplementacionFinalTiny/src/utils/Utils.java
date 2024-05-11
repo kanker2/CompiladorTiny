@@ -8,6 +8,7 @@ import asint.SintaxisAbstractaTiny.Iden;
 import asint.SintaxisAbstractaTiny.Indexacion;
 import asint.SintaxisAbstractaTiny.Indireccion;
 import asint.SintaxisAbstractaTiny.Int_t;
+import asint.SintaxisAbstractaTiny.Lit_ent;
 import asint.SintaxisAbstractaTiny.Real_t;
 import asint.SintaxisAbstractaTiny.String_t;
 import asint.SintaxisAbstractaTiny.Tipo;

@@ -178,6 +178,8 @@ public class SintaxisAbstractaTiny {
 
 	public static abstract class LOptParamForm extends Nodo implements ImpresionInterprete {
 		protected LParamForm lista_parametros_formales;
+		
+		public Integer num_elems;
 
 		public LOptParamForm(LParamForm lista_parametros_formales) {
 			this.lista_parametros_formales = lista_parametros_formales;
@@ -196,6 +198,8 @@ public class SintaxisAbstractaTiny {
 	public static abstract class LParamForm extends Nodo implements ImpresionInterprete {
 		protected LParamForm lista_parametros_formales;
 		protected ParamForm parametro_formal;
+		
+		public Integer num_elems;
 
 		public LParamForm(LParamForm lista_parametros_formales, ParamForm parametro_formal) {
 			this.lista_parametros_formales = lista_parametros_formales;
@@ -559,6 +563,8 @@ public class SintaxisAbstractaTiny {
 	public static abstract class LOptParam extends Nodo implements ImpresionInterprete {
 		protected LParam lista_parametros;
 
+		public Integer num_elems;
+		
 		public LOptParam() {
 		};
 
@@ -577,6 +583,8 @@ public class SintaxisAbstractaTiny {
 	public static abstract class LParam extends Nodo implements ImpresionInterprete {
 		protected LParam lista_parametros;
 		protected Exp expresion;
+		
+		public Integer num_elems;
 
 		public LParam(LParam lista_parametros, Exp expresion) {
 			this.lista_parametros = lista_parametros;
@@ -1194,6 +1202,19 @@ public class SintaxisAbstractaTiny {
 		public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+	}
+	
+	public static class Null_t extends Tipo {
+
+		@Override
+		public void imprime() {
+			System.out.print("null");
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {
+		}
+		
 	}
 
 	public static class Muchas_lista_param_reg extends LParamReg {
