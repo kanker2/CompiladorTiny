@@ -12,4 +12,9 @@ public class Errores {
 	public void nuevoError(Error e) {
 		errs.push(e);
 	}
+	
+	public void traza() {
+		while(!errs.isEmpty())
+			System.err.println(errs.pop().getMotivo());
+	}
 }
