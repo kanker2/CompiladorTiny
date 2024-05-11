@@ -2,71 +2,9 @@ package visitante;
 
 import java.util.Stack;
 
-import asint.SintaxisAbstractaTiny.Acc_reg;
-import asint.SintaxisAbstractaTiny.And;
-import asint.SintaxisAbstractaTiny.Asignacion;
-import asint.SintaxisAbstractaTiny.Bloque;
-import asint.SintaxisAbstractaTiny.Cadena;
-import asint.SintaxisAbstractaTiny.Comparacion;
-import asint.SintaxisAbstractaTiny.Dec;
-import asint.SintaxisAbstractaTiny.Dec_proc;
-import asint.SintaxisAbstractaTiny.Dec_var;
-import asint.SintaxisAbstractaTiny.Distinto;
-import asint.SintaxisAbstractaTiny.Div;
-import asint.SintaxisAbstractaTiny.Exp;
-import asint.SintaxisAbstractaTiny.False_e;
-import asint.SintaxisAbstractaTiny.Iden;
-import asint.SintaxisAbstractaTiny.Indexacion;
-import asint.SintaxisAbstractaTiny.Indireccion;
-import asint.SintaxisAbstractaTiny.Inst_call;
-import asint.SintaxisAbstractaTiny.Inst_comp;
-import asint.SintaxisAbstractaTiny.Inst_delete;
-import asint.SintaxisAbstractaTiny.Inst_eval;
-import asint.SintaxisAbstractaTiny.Inst_if;
-import asint.SintaxisAbstractaTiny.Inst_if_else;
-import asint.SintaxisAbstractaTiny.Inst_new;
-import asint.SintaxisAbstractaTiny.Inst_nl;
-import asint.SintaxisAbstractaTiny.Inst_read;
-import asint.SintaxisAbstractaTiny.Inst_while;
-import asint.SintaxisAbstractaTiny.Inst_write;
-import asint.SintaxisAbstractaTiny.LDecs;
-import asint.SintaxisAbstractaTiny.LOptDecs;
-import asint.SintaxisAbstractaTiny.LOptParam;
-import asint.SintaxisAbstractaTiny.LOptParamForm;
-import asint.SintaxisAbstractaTiny.LParam;
-import asint.SintaxisAbstractaTiny.LParamForm;
-import asint.SintaxisAbstractaTiny.Lit_ent;
-import asint.SintaxisAbstractaTiny.Lit_real;
-import asint.SintaxisAbstractaTiny.Mayor;
-import asint.SintaxisAbstractaTiny.Mayor_igual;
-import asint.SintaxisAbstractaTiny.Menor;
-import asint.SintaxisAbstractaTiny.Menor_igual;
-import asint.SintaxisAbstractaTiny.Mod;
-import asint.SintaxisAbstractaTiny.Muchas_lista_decs;
-import asint.SintaxisAbstractaTiny.Muchas_lista_inst;
-import asint.SintaxisAbstractaTiny.Muchas_lista_param;
-import asint.SintaxisAbstractaTiny.Muchas_lista_param_form;
-import asint.SintaxisAbstractaTiny.Mult;
-import asint.SintaxisAbstractaTiny.No_lista_opt_inst;
-import asint.SintaxisAbstractaTiny.Not_unario;
-import asint.SintaxisAbstractaTiny.Null_e;
-import asint.SintaxisAbstractaTiny.Or;
-import asint.SintaxisAbstractaTiny.ParamForm;
-import asint.SintaxisAbstractaTiny.Param_form;
-import asint.SintaxisAbstractaTiny.Param_form_ref;
-import asint.SintaxisAbstractaTiny.Prog_tiny;
-import asint.SintaxisAbstractaTiny.Resta;
-import asint.SintaxisAbstractaTiny.Resta_unario;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_decs;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_inst;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_param;
-import asint.SintaxisAbstractaTiny.Si_lista_opt_param_form;
-import asint.SintaxisAbstractaTiny.Suma;
-import asint.SintaxisAbstractaTiny.True_e;
-import asint.SintaxisAbstractaTiny.Una_lista_inst;
-import asint.SintaxisAbstractaTiny.Una_lista_param;
-import asint.SintaxisAbstractaTiny.Una_lista_param_form;
+import asint.SintaxisAbstractaTiny.*;
 import maquina_p.MaquinaP;
+import utils.Utils;
 
 public class GeneracionCodigo extends ProcesamientoDef {
 	private MaquinaP m;
@@ -118,16 +56,9 @@ public class GeneracionCodigo extends ProcesamientoDef {
 	}
 
 	// Funciones de utilidad
-	public boolean es_designador(Exp e) {
-		if (e instanceof Iden || e instanceof Indexacion || e instanceof Acc_reg || e instanceof Indireccion) {
-			return true;
-		}
-
-		return false;
-	}
 
 	public void gen_acc_val(Exp e, MaquinaP m) {
-		if (es_designador(e)) {
+		if (Utils.es_designador(e)) {
 			m.emit(m.apila_ind());
 		}
 	}

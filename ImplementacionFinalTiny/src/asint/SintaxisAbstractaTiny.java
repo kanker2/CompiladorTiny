@@ -1,6 +1,5 @@
 package asint;
 
-import visitante.ComprobacionTipos.Tipos;
 import visitante.Procesamiento;
 
 public class SintaxisAbstractaTiny {
