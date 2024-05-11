@@ -20,6 +20,11 @@ public class SintaxisAbstractaTiny {
 		public Nodo vinculo;
 		public boolean tipoCorrecto;
 		public Tipo tipo;
+		public int nivel;
+		public int dir;
+		public int tam;
+		public int prim;
+		public int sig;
 		
 		public Nodo() {
 			fila = col = -1;
