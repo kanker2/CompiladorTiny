@@ -81,16 +81,21 @@ import asint.SintaxisAbstractaTiny.Una_lista_inst;
 import asint.SintaxisAbstractaTiny.Una_lista_param;
 import asint.SintaxisAbstractaTiny.Una_lista_param_form;
 import asint.SintaxisAbstractaTiny.Una_lista_param_reg;
+import errores.Errores;
+import errores.VinculacionIdentificadorDuplicado;
+import errores.VinculacionIdentificadorNoDefinido;
 
 public class Vinculacion extends ProcesamientoDef {
 	
 	private TablaDeSimbolosAnidados ts; 
 	private boolean primeraPasada;
 	private SimbolosRegistro sr;
+	private Errores errores;
 	
-	public Vinculacion() {
+	public Vinculacion(Errores e) {
 		ts = new TablaDeSimbolosAnidados();
 		primeraPasada = true;
+		errores = e;
 	}
 	
 	public class SimbolosRegistro {
@@ -146,7 +151,7 @@ public class Vinculacion extends ProcesamientoDef {
 		public void recolecta(String id, Nodo p) {
 			TablaDeSimbolos tsCurrent = getFirst();
 			if (contiene(id))
-				throw ;// Identificador duplicado
+				errores.nuevoError(new VinculacionIdentificadorDuplicado(p));
 			else
 				inserta(id, p);
 		}
@@ -308,7 +313,7 @@ public class Vinculacion extends ProcesamientoDef {
 			if (p.tipo().tipoDefinido()) {
 				p.tipo().vinculo = ts.vinculoDe(p.tipo().cadena());
 				if (p.tipo().vinculo == null)
-					throw ;// Identificador de Tipo no definido
+					errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
 			} else {
 				p.tipo().procesa(this);
 			}
@@ -387,7 +392,7 @@ public class Vinculacion extends ProcesamientoDef {
 		if (primeraPasada) { 	// vincula1
 			p.tipo().procesa(this);
 			if (sr.duplicadoRegistro(p.cadena()))
-				throw ;// Identificador registro duplicado
+				errores.nuevoError(new VinculacionIdentificadorDuplicado(p));
 			else
 				sr.apuntaRegistro(p.cadena());
 		} else {				// vincula2
@@ -476,7 +481,7 @@ public class Vinculacion extends ProcesamientoDef {
 			p.lista_opt_parametros().procesa(this);
 		}
 		else
-			throw ;//Identificador no declarado
+			errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
 	}
 
 	@Override
@@ -634,7 +639,9 @@ public class Vinculacion extends ProcesamientoDef {
 	@Override
 	public void procesa(Iden p) {
 		p.vinculo = ts.vinculoDe(p.cadena());
-		if (p.vinculo == null)
-			throw ;//Identificador no declarado 
+		if (p.vinculo == null) {
+			errores.nuevoError(new VinculacionIdentificadorNoDefinido(p));
+			return;
+		}
 	}
 }
