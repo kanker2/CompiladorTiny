@@ -12,7 +12,6 @@ public abstract class Error {
 		p = n;
 		fila = n.leeFila();
 		columna = n.leeCol();
-		motivo = "Error: f:"+fila+";c:"+columna+"\n";
 	}
 	
 	public String getMotivo() {

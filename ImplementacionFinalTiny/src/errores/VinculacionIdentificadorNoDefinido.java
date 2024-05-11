@@ -5,6 +5,6 @@ import asint.SintaxisAbstractaTiny.Nodo;
 public class VinculacionIdentificadorNoDefinido extends ErroresVinculacion {
 	public VinculacionIdentificadorNoDefinido(Nodo n) {
 		super(n);
-		motivo += "Identificador no definido\n";
+		motivo = "Error Vinculacion: Identificador "+n.toString()+" no definido\n";
 	}
 }
