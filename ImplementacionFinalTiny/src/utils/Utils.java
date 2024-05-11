@@ -13,14 +13,15 @@ import asint.SintaxisAbstractaTiny.Real_t;
 import asint.SintaxisAbstractaTiny.String_t;
 import asint.SintaxisAbstractaTiny.Tipo;
 import asint.SintaxisAbstractaTiny.Tipo_definido;
+import asint.SintaxisAbstractaTiny.Tipo_puntero;
 
 public class Utils {
 	static public Tipo ref(Tipo t) {
-    	if (t instanceof Tipo_definido)
-    		return ref(t.vinculo.tipo);
-    	return t;
+		if (t instanceof Tipo_definido)
+			return ref(t.vinculo.tipo);
+		return t;
 	}
-	
+
 	static public boolean es_designador(Exp e) {
 		if (e instanceof Iden || e instanceof Indexacion || e instanceof Acc_reg || e instanceof Indireccion)
 			return true;
@@ -41,6 +42,10 @@ public class Utils {
 	
 	static public boolean esBoolean(Tipo t) {
 		return t instanceof Bool_t;
+	}
+	
+	static public boolean esPuntero(Tipo t) {
+		return t instanceof Tipo_puntero;
 	}
 	
 	static public boolean esTipoBasico(Tipo t) {
