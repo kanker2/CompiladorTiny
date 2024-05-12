@@ -557,7 +557,7 @@ public class GeneracionCodigo extends ProcesamientoDef {
 		
 		if(Utils.esRegistro(T)) {
 			e.op1().procesa(this);
-			m.emit(); //Hallar el desplazamiento
+			m.emit(m.apila_int()); //Hallar el desplazamiento
 			m.emit(m.suma_int());
 		}
 	}

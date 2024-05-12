@@ -290,7 +290,7 @@ public class SintaxisAbstractaTiny {
 
 	public static abstract class LParamReg extends Nodo implements ImpresionInterprete {
 		protected LParamReg lista_parametros_registro;
-		protected ParamReg parametro_registro;
+		public ParamReg parametro_registro;
 
 		public LParamReg(LParamReg lista_parametros_registro, ParamReg parametro_registro) {
 			this.lista_parametros_registro = lista_parametros_registro;

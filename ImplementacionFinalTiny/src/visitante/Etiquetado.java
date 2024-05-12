@@ -256,11 +256,11 @@ public class Etiquetado extends ProcesamientoDef {
 	@Override
 	public void procesa(Inst_new p) {
 		p.prim = etq;
-		
+
 		Tipo T = Utils.ref(p.expresion().tipo);
-		if(Utils.es_designador(p.expresion()) && Utils.esPuntero(T)) {
+		if (Utils.es_designador(p.expresion()) && Utils.esPuntero(T)) {
 			p.expresion().procesa(this);
-			etq+=2;
+			etq += 2;
 		}
 		p.sig = etq;
 	}
@@ -270,10 +270,10 @@ public class Etiquetado extends ProcesamientoDef {
 		p.prim = etq;
 		p.expresion().procesa(this);
 		Tipo T = Utils.ref(p.expresion().tipo);
-		if(Utils.es_designador(p.expresion()) && Utils.esPuntero(T)) {
+		if (Utils.es_designador(p.expresion()) && Utils.esPuntero(T)) {
 			etq++;
 		}
-		
+
 		p.sig = etq;
 	}
 
@@ -295,108 +295,293 @@ public class Etiquetado extends ProcesamientoDef {
 	}
 
 	public void etiquetado_paso_param(ParamForm pf, Exp e) {
+		etq+=3;
 
+		if (pf instanceof Param_form) {
+			etq+=3;
+			e.procesa(this);
+
+			Tipo pft = Utils.ref(pf.tipo());
+
+			if (Utils.esReal(pft) && Utils.esEntero(e.tipo)) {
+				etiquetado_acc_val(e);
+				etq+=2;
+			} else {
+				if (Utils.es_designador(e)) {
+					etq++;
+				} else {
+					etq++;
+				}
+
+			}
+
+		} else if (pf instanceof Param_form_ref) {
+			etq+=3;
+			e.procesa(this);
+			etq++;
+
+		}
 	}
 
 	@Override
 	public void procesa(Asignacion e) {
+		e.op1().procesa(this);
+		e.op2().procesa(this);
 
+		if (Utils.esEntero(e.op2().tipo) && Utils.esReal(e.op1().tipo)) {
+			etiquetado_acc_val(e.op2());
+			etq++;
+		} else {
+			if (Utils.es_designador(e.op2())) {
+				etq++;
+			} else {
+				etq++;
+			}
+		}
 	}
 
 	@Override
 	public void procesa(Mayor e) {
-
+		etiquetado_op(e.op1(), e.op2());
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		} else if (Utils.esBoolean(e.tipo)) {
+			etq++;
+		} else if (Utils.esString(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Mayor_igual e) {
-
+		etiquetado_op(e.op1(), e.op2());
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		} else if (Utils.esBoolean(e.tipo)) {
+			etq++;
+		} else if (Utils.esString(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Menor e) {
-
+		etiquetado_op(e.op1(), e.op2());
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		} else if (Utils.esBoolean(e.tipo)) {
+			etq++;
+		} else if (Utils.esString(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Menor_igual e) {
-
+		etiquetado_op(e.op1(), e.op2());
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		} else if (Utils.esBoolean(e.tipo)) {
+			etq++;
+		} else if (Utils.esString(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Comparacion e) {
-
+		etiquetado_op(e.op1(), e.op2());
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		} else if (Utils.esBoolean(e.tipo)) {
+			etq++;
+		} else if (Utils.esString(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Distinto e) {
-
+		etiquetado_op(e.op1(), e.op2());
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		} else if (Utils.esBoolean(e.tipo)) {
+			etq++;
+		} else if (Utils.esString(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Suma e) {
+		e.op1().procesa(this);
+		etiquetado_acc_val(e.op1());
 
+		if (Utils.esEntero(e.op1().tipo) && Utils.esReal(e.tipo)) {
+			etq++;
+		}
+
+		e.op2().procesa(this);
+		etiquetado_acc_val(e.op2());
+
+		if (Utils.esEntero(e.op2().tipo) && Utils.esReal(e.tipo)) {
+			etq++;
+		}
+
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Resta e) {
+		e.op1().procesa(this);
+		etiquetado_acc_val(e.op1());
 
+		if (Utils.esEntero(e.op1().tipo) && Utils.esReal(e.tipo)) {
+			etq++;
+		}
+
+		e.op2().procesa(this);
+		etiquetado_acc_val(e.op2());
+
+		if (Utils.esEntero(e.op2().tipo) && Utils.esReal(e.tipo)) {
+			etq++;
+		}
+
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(And e) {
-
+		etiquetado_op(e.op1(), e.op2());
+		etq++;
 	}
 
 	@Override
 	public void procesa(Or e) {
-
+		etiquetado_op(e.op1(), e.op2());
+		etq++;
 	}
 
 	@Override
 	public void procesa(Mult e) {
+		e.op1().procesa(this);
+		etiquetado_acc_val(e.op1());
 
+		if (Utils.esEntero(e.op1().tipo) && Utils.esReal(e.tipo)) {
+			etq++;
+		}
+
+		e.op2().procesa(this);
+		etiquetado_acc_val(e.op2());
+
+		if (Utils.esEntero(e.op2().tipo) && Utils.esReal(e.tipo)) {
+			etq++;
+		}
+
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Div e) {
+		e.op1().procesa(this);
+		etiquetado_acc_val(e.op1());
 
+		if (Utils.esEntero(e.op1().tipo) && Utils.esReal(e.tipo)) {
+			etq++;
+		}
+
+		e.op2().procesa(this);
+		etiquetado_acc_val(e.op2());
+
+		if (Utils.esEntero(e.op2().tipo) && Utils.esReal(e.tipo)) {
+			etq++;
+		}
+
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Not_unario e) {
 		e.op1().procesa(this);
-		gen_acc_val(e.op1(), m);
-		// COMPLETAR
+		etiquetado_acc_val(e.op1());
+		etq++;
 
 	}
 
 	@Override
 	public void procesa(Resta_unario e) {
 		e.op1().procesa(this);
-		gen_acc_val(e.op1(), m);
-		// COMPLETAR
+		etiquetado_acc_val(e.op1());
+		if (Utils.esEntero(e.tipo)) {
+			etq++;
+		} else if (Utils.esReal(e.tipo)) {
+			etq++;
+		}
 	}
 
 	@Override
 	public void procesa(Mod e) {
-		gen_cod_op(e.op1(), e.op2());
-		m.emit(m.mod());
+		etiquetado_op(e.op1(), e.op2());
+		etq++;
 	}
 
 	@Override
 	public void procesa(Indexacion e) {
-
+		Tipo T = Utils.ref(e.op1().tipo);
+		if (Utils.esArray(T)) {
+			e.op1().procesa(this);
+			e.op2().procesa(this);
+			etiquetado_acc_val(e.op2());
+			etq += 3;
+		}
 	}
 
 	@Override
 	public void procesa(Acc_reg e) {
+		Tipo T = Utils.ref(e.op1().tipo);
 
+		if (Utils.esRegistro(T)) {
+			e.op1().procesa(this);
+			etq += 2;
+		}
 	}
 
 	@Override
 	public void procesa(Indireccion e) {
+		Tipo T = Utils.ref(e.op1().tipo);
 
+		if (Utils.esPuntero(T)) {
+			e.op1().procesa(this);
+			etq++;
+		}
 	}
 
 	@Override
@@ -435,7 +620,7 @@ public class Etiquetado extends ProcesamientoDef {
 	}
 
 	@Override
-	public void procesa(Cadena c) {
+	public void procesa(Cadena e) {
 		e.prim = etq;
 		etq++;
 		e.sig = etq;
@@ -455,7 +640,11 @@ public class Etiquetado extends ProcesamientoDef {
 	}
 
 	public void etiquetado_acc_id(Dec_var dec) {
-
+		if (dec.nivel == 0) {
+			etq++;
+		} else {
+			etq += 3;
+		}
 	}
 
 	public void etiquetado_acc_id(Param_form_ref pf) {

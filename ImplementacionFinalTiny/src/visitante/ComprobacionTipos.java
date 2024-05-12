@@ -43,7 +43,10 @@ public class ComprobacionTipos extends ProcesamientoDef {
 
 	public void procesa(Una_lista_dec p) {
 		p.declaracion().procesa(this);
-		p.tipo = p.declaracion().tipo();
+		
+		if(!Utils.esTipoError(p.declaracion().tipo())) {
+			p.tipo = new Ok_t();
+		}
 	}
 
 	public void procesa(Dec_var p) {
@@ -149,7 +152,10 @@ public class ComprobacionTipos extends ProcesamientoDef {
 
 	public void procesa(Una_lista_param_reg p) {
 		p.parametro_registro().procesa(this);
-		p.tipo = p.parametro_registro().tipo();
+		
+		if(!Utils.esTipoError(p.parametro_registro().tipo())){
+			p.tipo = new Ok_t();
+		}
 	}
 
 	public void procesa(Param_reg p) {
