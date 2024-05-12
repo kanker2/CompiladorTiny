@@ -11,8 +11,10 @@ import asint.SintaxisAbstractaTiny.Int_t;
 import asint.SintaxisAbstractaTiny.Real_t;
 import asint.SintaxisAbstractaTiny.String_t;
 import asint.SintaxisAbstractaTiny.Tipo;
+import asint.SintaxisAbstractaTiny.Tipo_array;
 import asint.SintaxisAbstractaTiny.Tipo_definido;
 import asint.SintaxisAbstractaTiny.Tipo_puntero;
+import asint.SintaxisAbstractaTiny.Tipo_registro;
 
 public class Utils {
 	static public Tipo ref(Tipo t) {
@@ -46,6 +48,15 @@ public class Utils {
 	static public boolean esPuntero(Tipo t) {
 		return t instanceof Tipo_puntero;
 	}
+	
+	static public boolean esArray(Tipo t) {
+		return t instanceof Tipo_array;
+	}
+	
+	static public boolean esRegistro(Tipo t) {
+		return t instanceof Tipo_registro;
+	}
+	
 	
 	static public boolean esTipoBasico(Tipo t) {
 		return esEntero(t) || esReal(t) || esString(t) || esBoolean(t);

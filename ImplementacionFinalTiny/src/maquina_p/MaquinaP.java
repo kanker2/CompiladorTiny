@@ -402,6 +402,23 @@ public class MaquinaP {
 			return "mod";
 		}
 	}
+	
+	private class INotUnario implements Instruccion{
+
+
+		public void ejecuta() {
+			Valor opnd1 = pilaEvaluacion.pop();		
+			boolean ret =  opnd1.valorBool() ? false : true;	
+			pilaEvaluacion.push(new ValorBool(ret));
+			pc++;
+			
+		}
+		
+		public String toString() {
+			return "notUnario";
+		}
+		
+	}
 
 	private class IMenosUnarioInt implements Instruccion {
 
@@ -1124,6 +1141,7 @@ public class MaquinaP {
 	private IAnd IAND;
 	private IOr IOR;
 	private IMod IMOD;
+	private INotUnario INOTUNARIO;
 	private IMenosUnarioInt IMENOSUNARIOINT;
 	private IMenosUnarioReal IMENOSUNARIOREAL;
 	private IMayorInt IMAYORINT;
@@ -1379,6 +1397,10 @@ public class MaquinaP {
 
 	public Instruccion mod() {
 		return IMOD;
+	}
+	
+	public Instruccion notUnario() {
+		return INOTUNARIO;
 	}
 
 	public Instruccion menosUnario_int() {
