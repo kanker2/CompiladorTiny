@@ -1,5 +1,6 @@
 package maquina_p;
 
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +16,7 @@ public class MaquinaP {
 	private int pc; // contador del programa
 	private GestorMemoriaDinamica gestorMemoriaDinamica;
 	private GestorPilaActivaciones gestorPilaActivaciones;
+	private Scanner input;
 	private int tamEstatico; // Numero de celdas de la memeoria estatica
 	private int tamPila; // Numero de celdas para la pila de registro de activacion
 	private int tamMemDin; // Numero de celdas para la memoria dinamica
@@ -204,10 +206,14 @@ public class MaquinaP {
 	}
 
 	private class IReadInt implements Instruccion {
+		private Scanner input;
+		
+		public IReadInt(Scanner input) {
+			this.input = input;
+		}
 
 		public void ejecuta() {
-			Scanner s = new Scanner(System.in);
-			pilaEvaluacion.push(new ValorInt(s.nextInt()));
+			pilaEvaluacion.push(new ValorInt(input.nextInt()));
 			pc++;
 		}
 
@@ -217,10 +223,15 @@ public class MaquinaP {
 	}
 
 	private class IReadReal implements Instruccion {
+		private Scanner input;
+		
+		public IReadReal(Scanner input) {
+			this.input = input;
+		}
+		
 
 		public void ejecuta() {
-			Scanner s = new Scanner(System.in);
-			pilaEvaluacion.push(new ValorReal(s.nextFloat()));
+			pilaEvaluacion.push(new ValorReal(input.nextFloat()));
 			pc++;
 		}
 
@@ -230,10 +241,14 @@ public class MaquinaP {
 	}
 
 	private class IReadString implements Instruccion {
+		private Scanner input;
+		
+		public IReadString(Scanner input) {
+			this.input = input;
+		}
 
 		public void ejecuta() {
-			Scanner s = new Scanner(System.in);
-			pilaEvaluacion.push(new ValorString(s.nextLine()));
+			pilaEvaluacion.push(new ValorString(input.nextLine()));
 			pc++;
 		}
 
@@ -243,10 +258,14 @@ public class MaquinaP {
 	}
 
 	private class IReadBool implements Instruccion {
-
+		private Scanner input;
+		
+		public IReadBool(Scanner input) {
+			this.input = input;
+		}
+		
 		public void ejecuta() {
-			Scanner s = new Scanner(System.in);
-			pilaEvaluacion.push(new ValorBool(s.nextBoolean()));
+			pilaEvaluacion.push(new ValorBool(input.nextBoolean()));
 			pc++;
 		}
 
@@ -1179,8 +1198,10 @@ public class MaquinaP {
 	private IrA IRA;
 	private IrInd IRIND;
 	private IStop ISTOP;
+	
 
-	public MaquinaP(int tamEstatico, int tamPila, int tamMemDin, int num_display) {
+	public MaquinaP(Reader input, int tamEstatico, int tamPila, int tamMemDin, int num_display) {
+		this.input = new Scanner(input);
 		this.tamEstatico = tamEstatico;
 		this.tamPila = tamPila;
 		this.tamMemDin = tamMemDin;
@@ -1195,10 +1216,10 @@ public class MaquinaP {
 
 		IDESAPILA = new IDesapila();
 		IDESAPILAE = new IDesapilaEscribe();
-		IREADINT = new IReadInt();
-		IREADREAL = new IReadReal();
-		IREADBOOL = new IReadBool();
-		IREADSTRING = new IReadString();
+		IREADINT = new IReadInt(this.input);
+		IREADREAL = new IReadReal(this.input);
+		IREADBOOL = new IReadBool(this.input);
+		IREADSTRING = new IReadString(this.input);
 		ISUMAINT = new ISumaInt();
 		ISUMAREAL = new ISumaReal();
 		IRESTAINT = new IRestaInt();
@@ -1282,7 +1303,7 @@ public class MaquinaP {
 	}
 
 	public static void main(String[] args) {
-	       MaquinaP m = new MaquinaP(5,10,10,2);
+	       MaquinaP m = new MaquinaP(null, 5,10,10,2);
 	        
 //	       int x;
 //	       proc store(int v) {

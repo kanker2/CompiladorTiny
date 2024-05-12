@@ -11,7 +11,7 @@ public class ComprobacionTipos extends ProcesamientoDef {
 
 	private Errores errores;
 
-	ComprobacionTipos(Errores e) {
+	public ComprobacionTipos(Errores e) {
 		errores = e;
 	}
 
@@ -38,14 +38,23 @@ public class ComprobacionTipos extends ProcesamientoDef {
 	public void procesa(Muchas_lista_decs p) {
 		p.lista_declaraciones().procesa(this);
 		p.declaracion().procesa(this);
-		p.tipo = Utils.ambos_ok(p.lista_declaraciones().tipo, p.declaracion().tipo());
+		Tipo t;
+		if (!Utils.esTipoError(p.declaracion().tipo())) {
+			t = new Ok_t();
+		} else {
+			t = new Error_t();
+		}
+
+		p.tipo = Utils.ambos_ok(p.lista_declaraciones().tipo, t);
 	}
 
 	public void procesa(Una_lista_dec p) {
 		p.declaracion().procesa(this);
-		
-		if(!Utils.esTipoError(p.declaracion().tipo())) {
+
+		if (!Utils.esTipoError(p.declaracion().tipo())) {
 			p.tipo = new Ok_t();
+		} else {
+			p.tipo = new Error_t();
 		}
 	}
 
@@ -80,13 +89,24 @@ public class ComprobacionTipos extends ProcesamientoDef {
 	public void procesa(Muchas_lista_param_form p) {
 		p.lista_parametros_formales().procesa(this);
 		p.parametro_formal().procesa(this);
-		p.tipo = Utils.ambos_ok(p.parametro_formal().tipo(), p.parametro_formal().tipo());
+		Tipo t;
+		if (!Utils.esTipoError(p.parametro_formal().tipo())) {
+			t = new Ok_t();
+		} else {
+			t = new Error_t();
+		}
+
+		p.tipo = Utils.ambos_ok(p.lista_parametros_formales().tipo, t);
 	}
 
 	@Override
 	public void procesa(Una_lista_param_form p) {
 		p.parametro_formal().procesa(this);
-		p.tipo = p.parametro_formal().tipo();
+		if (!Utils.esTipoError(p.parametro_formal().tipo())) {
+			p.tipo = new Ok_t();
+		} else {
+			p.tipo = new Error_t();
+		}
 	}
 
 	@Override
@@ -118,11 +138,9 @@ public class ComprobacionTipos extends ProcesamientoDef {
 
 	public void procesa(Tipo_definido p) {
 		// Esto es parte del pre-tipado
-		
-		if(p.vinculo instanceof Dec_tipo) {
+		if (p.vinculo instanceof Dec_tipo) {
 			p.tipo = new Ok_t();
-		}
-		else {
+		} else {
 			p.tipo = new Error_t();
 			errores.nuevoError();
 		}
@@ -147,14 +165,23 @@ public class ComprobacionTipos extends ProcesamientoDef {
 	public void procesa(Muchas_lista_param_reg p) {
 		p.lista_parametros_registro().procesa(this);
 		p.parametro_registro().procesa(this);
-		p.tipo = Utils.ambos_ok(p.lista_parametros_registro().tipo, p.parametro_registro().tipo);
+		Tipo t;
+		if(!Utils.esTipoError(p.parametro_registro.tipo())) {
+			t = new Ok_t();
+		}
+		else {
+			t = new Error_t();
+		}
+		p.tipo = Utils.ambos_ok(p.lista_parametros_registro().tipo, t);
 	}
 
 	public void procesa(Una_lista_param_reg p) {
 		p.parametro_registro().procesa(this);
-		
-		if(!Utils.esTipoError(p.parametro_registro().tipo())){
+		if(!Utils.esTipoError(p.parametro_registro.tipo())) {
 			p.tipo = new Ok_t();
+		}
+		else {
+			p.tipo = new Error_t();
 		}
 	}
 
@@ -186,21 +213,22 @@ public class ComprobacionTipos extends ProcesamientoDef {
 	public void procesa(Inst_eval p) {
 		p.expresion().procesa(this);
 
-		
-		p.tipo = p.expresion().tipo;
-		if (p.tipo instanceof Error_t)
-			errores.nuevoError();
+		if(!Utils.esTipoError(p.expresion().tipo)) {
+			p.tipo = new Ok_t();
+		}
+		else {
+			p.tipo = new Error_t();
+		}
 	}
 
 	@Override
 	public void procesa(Inst_if p) {
 		p.expresion().procesa(this);
 		p.bloque1().procesa(this);
-		
-		if(Utils.ref(p.expresion().tipo) instanceof Bool_t && p.bloque1().tipo instanceof Ok_t) {
+
+		if (Utils.ref(p.expresion().tipo) instanceof Bool_t && p.bloque1().tipo instanceof Ok_t) {
 			p.tipo = new Ok_t();
-		}
-		else {
+		} else {
 			p.tipo = new Error_t();
 			errores.nuevoError();
 		}
@@ -211,12 +239,11 @@ public class ComprobacionTipos extends ProcesamientoDef {
 		p.expresion().procesa(this);
 		p.bloque1().procesa(this);
 		p.bloque2().procesa(this);
-		
-		if(Utils.ref(p.expresion().tipo) instanceof Bool_t && p.bloque1().tipo instanceof Ok_t
+
+		if (Utils.ref(p.expresion().tipo) instanceof Bool_t && p.bloque1().tipo instanceof Ok_t
 				&& p.bloque2().tipo instanceof Ok_t) {
 			p.tipo = new Ok_t();
-		}
-		else {
+		} else {
 			p.tipo = new Error_t();
 			errores.nuevoError();
 		}
@@ -226,11 +253,10 @@ public class ComprobacionTipos extends ProcesamientoDef {
 
 		p.expresion().procesa(this);
 		p.bloque().procesa(this);
-		
-		if(Utils.ref(p.expresion().tipo) instanceof Bool_t && p.bloque1().tipo instanceof Ok_t) {
+
+		if (Utils.ref(p.expresion().tipo) instanceof Bool_t && p.bloque1().tipo instanceof Ok_t) {
 			p.tipo = new Ok_t();
-		}
-		else {
+		} else {
 			p.tipo = new Error_t();
 			errores.nuevoError();
 		}
@@ -239,11 +265,11 @@ public class ComprobacionTipos extends ProcesamientoDef {
 	public void procesa(Inst_read p) {
 		p.expresion().procesa(this);
 		Tipo tipo_ref = Utils.ref(p.expresion().tipo);
-			
-		if(Utils.es_designador(p.expresion()) && (Utils.esEntero(tipo_ref) || Utils.esReal(tipo_ref) || Utils.esString(tipo_ref))){
+
+		if (Utils.es_designador(p.expresion())
+				&& (Utils.esEntero(tipo_ref) || Utils.esReal(tipo_ref) || Utils.esString(tipo_ref))) {
 			p.tipo = new Ok_t();
-		}
-		else {
+		} else {
 			p.tipo = new Error_t();
 			errores.nuevoError();
 		}
@@ -252,16 +278,15 @@ public class ComprobacionTipos extends ProcesamientoDef {
 	public void procesa(Inst_write p) {
 		p.expresion().procesa(this);
 		Tipo tipo_ref = Utils.ref(p.expresion().tipo);
-		
-		if(Utils.es_designador(p.expresion()) && (Utils.esEntero(tipo_ref) || Utils.esReal(tipo_ref)
-				|| Utils.esString(tipo_ref) || Utils.esBoolean(tipo_ref))){
+
+		if (Utils.es_designador(p.expresion()) && (Utils.esEntero(tipo_ref) || Utils.esReal(tipo_ref)
+				|| Utils.esString(tipo_ref) || Utils.esBoolean(tipo_ref))) {
 			p.tipo = new Ok_t();
-		}
-		else {
+		} else {
 			p.tipo = new Error_t();
 			errores.nuevoError();
 		}
-			
+
 	}
 
 	public void procesa(Inst_nl p) {
@@ -271,11 +296,10 @@ public class ComprobacionTipos extends ProcesamientoDef {
 	public void procesa(Inst_new p) {
 		p.expresion().procesa(this);
 		Tipo tipo_ref = Utils.ref(p.expresion().tipo);
-		
-		if(tipo_ref instanceof Tipo_puntero) {
+
+		if (tipo_ref instanceof Tipo_puntero) {
 			p.tipo = new Ok_t();
-		}
-		else {
+		} else {
 			p.tipo = new Error_t();
 			errores.nuevoError();
 		}
@@ -284,10 +308,9 @@ public class ComprobacionTipos extends ProcesamientoDef {
 	public void procesa(Inst_delete p) {
 		p.expresion().procesa(this);
 		Tipo tipo_ref = Utils.ref(p.expresion().tipo);
-		if(tipo_ref instanceof Tipo_puntero) {
+		if (tipo_ref instanceof Tipo_puntero) {
 			p.tipo = new Ok_t();
-		}
-		else {
+		} else {
 			p.tipo = new Error_t();
 			errores.nuevoError();
 		}
@@ -667,7 +690,8 @@ public class ComprobacionTipos extends ProcesamientoDef {
 			errores.nuevoError(); // t1 no e sun Tipo_puntero
 	}
 
-	////////////////////////////////////   METODOS  //////////////////////////////////////////////////////
+	//////////////////////////////////// METODOS
+	//////////////////////////////////// //////////////////////////////////////////////////////
 	//////////////////////////////////// ADICIONALES//////////////////////////////////////////////////////
 	static public boolean compatibles(Tipo t1, Tipo t2) {
 		HashSet<Pair<Tipo, Tipo>> conjunto = new HashSet<>();
@@ -696,12 +720,9 @@ public class ComprobacionTipos extends ProcesamientoDef {
 		} else if (Utils.esRegistro(T1) && Utils.esRegistro(T2)
 				&& numElems(T1.lista_parametros_registro()) == numElems(T2.lista_parametros_registro())) {
 			return compatibles_registro(T1.lista_parametros_registro(), T2.lista_parametros_registro());
-		}
-		else if(Utils.esPuntero(T1) && Utils.esPuntero(T2)) {
+		} else if (Utils.esPuntero(T1) && Utils.esPuntero(T2)) {
 			return son_unificables(T1.tipo(), T2.tipo(), c);
-		}
-		else if(Utils.esPuntero(T1) && T2 instanceof Null_t 
-				|| T1 instanceof Null_t && Utils.esPuntero(T2)) {
+		} else if (Utils.esPuntero(T1) && T2 instanceof Null_t || T1 instanceof Null_t && Utils.esPuntero(T2)) {
 			return true;
 		}
 		return false;

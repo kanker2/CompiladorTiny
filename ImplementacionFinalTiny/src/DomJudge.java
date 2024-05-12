@@ -1,6 +1,10 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 
 import asint.SintaxisAbstractaTiny.ProgT;
+import asint.SintaxisAbstractaTiny.Prog_tiny;
 import c_ast_ascendente.alex.AnalizadorLexicoTiny;
 import c_ast_ascendente.asint.ConstructorASTTiny;
 import c_ast_ascendente.errors.GestionErroresTiny.ErrorLexico;
@@ -9,6 +13,13 @@ import c_ast_descendente.asint.ConstructorASTTinyDesc;
 import c_ast_descendente.asint.ConstructorASTTinyDescDJ;
 import c_ast_descendente.asint.ParseException;
 import c_ast_descendente.asint.TokenMgrError;
+import errores.Errores;
+import maquina_p.MaquinaP;
+import visitante.AsignacionEspacio;
+import visitante.ComprobacionTipos;
+import visitante.Etiquetado;
+import visitante.GeneracionCodigo;
+import visitante.Vinculacion;
 
 public class DomJudge {
 	private static ProgT construye_ast(Reader input, char constructor) throws Exception {
@@ -46,20 +57,20 @@ public class DomJudge {
 		return null;
 	}
 
-	public static void procesa(Prog p, Reader datos) throws Exception {
+	public static void procesa(Prog_tiny prog, Reader datos) throws Exception {
 		Errores errores = new Errores();
-		new Vinculacion(errores).procesa(p);
+		new Vinculacion(errores).procesa(prog);
+//		if (!errores.hayError()) {
+//			new Pretipado(errores).procesa(p);
+//		}
 		if (!errores.hayError()) {
-			new Pretipado(errores).procesa(p);
+			new ComprobacionTipos(errores).procesa(prog);
 		}
 		if (!errores.hayError()) {
-			new Tipado(errores).procesa(p);
-		}
-		if (!errores.hayError()) {
-			new AsignacionEspacio().procesa(p);
-			new Etiquetado().procesa(p);
+			new AsignacionEspacio().procesa(prog);
+			new Etiquetado().procesa(prog);
 			MaquinaP m = new MaquinaP(datos, 500, 5000, 5000, 10);
-			new GeneracionCodigo(m).procesa(p);
+			new GeneracionCodigo(m).procesa(prog);
 			m.ejecuta();
 		}
 	}
@@ -67,7 +78,7 @@ public class DomJudge {
 	public static void main(String[] args) throws Exception {
 		char constructor = (char) System.in.read();
 		Reader r = new BISReader(System.in);
-		Prog prog = construye_ast(r, constructor);
+		Prog_tiny prog = (Prog_tiny) construye_ast(r, constructor);
 		if (prog != null) {
 			procesa(prog, r);
 		}
