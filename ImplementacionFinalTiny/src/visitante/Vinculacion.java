@@ -223,6 +223,7 @@ public class Vinculacion extends ProcesamientoDef {
 	public void procesa(Si_lista_opt_param_form p) {
 		if (ts.primeraPasada()) { 	// vincula1
 			p.lista_parametros_formales().procesa(this);
+			p.num_elems = p.lista_parametros_formales().num_elems;
 		} else {				// vincula2
 			p.lista_parametros_formales().procesa(this);
 		}
@@ -231,6 +232,7 @@ public class Vinculacion extends ProcesamientoDef {
 	@Override
 	public void procesa(No_lista_opt_param_form p) {
 		if (ts.primeraPasada()) { 	// vincula1
+			p.num_elems = 0;
 			/* noop */
 		} else {				// vincula2
 			/* noop */
@@ -242,6 +244,8 @@ public class Vinculacion extends ProcesamientoDef {
 		if (ts.primeraPasada()) { 	// vincula1
 			p.lista_parametros_formales().procesa(this);
 			p.parametro_formal().procesa(this);
+			
+			p.num_elems = p.lista_parametros_formales().num_elems + 1;
 		} else {				// vincula2
 			p.lista_parametros_formales().procesa(this);
 			p.parametro_formal().procesa(this);
@@ -252,6 +256,8 @@ public class Vinculacion extends ProcesamientoDef {
 	public void procesa(Una_lista_param_form p) {
 		if (ts.primeraPasada()) { 	// vincula1
 			p.parametro_formal().procesa(this);
+			
+			p.num_elems = 1;
 		} else {				// vincula2
 			p.parametro_formal().procesa(this);
 		}
@@ -281,6 +287,8 @@ public class Vinculacion extends ProcesamientoDef {
 	public void procesa(Tipo_array p) {
 		if (ts.primeraPasada()) { 	// vincula1
 			p.tipo().procesa(this);
+			if (Integer.getInteger(p.cadena()) <= 0)
+				errores.nuevoError(); // Error de pretipado que aprovechamo a comprobar aquí
 		} else {				// vincula2
 			p.tipo().procesa(this);
 		}
@@ -480,20 +488,28 @@ public class Vinculacion extends ProcesamientoDef {
 	@Override
 	public void procesa(Si_lista_opt_param p) {
 		p.lista_parametros().procesa(this);
+		
+		p.num_elems = p.lista_parametros().num_elems; 
 	}
 
 	@Override
-	public void procesa(No_lista_opt_param p) { /* noop */ }
+	public void procesa(No_lista_opt_param p) {
+		p.num_elems = 0;
+	}
 
 	@Override
 	public void procesa(Muchas_lista_param p) {
 		p.lista_parametros().procesa(this);
 		p.expresion().procesa(this);
+		
+		p.num_elems = p.lista_parametros().num_elems + 1;
 	}
 
 	@Override
 	public void procesa(Una_lista_param p) {
 		p.expresion().procesa(this);
+		
+		p.num_elems = 1;
 	}
 	
 	@Override
