@@ -68,6 +68,10 @@ public class Utils {
 	static public boolean esRegistro(Tipo t) {
 		return t instanceof Tipo_registro;
 	}
+	
+	static public boolean esTipoDefinido(Tipo t) {
+		return t instanceof Tipo_definido;
+	}
 
 	static public boolean esTipoBasico(Tipo t) {
 		return esEntero(t) || esReal(t) || esString(t) || esBoolean(t);

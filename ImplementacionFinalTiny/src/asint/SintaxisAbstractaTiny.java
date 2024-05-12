@@ -23,6 +23,7 @@ public class SintaxisAbstractaTiny {
 		public int tam;
 		public int prim;
 		public int sig;
+		public int despl;
 		
 		public Nodo() {
 			fila = col = -1;
