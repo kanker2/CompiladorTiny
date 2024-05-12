@@ -23,11 +23,6 @@ public class MaquinaP {
 	public static class EAccesoIlegitimo extends RuntimeException {
 	}
 
-	public static class EAccesoFueraDeRango extends RuntimeException {
-	}
-
-	public static class EAccesoValorNoDefinido extends RuntimeException {
-	}
 
 	// valores basicos de la maquina-p
 	private class Valor {
