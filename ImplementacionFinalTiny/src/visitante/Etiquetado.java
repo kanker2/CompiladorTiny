@@ -62,11 +62,12 @@ import asint.SintaxisAbstractaTiny.Si_lista_opt_inst;
 import asint.SintaxisAbstractaTiny.Si_lista_opt_param;
 import asint.SintaxisAbstractaTiny.Si_lista_opt_param_form;
 import asint.SintaxisAbstractaTiny.Suma;
+import asint.SintaxisAbstractaTiny.Tipo;
 import asint.SintaxisAbstractaTiny.True_e;
 import asint.SintaxisAbstractaTiny.Una_lista_inst;
 import asint.SintaxisAbstractaTiny.Una_lista_param;
 import asint.SintaxisAbstractaTiny.Una_lista_param_form;
-import maquina_p.MaquinaP;
+import utils.Utils;
 
 public class Etiquetado extends ProcesamientoDef {
 	private Stack<Dec_proc> proc_pendientes;
@@ -226,7 +227,14 @@ public class Etiquetado extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Inst_read p) {
+		p.prim = etq;
+		p.expresion().procesa(this);
 
+		if (Utils.esEntero(p.tipo) || Utils.esReal(p.tipo) || Utils.esBoolean(p.tipo) || Utils.esString(p.tipo)) {
+			etq++;
+		}
+		etq++;
+		p.sig = etq;
 	}
 
 	@Override
@@ -247,12 +255,26 @@ public class Etiquetado extends ProcesamientoDef {
 
 	@Override
 	public void procesa(Inst_new p) {
-
+		p.prim = etq;
+		
+		Tipo T = Utils.ref(p.expresion().tipo);
+		if(Utils.es_designador(p.expresion()) && Utils.esPuntero(T)) {
+			p.expresion().procesa(this);
+			etq+=2;
+		}
+		p.sig = etq;
 	}
 
 	@Override
 	public void procesa(Inst_delete p) {
-
+		p.prim = etq;
+		p.expresion().procesa(this);
+		Tipo T = Utils.ref(p.expresion().tipo);
+		if(Utils.es_designador(p.expresion()) && Utils.esPuntero(T)) {
+			etq++;
+		}
+		
+		p.sig = etq;
 	}
 
 	@Override

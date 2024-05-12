@@ -287,8 +287,8 @@ public class Vinculacion extends ProcesamientoDef {
 	public void procesa(Tipo_array p) {
 		if (ts.primeraPasada()) { 	// vincula1
 			p.tipo().procesa(this);
-			if (Integer.getInteger(p.cadena()) <= 0)
-				errores.nuevoError(); // Error de pretipado que aprovechamo a comprobar aquí
+//			if (Integer.getInteger(p.cadena()) <= 0)
+//				errores.nuevoError(); // Error de pretipado que aprovechamo a comprobar aquí
 		} else {				// vincula2
 			p.tipo().procesa(this);
 		}

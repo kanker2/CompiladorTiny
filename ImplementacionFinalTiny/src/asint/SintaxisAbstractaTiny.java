@@ -17,7 +17,6 @@ public class SintaxisAbstractaTiny {
 	public static abstract class Nodo {
 
 		public Nodo vinculo;
-		public boolean tipoCorrecto;
 		public Tipo tipo;
 		public int nivel;
 		public int dir;
@@ -141,7 +140,7 @@ public class SintaxisAbstractaTiny {
 	}
 
 	public static abstract class Dec extends Nodo implements ImpresionInterprete {
-		protected Tipo tipo;
+		public Tipo tipo;
 		protected String cadena;
 		protected Blq bloque;
 		protected LOptParamForm lista_opt_parametros_formales;
@@ -222,7 +221,7 @@ public class SintaxisAbstractaTiny {
 	}
 
 	public static abstract class ParamForm extends Nodo implements ImpresionInterprete {
-		protected Tipo tipo;
+		public Tipo tipo;
 		protected String cadena;
 
 		public ParamForm() {
@@ -245,7 +244,8 @@ public class SintaxisAbstractaTiny {
 	}
 
 	public static abstract class Tipo extends Nodo implements ImpresionInterprete {
-		protected Tipo tipo;
+
+		public Tipo tipo;
 		protected String cadena;
 		protected LParamReg lista_parametros_registro;
 		protected boolean tipo_definido = false;
@@ -312,7 +312,7 @@ public class SintaxisAbstractaTiny {
 	}
 
 	public static abstract class ParamReg extends Nodo implements ImpresionInterprete {
-		protected Tipo tipo;
+		public  Tipo tipo;
 		protected String cadena;
 
 		public ParamReg(Tipo tipo, String cadena) {
@@ -1151,6 +1151,49 @@ public class SintaxisAbstractaTiny {
 		public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+	}
+	
+	public static class Ok_t extends Tipo{
+		public  Ok_t() {
+			super();
+		}
+
+		@Override
+		public void imprime() {		
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {		
+		}
+	}
+	
+	
+	public static class Error_t extends Tipo{
+		public Error_t() {
+			super();
+		}
+
+		@Override
+		public void imprime() {			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {		
+		}
+	}
+	
+	public static class Null_t extends Tipo{
+		public Null_t() {
+			super();
+		}
+
+		@Override
+		public void imprime() {			
+		}
+
+		@Override
+		public void procesa(Procesamiento p) {		
+		}
 	}
 
 	public static class Tipo_registro extends Tipo {
