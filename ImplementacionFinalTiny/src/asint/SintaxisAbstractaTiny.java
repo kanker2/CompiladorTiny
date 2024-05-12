@@ -1246,19 +1246,6 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 	}
-	
-	public static class Null_t extends Tipo {
-
-		@Override
-		public void imprime() {
-			System.out.print("null");
-		}
-
-		@Override
-		public void procesa(Procesamiento p) {
-		}
-		
-	}
 
 	public static class Muchas_lista_param_reg extends LParamReg {
 		public Muchas_lista_param_reg(LParamReg lista_parametros_registro, ParamReg parametro_registro) {
